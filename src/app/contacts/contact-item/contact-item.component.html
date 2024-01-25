@@ -1,0 +1,40 @@
+<a 
+href="#" 
+class="list-group-item clearfix"
+(click)="onselected()">
+<div class="pull-left">
+    <h4 class="list-group-item-heading">{{ contact.name }}</h4>
+</div>
+<span class="pull-right">
+    <img 
+    [src]="contact.imageUrl" 
+    alt="{{ contact.name }}"
+    class="img-responsive" 
+    style="max-height: 50px">
+</span>
+</a>
+<!--
+<div class="panel-heading">
+    Contacts
+    <span class="pull-right">
+        <a href="#" class="btn btn-success">New contact</a>        </span>
+</div>
+<div class="panel-body">
+    <div 
+    class="list-group-item clearfix" 
+    *ngFor="let contact of contacts">
+        <div class="pull-left">
+            <h4 class="list-group-item-heading">{{ contact.name }}</h4>
+        </div>
+        <span class="pull-right">
+            <img 
+            [src]="contact.imageUrl" 
+            alt="{{ contact.name }}"
+            class="img-responsive" 
+            style="max-height: 50px">
+        </span>
+    </div>
+</div> 
+
+-->
+
