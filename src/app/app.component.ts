@@ -8,5 +8,22 @@ import { Component } from '@angular/core';
 
 export class AppComponent {
   title = 'cms';
-
+  contactsVisible:boolean = false;
+  documentsVisible: boolean = true;
+  messagesVisible: boolean = false;
+  onClickDocuments() {
+    this.documentsVisible = true;
+    this.contactsVisible = false;
+    this.messagesVisible = false;
+  }
+  onClickContacts() {
+    this.documentsVisible = false;
+    this.contactsVisible = true;
+    this.messagesVisible = false;
+  }
+  onClickMessages() {
+    this.documentsVisible = false;
+    this.contactsVisible = false;
+    this.messagesVisible = true;
+  }
 }

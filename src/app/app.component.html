@@ -1,6 +1,21 @@
 <div class="container-fluid">
-    <app-header></app-header>
-    <app-contacts></app-contacts>
+    <app-header
+        (documentsClicked)="onClickDocuments()"
+        (contactsClicked)="onClickContacts()"
+        (messagesClicked)="onClickMessages()"
+    ></app-header>
+    <div class="container pull-left">
+        <app-contacts
+            *ngIf="contactsVisible"
+        ></app-contacts>
+        <app-documents
+            *ngIf="documentsVisible"
+        ></app-documents>
+        <app-messages
+            *ngIf="messagesVisible"
+        ></app-messages>
+    </div>>
+
 </div>
 
 
