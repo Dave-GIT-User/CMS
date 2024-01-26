@@ -1,24 +1,25 @@
-<a 
-    href="#" 
-    class="list-group-item clearfix">
-    <div class="row">
-        <div class="col-xs-12">
-            <button class="btn btn-success">New Contact</button>
+
+    <a 
+        href="#" 
+        class="list-group-item clearfix">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="pull-left">
+                    <h2><b>Contacts</b></h2>
+                </div>
+                <br>
+                <div class="pull-right"><button class="btn btn-success">New Contact</button></div>   
+            </div>
         </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-xs-12">
-            <app-contact-item 
-            *ngFor="let contactEl of contacts"
-            [contact]="contactEl"
-            (contactSelected) ="oncontactSelected(contactEl)"   
-            ></app-contact-item>
-        </div>
-    </div>    
-</a>
-<!--
-    <div class="panel panel-default">
-    <app-contact-item></app-contact-item>
-</div>
--->
+        <hr>
+        <div class="row">
+            <div class="col-xs-12">
+                <app-contact-item 
+                *ngFor="let contactEl of contacts"
+                [contact]="contactEl"
+                (selectedContactEvent) ="onSelected(contactEl)"   
+                ></app-contact-item>
+            </div>
+        </div>    
+    </a>
+

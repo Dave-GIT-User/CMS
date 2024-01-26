@@ -1,14 +1,14 @@
-<a 
+    <a 
     href="#" 
-    class="list-group-item clearfix">
-    <div class="panel-heading" >
-        Alfred E. Neuman 
+    class="list-group-item clearfix"> 
+    <div class="panel-default">
         <br>
+        <h4>{{ contact.name }}</h4>  
         <br>
         <span class="pull-left">
             <img 
-            src="../assets/images/A.E.Neuman.jpg" 
-            alt="Alfred E. Neuman"
+            src="{{ contact.imageUrl }}" 
+            alt="{{ contact.name }}"
             class="img-responsive" 
             style="max-height: 50px">                        
         </span>
@@ -18,12 +18,35 @@
         </span>
         <br>
         <br>
-        <br>
     </div>
     <div class="panel-body">
-        Email:
         <br>
-        Phone:
+        <h4>Email: {{ contact.email }}</h4> 
+
+        <h4>Phone: {{ contact.phone }}  </h4>
     </div>
+    </a>
+
+    
+    <!--
 </a>
+    -->
+
+<!--
+    <a 
+href="#" 
+class="list-group-item clearfix"
+(click)="onselected()">
+<div class="pull-left">
+    <h4 class="list-group-item-heading">{{ contact.name }}</h4>
+</div>
+<span class="pull-right">
+    <img 
+    [src]="contact.imageUrl" 
+    alt="{{ contact.name }}"
+    class="img-responsive" 
+    style="max-height: 50px">
+</span>
+</a>
+-->
 
