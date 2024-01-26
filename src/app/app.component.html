@@ -1,22 +1,16 @@
 <div class="container-fluid">
     <app-header
-        (documentsClicked)="onClickDocuments()"
-        (contactsClicked)="onClickContacts()"
-        (messagesClicked)="onClickMessages()"
+        (itemSelected)="onItemSelected($event)"
     ></app-header>
     <div class="container pull-left">
         <app-contacts
-            *ngIf="contactsVisible"
+            *ngIf="itemSelected === 'contacts'"
         ></app-contacts>
         <app-documents
-            *ngIf="documentsVisible"
+            *ngIf="itemSelected === 'documents'"
         ></app-documents>
         <app-messages
-            *ngIf="messagesVisible"
+            *ngIf="itemSelected === 'messages'"
         ></app-messages>
     </div>>
-
 </div>
-
-
-

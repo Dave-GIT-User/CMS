@@ -8,6 +8,11 @@ import { Component } from '@angular/core';
 
 export class AppComponent {
   title = 'cms';
+  itemSelected: string = 'documents';
+  onItemSelected(item: string) {
+    this.itemSelected = item;
+  }
+  /*
   contactsVisible:boolean = false;
   documentsVisible: boolean = true;
   messagesVisible: boolean = false;
@@ -26,4 +31,5 @@ export class AppComponent {
     this.contactsVisible = false;
     this.messagesVisible = true;
   }
+  */
 }

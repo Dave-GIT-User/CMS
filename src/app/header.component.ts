@@ -7,16 +7,9 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 
 export class HeaderComponent {
-  @Output() documentsClicked: EventEmitter<void>= new EventEmitter();
-  @Output() contactsClicked: EventEmitter<void>= new EventEmitter();
-  @Output() messagesClicked: EventEmitter<void>= new EventEmitter();
-  onClickDocuments() {
-    this.documentsClicked.emit();
+  @Output() itemSelected: EventEmitter<string>= new EventEmitter();
+  onSelectItem(choice: string) {
+    this.itemSelected.emit(choice);
   }
-  onClickContacts() {
-    this.contactsClicked.emit();
-  }
-  onClickMessages() {
-    this.messagesClicked.emit();
-  }
+
 }

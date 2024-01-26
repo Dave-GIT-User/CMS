@@ -1,40 +1,19 @@
 <nav class="navbar navbar-default">
     <div class="navbar-header">
-        <a class="navbar-brand">WeLearn CMS</a>
+        <a class="navbar-brand"><h4>WeLearn CMS</h4></a>
     </div>
     <div class="collpase navbar-collapse">
         <ul class="nav navbar-nav">
-            <!--
-                <li><a
-                    (click)="onClickRecipes()"
-                    >Recipes</a></li>
-                <li><a
-                    (click)="onClickShopping()"
-                    >Shopping List</a></li>
-            </ul>
-            -->
+
             <li><a
-                (click)="onClickDocuments()"
-                >Documents</a></li>
+                (click)="onSelectItem('documents')"
+                ><h4>Documents</h4></a></li>
             <li><a
-                (click)="onClickMessages()"
-                >Messages</a></li>  
+                (click)="onSelectItem('messages')"
+                ><h4>Messages</h4></a></li>  
             <li><a
-                (click)="onClickContacts()"
-                >Contacts</a></li> 
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-                <a 
-                    class="dropdown-toggle" 
-                    role="button">User<span 
-                    class="caret"></span> 
-                </a>
-                <ul class="dropdown-menu">
-                    <li>Item a</li>
-                    <li>Item b</li>
-                </ul>
-            </li>
+                (click)="onSelectItem('contacts')"
+                ><h4>Contacts</h4></a></li> 
         </ul>
     </div>
 </nav>

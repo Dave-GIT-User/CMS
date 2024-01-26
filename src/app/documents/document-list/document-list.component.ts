@@ -11,8 +11,4 @@ export class DocumentListComponent {
     new Document('Abe', 'Albacore', 'All the fish', '../../../assets/documents/abe.txt', null),
     new Document('Bob', 'Boxing', 'Boxing galore!', '../../../assets/documents/bob.txt', null)
   ]
-  //  recipes: Recipe[] = [
-//    new Recipe('Salmon', 'Lovely seafood','./assets/images/Salmon_dinner.jpg'),
-//    new Recipe('Oriental Salad', 'Traditional salad','./assets/images/Oriental_salad.jpg')
-//  ];
 }
