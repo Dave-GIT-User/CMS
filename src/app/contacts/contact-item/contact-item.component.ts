@@ -10,6 +10,7 @@ export class ContactItemComponent {
   @Output() selectedContactEvent: EventEmitter<void>= new EventEmitter();
   @Input() contact: Contact;
   onSelected() {
+    console.count('ContactItemComponent.onSelected()');
     this.selectedContactEvent.emit();
   }
 }

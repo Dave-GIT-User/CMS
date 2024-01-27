@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { Message } from '../message.model';
 
 @Component({
@@ -11,10 +11,11 @@ export class MessageEditComponent {
   @Output() addMessageEvent: EventEmitter<Message>= new EventEmitter();
   @ViewChild('subject', {static: true}) subject: ElementRef;
   @ViewChild('msgText', {static: true}) msgText: ElementRef;
+ 
   id: string;
   currentSender: string = "David Hendricks"
   rndNum: number;
- 
+  
   onSendMessage() {
     this.rndNum = Math.floor(Math.random() * 1000);
     this.id=''+this.rndNum; // convert random number to string
@@ -23,10 +24,8 @@ export class MessageEditComponent {
       this.subject.nativeElement.value, 
       this.msgText.nativeElement.value, 
       this.currentSender));
-      console.log('message-edit says sender is '+this.currentSender);
   }
   onClear() {
-    // is this legal?
     this.subject.nativeElement.value = '';
     this.msgText.nativeElement.value = '';
   }

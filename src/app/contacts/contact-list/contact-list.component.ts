@@ -29,7 +29,6 @@ contacts: Contact[] = [];
   }
   @Output() contactWasSelected: EventEmitter<Contact>= new EventEmitter();
   onSelected(contact: Contact) {
-    console.log('ContactList: contact ',contact.name," was selected.");
     this.contactWasSelected.emit(contact);
   }
 }

@@ -7,8 +7,5 @@ import { Message } from './message.model'
   styleUrl: './messages.component.css'
 })
 export class MessagesComponent {
-  selectedMessage: Message;
-  onSelectedMessage(message: Message) {
-    this.selectedMessage = message;
-  }
+
 }

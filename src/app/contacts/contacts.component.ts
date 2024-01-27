@@ -9,7 +9,6 @@ import { Contact } from '../contacts/contact.model';
 export class ContactsComponent {
   selectedContact: Contact;
   onSelectedContact(contact: Contact) {
-    console.log('contacts found '+contact.name);
     this.selectedContact = contact
   }
 }
