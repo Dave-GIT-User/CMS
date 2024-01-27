@@ -9,7 +9,7 @@ export class ContactItemComponent {
 
   @Output() selectedContactEvent: EventEmitter<void>= new EventEmitter();
   @Input() contact: Contact;
-  onselected() {
+  onSelected() {
     this.selectedContactEvent.emit();
   }
 }

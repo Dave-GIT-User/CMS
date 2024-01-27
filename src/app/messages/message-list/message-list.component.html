@@ -1,4 +1,3 @@
-
 <div class="panel panel-default">
    <div class="panel-heading">
       <div class="row pad-left-right">
@@ -8,15 +7,15 @@
    <div class="panel-body">
       <div class="row">
          <div class="col-xs-12">
-         <!-- this needs to show a bunch of messages -->
             <app-message-item
                *ngFor="let messageEl of messages"
+			      [message]="messageEl"
+               (selectedmessageEvent) ="onSelected(messageEl)" 
             ></app-message-item>
          </div>
       </div>
    </div>
-   <div class="panel-footer">
-      <!-- this should edit the current message-->
+   <div class="panel-footer"> 
       <app-message-edit></app-message-edit>
    </div>
 </div>
