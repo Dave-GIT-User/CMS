@@ -9,6 +9,6 @@ import { Contact } from '../contacts/contact.model';
 export class ContactsComponent {
   selectedContact: Contact;
   onSelectedContact(contact: Contact) {
-    this.selectedContact = contact
+    this.selectedContact = contact;
   }
 }

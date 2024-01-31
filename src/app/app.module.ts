@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { DropdownDirective } from './dropdown.directive';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header.component';
 import { ContactsComponent } from './contacts/contacts.component';
@@ -31,7 +32,8 @@ import { MessagesComponent } from './messages/messages.component';
     MessageItemComponent,
     MessageEditComponent,
     MessageListComponent,
-    MessagesComponent
+    MessagesComponent,
+    DropdownDirective
   ],
   imports: [
     BrowserModule
