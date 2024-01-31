@@ -10,6 +10,5 @@ export class DocumentsComponent {
   selectedDocument: Document;
   onSelectedDocument(document: Document) {
     this.selectedDocument = document;
-    console.log('DocumentComponent.onSelectedDocument is'+this.selectedDocument.name);
   }
 }

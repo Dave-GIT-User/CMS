@@ -18,6 +18,5 @@ export class DocumentListComponent {
 
   onSelectedDocument(document: Document) {
     this.selectedDocumentEvent.emit(document);
-    console.log('DocumentListComponent.onSelectedDocument');
   }
 }
