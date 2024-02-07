@@ -18,7 +18,7 @@ export class MessageService {
   getMessages() {
     return this.messages.slice();
   }
-/*
+
   // week 5 note: This is not used.
   // Presumably we will use it in future.
   // search for a message with the expected id.
@@ -33,7 +33,7 @@ export class MessageService {
     return null; 
     // but now null must be intercepted if it happens...
   }
-*/
+
   addMessage(message: Message) {
     this.messages.push(message);
     this.messageChangedEvent.emit(this.messages.slice());

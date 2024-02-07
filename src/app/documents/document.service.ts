@@ -21,7 +21,7 @@ export class DocumentService {
     // week 5 note: This is not used.
     // Presumably we will use it in future.
     // search for a document with the expected id.
-    /*getDocument(id: string): Document {
+    getDocument(id: string): Document {
       // changed let document to const document
       // based on Lint complaint.
       for (const document of this.documents) {
@@ -31,5 +31,5 @@ export class DocumentService {
       // how do we handle failure?
       return null; 
       // but now null must be intercepted if it happens...
-    }*/
+    }
 }
