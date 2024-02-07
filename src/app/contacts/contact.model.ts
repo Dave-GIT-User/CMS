@@ -1,6 +1,12 @@
 export class Contact {
-    constructor(public id: string, public name: string, public email: string, 
-        public phone: string, public imageUrl: string, public group?: Contact[]) {
+    constructor (
+        public id: string,
+        public name: string,
+        public email: string,
+        public phone: string,
+        public imageUrl: string,
+        public group: Contact[]
+    ) { }
         /*
         id—the id of the contact.
 
@@ -14,5 +20,4 @@ export class Contact {
         
         group—this attribute is only applicable to group contacts. It is an array of other contacts that belong to the group.
         */
-    }
 }
