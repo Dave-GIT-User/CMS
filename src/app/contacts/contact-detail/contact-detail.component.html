@@ -1,26 +1,30 @@
-    <a 
-    class="list-group-item clearfix"> 
-    <div class="panel-default">
-        <br>
-        <h4>{{ contact.name }}</h4>  
-        <br>
-        <span class="pull-left">
-            <img 
-            src="{{ contact.imageUrl }}" 
-            alt="{{ contact.name }}"
-            class="img-responsive" 
-            style="max-height: 50px">                        
-        </span>
-        <span class="pull-right">
-            <a class="btn btn-primary">Edit</a>
-            <a class="btn btn-danger">Delete</a>
-        </span>
-        <br>
-        <br>
-    </div>
+<div class="panel panel-default" xmlns="http://www.w3.org/1999/html">
+    <div class="panel-heading">
+        <div class="row pad-all">
+            <h4 class="title margin-left-right">{{ contact.name }}</h4>
+                <span class="pull-left">
+                    <img 
+                    src="{{ contact.imageUrl }}" 
+                    alt="{{ contact.name }}"
+                    class="img-responsive" 
+                    style="max-height: 50px">                        
+                </span>
+                <div class="row pull-right margin-left-right">
+                    <a class="btn btn-primary">Edit</a>
+                    <a class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
     <div class="panel-body">
-        <br>
-        <h4>Email: {{ contact.email }}</h4> 
-        <h4>Phone: {{ contact.phone }} </h4>
+        <div class="pad-left-right">
+            <div class="row">
+                <p>Email:</p>
+                <span class="label-value">{{ contact.email }}</span>
+            </div>
+            <div class="row">
+                <p>phone:</p>
+                <span class="label-value">{{ contact.phone }}</span>
+            </div>
+        </div>
     </div>
-    </a>
+</div>
