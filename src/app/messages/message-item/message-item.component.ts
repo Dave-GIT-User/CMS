@@ -6,7 +6,7 @@ import { ContactService } from '../../contacts/contact.service';
 
 
 @Component({
-  selector: 'app-message-item',
+  selector: 'cms-message-item',
   templateUrl: './message-item.component.html',
   styleUrl: './message-item.component.css'
 })

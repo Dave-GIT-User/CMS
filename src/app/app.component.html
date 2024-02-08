@@ -1,16 +1,16 @@
 <div class="container-fluid">
-    <app-header
+    <cms-header
         (itemSelected)="onItemSelected($event)"
-    ></app-header>
+    ></cms-header>
     <div class="container pull-left">
-        <app-contacts
+        <cms-contacts
             *ngIf="itemSelected === 'contacts'"
-        ></app-contacts>
-        <app-documents
+        ></cms-contacts>
+        <cms-documents
             *ngIf="itemSelected === 'documents'"
-        ></app-documents>
-        <app-messages
+        ></cms-documents>
+        <cms-messages
             *ngIf="itemSelected === 'messages'"
-        ></app-messages>
+        ></cms-messages>
     </div>
 </div>

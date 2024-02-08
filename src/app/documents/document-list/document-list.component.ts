@@ -4,7 +4,7 @@ import { DocumentService } from '../document.service';
 
 
 @Component({
-  selector: 'app-document-list',
+  selector: 'cms-document-list',
   templateUrl: './document-list.component.html',
   styleUrl: './document-list.component.css'
 })

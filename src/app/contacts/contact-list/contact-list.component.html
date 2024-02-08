@@ -16,11 +16,11 @@
         <hr>
         <div class="row">
             <div class="col-xs-12">
-                <app-contact-item 
+                <cms-contact-item 
                 *ngFor="let contactEl of contacts"
                 [contact]="contactEl"
                 (selectedContactEvent) ="onSelected(contactEl)"   
-                ></app-contact-item>
+                ></cms-contact-item>
             </div>
         </div>    
     </a>
@@ -41,11 +41,11 @@
     </div>
     <div class="panel-body">
       <div class="center-panel">
-        <app-contact-item
+        <cms-contact-item
           *ngFor="let contactEl of contacts"
           [contact]="contactEl"
           (selectedContactEvent) ="onSelected(contactEl)" 
-        ></app-contact-item>
+        ></cms-contact-item>
       </div>
     </div>
   </div>

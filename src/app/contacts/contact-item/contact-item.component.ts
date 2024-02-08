@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Contact } from '../contact.model';
 @Component({
-  selector: 'app-contact-item',
+  selector: 'cms-contact-item',
   templateUrl: './contact-item.component.html',
   styleUrl: './contact-item.component.css'
 })

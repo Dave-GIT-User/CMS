@@ -7,14 +7,14 @@
    <div class="panel-body">
       <div class="row">
          <div class="col-xs-12">
-            <app-message-item
+            <cms-message-item
                *ngFor="let messageEl of messages"
 			      [message]="messageEl"
-            ></app-message-item>
+            ></cms-message-item>
          </div>
       </div>
    </div>
    <div class="panel-footer"> 
-      <app-message-edit></app-message-edit>
+      <cms-message-edit></cms-message-edit>
    </div>
 </div>
