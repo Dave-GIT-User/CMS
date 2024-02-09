@@ -1,6 +1,7 @@
 
 /* floating the contact detail based on an idea
 Aaron Picker posted in the Week 5 Developer Forum */
+
 .float-style {
   position: fixed;
   top: 50%;
@@ -16,6 +17,11 @@ Aaron Picker posted in the Week 5 Developer Forum */
     padding-right: 1rem;
   }
   
+  .pull-left {
+    margin-left:1rem;
+    margin-right:1rem;
+  }
+
   .margin-left-right{
     margin-left:1rem;
     margin-right:1rem;
