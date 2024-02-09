@@ -9,4 +9,4 @@ msgText—the text of the message
 
 sender—the sender of the message
 */
-} 
+}
