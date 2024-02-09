@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'cms';
   itemSelected: string = 'documents';
-  onItemSelected(item: string) { 
+  onItemSelected(item: string) {
     this.itemSelected = item;
   }
 }
