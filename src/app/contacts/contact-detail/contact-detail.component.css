@@ -1,17 +1,4 @@
-
-/* floating the contact detail based on an idea
-Aaron Picker posted in the Week 5 Developer Forum */
-
-.float-style {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20vw;
-  height: auto;
-  }
-  
-  .title {
+   .title {
     font-weight: bold;
     padding-left: 1rem;
     padding-right: 1rem;

@@ -10,8 +10,8 @@
                 style="max-height: 50px">                        
             </span>
             <div class="row pull-right margin-left-right">
-                <a class="btn btn-primary">Edit</a>
-                <a class="btn btn-danger">Delete</a>
+                <a class="btn btn-primary" [routerLink]="['edit']">Edit</a>
+                <a class="btn btn-danger" (click)="onDelete()">Delete</a>
             </div>
         </div>
     </div>

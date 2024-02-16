@@ -9,6 +9,7 @@ import { MOCKCONTACTS } from './MOCKCONTACTS';
 export class ContactService {
   private contacts: Contact[] = [];
   contactSelectedEvent: EventEmitter<Contact>= new EventEmitter();
+  contactChangedEvent: EventEmitter<Contact[]>= new EventEmitter();
   constructor() {
     this.contacts = MOCKCONTACTS;
   }
@@ -16,7 +17,6 @@ export class ContactService {
   getContacts(): Contact[] {
     return this.contacts.slice();
   }
-
 
   // search for a contact with the expected id.
   getContact(id: string): Contact {
@@ -30,4 +30,15 @@ export class ContactService {
     return null; 
     // but now null must be intercepted if it happens...
   }
+  deleteContact(contact: Contact) {
+    if (!contact) {
+       return;
+    }
+    const pos = this.contacts.indexOf(contact);
+    if (pos < 0) {
+       return;
+    }
+    this.contacts.splice(pos, 1);
+    this.contactChangedEvent.emit(this.contacts.slice());
+ }
 }

@@ -44,7 +44,7 @@
         <cms-contact-item
           *ngFor="let contactEl of contacts"
           [contact]="contactEl"
-          (selectedContactEvent) ="onSelected(contactEl)" 
+          [contactIndex]="contactEl.id" 
         ></cms-contact-item>
       </div>
     </div>

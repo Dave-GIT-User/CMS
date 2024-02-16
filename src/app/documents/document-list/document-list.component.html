@@ -2,15 +2,15 @@
   <div class="panel-heading">
     <div class="row pad-left-right">
       <span class="pull-left title">Documents</span>
-      <a class="btn btn-success pull-right">Add Document</a>
+      <a class="btn btn-success pull-right" role="presentation" [routerLink]="['/documents', 'new']">Add Document</a>
     </div>
   </div>
   <div class="panel-body">
     <div class="center-panel">
       <cms-document-item
-      *ngFor="let documentEl of documents"
+      *ngFor="let documentEl of documents;"
       [document]="documentEl"
-      (click)="onSelectedDocument(documentEl)"      
+      [docIndex]="documentEl.id"   
       ></cms-document-item>
     </div>
   </div>

@@ -1,16 +1,6 @@
 <div class="container-fluid">
-    <cms-header
-        (itemSelected)="onItemSelected($event)"
-    ></cms-header>
+    <cms-header></cms-header>
     <div class="container pull-left">
-        <cms-contacts
-            *ngIf="itemSelected === 'contacts'"
-        ></cms-contacts>
-        <cms-documents
-            *ngIf="itemSelected === 'documents'"
-        ></cms-documents>
-        <cms-messages
-            *ngIf="itemSelected === 'messages'"
-        ></cms-messages>
+        <router-outlet></router-outlet>
     </div>
 </div>
