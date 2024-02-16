@@ -23,6 +23,6 @@ export class ContactListComponent implements OnInit{
         this.contacts=updatedcontacts;
         this.messageService.purgeMissingSenders();
          }
-    );
+    ); 
   }
 }
