@@ -1,7 +1,9 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, OnInit } from '@angular/core';
 
 import { Message } from './message.model';
 import { MOCKMESSAGES } from './MOCKMESSAGES';
+import { ContactService } from '../contacts/contact.service';
+import { Contact } from '../contacts/contact.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +13,32 @@ export class MessageService {
   messageSelectedEvent: EventEmitter<Message>= new EventEmitter();
   messageChangedEvent: EventEmitter<Message[]>= new EventEmitter();
 
-  constructor() {
+  constructor(private contactService: ContactService) {
     this.messages = MOCKMESSAGES;
   }
+  
+  purgeMissingSenders() {
+    for (const message of this.messages) {
+      const sender: string = message.sender;
+      if (this.contactService.getContact(sender)===null) {
+        console.log('deleting a message');
+        this.deleteMessage(message);
+      }
+    }
+    this.messageChangedEvent.emit(this.messages.slice());
+  }
 
+  deleteMessage(message: Message) { //may need more if user can separately delete a message.
+    if (!message) {
+       return;
+    }
+    const pos = this.messages.indexOf(message);
+    if (pos < 0) {
+       return;
+    }
+    this.messages.splice(pos, 1);
+ }
+ 
   getMessages() {
     return this.messages.slice();
   }

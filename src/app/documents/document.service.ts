@@ -26,15 +26,12 @@ export class DocumentService {
   getDocument(id: string): Document {
     // changed let document to{ const document
     // based on Lint complaint.
-    console.log('docservice getDoc('+id+')')
     for (const document of this.documents) {
       if (document.id === id)
       {
-        console.log('docsvc found doc about '+document.name);
         return document;
       }
     }
-    console.log('docsvc did not find doc '+id);
     // how do we handle failure?
     return null; 
     // but now null must be intercepted if it happens...
