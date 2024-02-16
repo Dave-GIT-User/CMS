@@ -34,6 +34,10 @@ export class ContactService {
     if (!contact) {
        return;
     }
+    if (contact.id === '0') {
+      alert('Deleting the primary contact is not allowed!');
+      return;
+    }
     const pos = this.contacts.indexOf(contact);
     if (pos < 0) {
        return;

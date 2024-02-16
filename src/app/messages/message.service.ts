@@ -21,18 +21,18 @@ export class MessageService {
     for (const message of this.messages) {
       const sender: string = message.sender;
       if (this.contactService.getContact(sender)===null) {
-        console.log('deleting a message');
         this.deleteMessage(message);
       }
     }
     this.messageChangedEvent.emit(this.messages.slice());
   }
 
+  // note, this is not being used as of week 6.
   deleteMessage(message: Message) { //may need more if user can separately delete a message.
     if (!message) {
        return;
     }
-    const pos = this.messages.indexOf(message);
+    const pos = this.messages.indexOf(message); 
     if (pos < 0) {
        return;
     }
@@ -49,7 +49,7 @@ export class MessageService {
   getMessage(id: string) {
     // changed let message to const message
     // based on Lint complaint.
-    for (const message of this.messages) {
+    for (const message of this.messages) { 
       if (message.id === id)
         return message;
     }

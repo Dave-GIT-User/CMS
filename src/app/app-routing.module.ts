@@ -13,16 +13,14 @@ const routes: Routes = [
   { path: '', redirectTo: '/documents', pathMatch: 'full'},
   { path: 'documents', component: DocumentsComponent, children: [
     { path: 'new', component: DocumentEditComponent },
-    { path: ':id', component: DocumentDetailComponent, children: 
-      [{ path: 'edit', component: DocumentEditComponent }
-      ]},
+    { path: ':id', component: DocumentDetailComponent},
+    { path: ':id/edit', component: DocumentEditComponent }
   ]},
   { path: 'messages', component: MessagesComponent},
   { path: 'contacts', component: ContactsComponent, children: [
     { path: 'new', component: ContactEditComponent },
-    { path: ':id', component: ContactDetailComponent, children: 
-      [{ path: 'edit', component: ContactEditComponent }
-      ]},    
+    { path: ':id', component: ContactDetailComponent},
+    { path: ':id/edit', component: ContactEditComponent}
   ]},
 ];
 

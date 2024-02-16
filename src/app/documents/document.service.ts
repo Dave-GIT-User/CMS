@@ -17,9 +17,7 @@ export class DocumentService {
   getDocuments(): Document[] {
     return this.documents.slice();
   }
-  getDocumentByIndex(index: number) {
-    return this.documents[index];
-  }
+
   // week 5 note: This is not used.
   // Presumably we will use it in future.
   // search for a document with the expected id.
