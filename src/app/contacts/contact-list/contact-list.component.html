@@ -1,42 +1,9 @@
-<!--
-    2/7/2024
-    This was what I had. Notice I used <br> to adjust the styling, and it still wasn't 
-    close enough to the assignment screenshots. It was functional, however.
-    <a 
-        class="list-group-item clearfix">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="pull-left">
-                    <h2><strong>Contacts</strong></h2>
-                </div>
-                <br>
-                <div class="pull-right"><button class="btn btn-success">New Contact</button></div>   
-            </div>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-xs-12">
-                <cms-contact-item 
-                *ngFor="let contactEl of contacts"
-                [contact]="contactEl"
-                (selectedContactEvent) ="onSelected(contactEl)"   
-                ></cms-contact-item>
-            </div>
-        </div>    
-    </a>
--->
-<!--
-    The following is a touch up using Brian Norton's idea from the W05 Developer Forum. 
-    It uses the same .css as the document list here and in the message list.
-    I had to put back (selectedContactEvent) ="onSelected(contactEl)" in order to see
-    the contact details, however. Perhaps Brian does something in contact-item...
--->
 
 <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row pad-left-right">
         <span class="pull-left title">Contacts</span>
-        <a class="btn btn-success pull-right">New Contact</a>
+        <a class="btn btn-success pull-right" role="presentation" [routerLink]="['/contacts', 'new']">New Contact</a>
       </div>
     </div>
     <div class="panel-body">
