@@ -1,9 +1,8 @@
-import { Injectable, EventEmitter, OnInit } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 import { Message } from './message.model';
 import { MOCKMESSAGES } from './MOCKMESSAGES';
 import { ContactService } from '../contacts/contact.service';
-import { Contact } from '../contacts/contact.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +45,7 @@ export class MessageService {
   // week 5 note: This is not used.
   // Presumably we will use it in future.
   // search for a message with the expected id.
-  getMessage(id: string) {
+  getMessage(id: string): Message {
     // changed let message to const message
     // based on Lint complaint.
     for (const message of this.messages) { 

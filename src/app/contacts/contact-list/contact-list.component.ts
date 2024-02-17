@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Contact } from '../contact.model'
 import { ContactService } from '../contact.service';
 import { MessageService } from '../../messages/message.service';
-import { Message } from '../../messages/message.model';
 
 @Component({
   selector: 'cms-contact-list',
