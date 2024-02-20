@@ -43,7 +43,7 @@ export class DocumentDetailComponent implements OnInit {
 
   // replace selected document with a dummy document for testing purposes
   onEdit() {
-    let d: Document = this.documentService.updateDocument(this.document, new Document('0','Yahoo', 'Yahoo', 'https://www.yahoo.com'));
+    let d: Document = this.documentService.updateDocument(this.document, new Document('0','Week 7 source', 'Test document for week 7', 'https://github.com/Dave-GIT-User/CMS/tree/week7'));
     if (d) 
       this.document = d;
     else

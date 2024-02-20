@@ -18,7 +18,6 @@ export class DocumentListComponent implements OnInit, OnDestroy {
     this.subscription = this.documentService.documentListChangedEvent.subscribe(
       (updatedDocuments: Document[]) => {
         this.documents=updatedDocuments;
-        console.log('a document was updated');
          }
     );
   }
@@ -29,6 +28,6 @@ export class DocumentListComponent implements OnInit, OnDestroy {
 
   // add a dummy document as a test
   addDocument() {  
-    this.documentService.addDocument(new Document('0','Google', 'Google', 'https://www.google.com'))
+    this.documentService.addDocument(new Document('0','Week 7 source, test branch', 'Test document for week 7', 'https://github.com/Dave-GIT-User/CMS/tree/week7-test'))
   }
 }
