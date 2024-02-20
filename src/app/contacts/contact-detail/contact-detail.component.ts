@@ -32,4 +32,13 @@ export class ContactDetailComponent implements OnInit{
     this.contactService.deleteContact(this.contact);
     this.router.navigate(['/contacts']);
   }
+
+  OnEdit() {
+    let c: Contact = this.contactService.updateContact(this.contact, 
+      new Contact('0','Paul E. Neuman', 'NoEmail@NoEmail.com', '1-800-NO-PHONE', '../../assets/images/AlfredENeuman.jpg')); 
+    if (c)
+      this.contact = c;
+    else 
+      alert('Contact not found!');
+  }
 }

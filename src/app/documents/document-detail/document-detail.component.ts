@@ -40,4 +40,13 @@ export class DocumentDetailComponent implements OnInit {
     this.documentService.deleteDocument(this.document);
     this.router.navigate(['/documents']);
   }
+
+  // replace selected document with a dummy document for testing purposes
+  onEdit() {
+    let d: Document = this.documentService.updateDocument(this.document, new Document('0','Yahoo', 'Yahoo', 'https://www.yahoo.com'));
+    if (d) 
+      this.document = d;
+    else
+      alert('Document not found!');
+   }
 }

@@ -5,7 +5,7 @@ export class Contact {
         public email: string,
         public phone: string,
         public imageUrl: string,
-        public group: Contact[] 
+        public group: Contact[] = null
     ) { }
         /*
         id—the id of the contact.
