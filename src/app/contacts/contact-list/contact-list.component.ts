@@ -29,10 +29,4 @@ export class ContactListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
-  // add a dummy contact for testing
-  addContact() {
-    this.contactService.addcontact(new Contact('0','Barney Rubble', 'spam@byui.edu', '1-800-NO-PHONE', 
-      '../../assets/images/BarneyRubble.jpg'));
-  }
 }

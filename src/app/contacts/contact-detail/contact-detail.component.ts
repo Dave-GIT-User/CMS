@@ -32,13 +32,4 @@ export class ContactDetailComponent implements OnInit{
     this.contactService.deleteContact(this.contact);
     this.router.navigate(['/contacts']);
   }
-
-  OnEdit() {
-    let c: Contact = this.contactService.updateContact(this.contact, 
-      new Contact('0','Barney Rubble', 'spam@byui.edu', '1-800-NO-PHONE', '../../assets/images/BarneyRubble.jpg')); 
-    if (c)
-      this.contact = c;
-    else 
-      alert('Contact not found!');
-  }
 }

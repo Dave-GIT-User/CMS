@@ -40,13 +40,4 @@ export class DocumentDetailComponent implements OnInit {
     this.documentService.deleteDocument(this.document);
     this.router.navigate(['/documents']);
   }
-
-  // replace selected document with a dummy document for testing purposes
-  onEdit() {
-    let d: Document = this.documentService.updateDocument(this.document, new Document('0','Week 7 source', 'Test document for week 7', 'https://github.com/Dave-GIT-User/CMS/tree/week7'));
-    if (d) 
-      this.document = d;
-    else
-      alert('Document not found!');
-   }
 }
