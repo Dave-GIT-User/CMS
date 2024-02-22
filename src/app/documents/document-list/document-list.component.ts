@@ -25,4 +25,9 @@ export class DocumentListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+
+  // add a dummy document as a test
+  addDocument() {  
+    this.documentService.addDocument(new Document('0','Week 7 source, test branch', 'Test document for week 7', 'https://github.com/Dave-GIT-User/CMS/tree/week7-test'))
+  }
 }

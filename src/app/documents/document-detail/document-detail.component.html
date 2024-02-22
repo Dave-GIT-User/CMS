@@ -4,7 +4,11 @@
       <h4 class="title margin-left-right">{{document?.name}}</h4>
       <div class="row pull-right margin-left-right">
         <a class="btn btn-primary" (click)="onView()">View</a>
-        <a class="btn btn-info" [routerLink]="['edit']">Edit</a>
+        <!-- this will go back in week 8 -->
+        <!--a class="btn btn-info" [routerLink]="['edit']">Edit</a-->
+
+        <!-- replace selected document with a dummy document for testing -->
+        <a class="btn btn-info" (click)="onEdit()">Edit</a>
         <a class="btn btn-danger" (click)="onDelete()">Delete</a>
       </div>
     </div>

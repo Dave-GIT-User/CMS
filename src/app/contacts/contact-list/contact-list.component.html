@@ -3,7 +3,11 @@
     <div class="panel-heading">
       <div class="row pad-left-right">
         <span class="pull-left title">Contacts</span>
-        <a class="btn btn-success pull-right" role="presentation" [routerLink]="['/contacts', 'new']">New Contact</a>
+        <!-- this will go back in week 8 -->
+        <!--a class="btn btn-success pull-right" role="presentation" [routerLink]="['/contacts', 'new']">New Contact</a-->
+
+        <!-- create a dummy contact for testing purposes -->
+        <a class="btn btn-success pull-right" role="presentation" (click)="addContact()">New Contact</a>
       </div>
     </div>
     <div class="panel-body">
