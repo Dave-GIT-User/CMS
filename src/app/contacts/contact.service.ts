@@ -58,7 +58,7 @@ export class ContactService {
     return highest;
   }
 
-  addcontact(newContact: Contact ) {
+  addContact(newContact: Contact ) {
     if (newContact === null)
       return;
     this.maxContactId++;
