@@ -10,7 +10,6 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   styleUrl: './document-edit.component.css'
 })
 export class DocumentEditComponent implements OnInit{
-  originalDocument: Document;
   document: Document;
   editMode: boolean = false;
 
@@ -19,7 +18,6 @@ constructor(
   private documentService: DocumentService,
   private router: Router,
   private route: ActivatedRoute) {
-
 }
 
   onCancel() {
@@ -34,7 +32,7 @@ constructor(
       value.description,
       value.url);
     if (this.editMode) {
-      this.documentService.updateDocument(this.originalDocument, newDocument)
+      this.documentService.updateDocument(this.document, newDocument)
     } else {
       this.documentService.addDocument(newDocument);
     }
@@ -49,12 +47,12 @@ constructor(
           this.editMode = false;
           return;
         }
-        this.originalDocument = JSON.parse(JSON.stringify(this.documentService.getDocument(id)));
-        if (this.originalDocument === null) {
+        this.document = JSON.parse(JSON.stringify(this.documentService.getDocument(id)));
+        if (this.document === null) {
           return;
         }
         this.editMode = true;
-        this.document = JSON.parse(JSON.stringify(this.originalDocument));
+        this.document = JSON.parse(JSON.stringify(this.document));
       }
     );
   }

@@ -11,11 +11,9 @@ import { ContactService } from '../contact.service';
 })
 
 export class ContactEditComponent implements OnInit {
-  originalContact: Contact;
   contact: Contact;
   groupContacts: Contact[] = [];
   editMode: boolean = false;
-  id: string;
   
   constructor(
        private contactService: ContactService,
@@ -30,25 +28,14 @@ export class ContactEditComponent implements OnInit {
           this.editMode = false;
           return;
         }
-        this.originalContact = JSON.parse(JSON.stringify(this.contactService.getContact(id)));
-        if (this.originalContact === null) {
+        this.contact = JSON.parse(JSON.stringify(this.contactService.getContact(id)));
+        if (this.contact === null) {
           return;
         }
         this.editMode = true;
-        this.contact = JSON.parse(JSON.stringify(this.originalContact));
-        /*
-           if the contact has a group then
-              groupContacts = clone the contact’s group
-           endif
-        */
-       if (this.contact.group !== null) {
-        console.log('group found')
-        for (let gc of this.contact.group) {
-          this.groupContacts.push(gc);
+        if (this.contact.group !== null) {
+         this.groupContacts = JSON.parse(JSON.stringify(this.contact.group));
         }
-          //this.contact.group = JSON.parse(JSON.stringify(this.originalContact.group));
-          //console.log(this.contact.group);
-       }
       }
     );
   }  
@@ -56,7 +43,6 @@ export class ContactEditComponent implements OnInit {
   onCancel() {
     this.router.navigate(['/contacts']);
   }
-
 
   onRemoveItem(index: number) {
     if (index < 0 || index >= this.groupContacts.length) {
@@ -72,13 +58,14 @@ export class ContactEditComponent implements OnInit {
       value.name,
       value.email,
       value.phone,
-      value.imageUrl);
+      value.imageUrl, 
+      this.groupContacts.slice());
     if (this.editMode) {
-      this.contactService.updateContact(this.originalContact, newContact)
+      this.contactService.updateContact(this.contact, newContact)
     } else {
       this.contactService.addContact(newContact);
     }
-    this.router.navigate(['/Contacts']);
+    this.onCancel();
   }
   
   isInvalidContact(newContact: Contact) {
