@@ -71,37 +71,50 @@
             #imageUrl="ngModel">
         </div>
       </div>
-
-      <div class="row">
+<!--
+<div class="row">
         <div class="form-group">
           <label for="groupList">Group Contacts:</label>
-          <button type="button" class="btn btn-primary" (click)="addToGroup()">Add Contact</button>
-
           <div class="row" id="groupList"
               style="min-height: 3rem;" >
-
             <div *ngFor="let contact of groupContacts; let i = index">
               <div>
-                <cms-contact-item class="col-sm-11" [contact]="contact"  style="margin-top: 10px;"></cms-contact-item>
+                <cms-contact-item class="col-sm-11" [contact]="contact"  style="margin-top: 10px;" 
+                cdkDropList [cdkDropListData]="groupContacts" (cdkDropListDropped)="addToGroup($event)"></cms-contact-item>
                 <button type="button" class="btn btn-danger col-sm-2 deleteButton" (click)="onRemoveItem(i)">X</button>
               </div>
             </div> 
-            <span class="dragMsg" *ngIf="groupContacts?.length < 1">Drag contacts in group here</span>
+              <p class="drop-area" cdkDropList [cdkDropListData]="groupContacts" (cdkDropListDropped)="addToGroup($event)" *ngIf="groupContacts?.length < 1">Drag contacts in group here</p>
           </div>
-
         </div>
+      </div>
+-->
+      <div
+        class="row drop-area"
+        id="groupList"
+        style="min-height: 3rem;"
+        cdkDropList
+        [cdkDropListData]="groupContacts"
+        (cdkDropListDropped)="addToGroup($event)">
+        <div *ngFor="let contact of groupContacts; let i = index">
+          <div>
+            <cms-contact-item class="col-sm-11" [contact]="contact" style="margin-top: 10px"></cms-contact-item>
+            <button class="btn btn-danger col-sm-2 deleteButton" (click)="onRemoveItem(i)">X</button>
+          </div>
+        </div>
+        <span class="drop-area" *ngIf="groupContacts?.length < 1">Drag contacts in group here</span>
       </div>
       <div 
         class="alert alert-danger"
-        *ngIf="!name.valid && !name.touched || !email.valid && !email.touched">The Name and Email fields are required.</div>
+        *ngIf="!name.valid && !name.touched || !email.valid && !email.touched" style="margin-top: 10px">The Name and Email fields are required.
+      </div>
 
       <div class="row">
-        <div class="col-xs-12 btn-toolbar">
+        <div class="col-xs-12 btn-toolbar" style="margin-top: 10px">
           <button class="btn btn-success" type="submit" [disabled]="!f.valid">Save</button>
           <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
         </div>
       </div>
-
     </form>
   </div>
 </div>

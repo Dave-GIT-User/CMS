@@ -8,11 +8,13 @@
     </div>
     <div class="panel-body">
       <div class="center-panel">
-        <cms-contact-item
-          *ngFor="let contactEl of contacts"
-          [contact]="contactEl"
-          [contactIndex]="contactEl.id" 
-        ></cms-contact-item>
+        <div cdkDropList [cdkDropListData]="contacts">
+          <cms-contact-item 
+            *ngFor="let contactEl of contacts" cdkDrag 
+            [contact]="contactEl"
+            [contactIndex]="contactEl.id"         
+          ></cms-contact-item>
+        </div>
       </div>
     </div>
   </div>
