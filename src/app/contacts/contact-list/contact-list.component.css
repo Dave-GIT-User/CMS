@@ -14,4 +14,8 @@
     padding-left:1rem;
     padding-right:1rem;
   }
+.panel-body {
+    height: 80vh;
+    overflow-y: auto;
+}
 

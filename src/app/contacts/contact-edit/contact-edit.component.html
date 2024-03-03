@@ -51,8 +51,9 @@
             ngModel
             [ngModel]=contact?.phone
             #phone="ngModel"
-            pattern="(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$">
-            <span class="help-block" *ngIf="!phone.valid && phone.touched">Please enter a 10 digit phone number!</span>
+            pattern="\D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D*">
+            <!-- \D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D* (\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$  -->
+            <span class="help-block" *ngIf="phone.value !=' ' && !phone.valid && phone.touched">Please enter a 10 digit phone number!</span>
         </div>
       </div>
 
@@ -71,31 +72,19 @@
             #imageUrl="ngModel">
         </div>
       </div>
-<!--
-<div class="row">
-        <div class="form-group">
-          <label for="groupList">Group Contacts:</label>
-          <div class="row" id="groupList"
-              style="min-height: 3rem;" >
-            <div *ngFor="let contact of groupContacts; let i = index">
-              <div>
-                <cms-contact-item class="col-sm-11" [contact]="contact"  style="margin-top: 10px;" 
-                cdkDropList [cdkDropListData]="groupContacts" (cdkDropListDropped)="addToGroup($event)"></cms-contact-item>
-                <button type="button" class="btn btn-danger col-sm-2 deleteButton" (click)="onRemoveItem(i)">X</button>
-              </div>
-            </div> 
-              <p class="drop-area" cdkDropList [cdkDropListData]="groupContacts" (cdkDropListDropped)="addToGroup($event)" *ngIf="groupContacts?.length < 1">Drag contacts in group here</p>
-          </div>
-        </div>
-      </div>
--->
+
       <div
         class="row drop-area"
         id="groupList"
         style="min-height: 3rem;"
         cdkDropList
-        [cdkDropListData]="groupContacts"
+        [cdkDropListData]="groupContacts" 
         (cdkDropListDropped)="addToGroup($event)">
+        <div 
+          class="alert alert-danger"
+          *ngIf="invalidDrop" style="margin-top: 10px">
+          Contact cannot be added to the group. It is already in the group or is the current contact.
+        </div>
         <div *ngFor="let contact of groupContacts; let i = index">
           <div>
             <cms-contact-item class="col-sm-11" [contact]="contact" style="margin-top: 10px"></cms-contact-item>
@@ -106,7 +95,8 @@
       </div>
       <div 
         class="alert alert-danger"
-        *ngIf="!name.valid && !name.touched || !email.valid && !email.touched" style="margin-top: 10px">The Name and Email fields are required.
+        *ngIf="!name.valid && !name.touched || !email.valid && !email.touched" style="margin-top: 10px">
+        The Name and Email fields are required.
       </div>
 
       <div class="row">

@@ -22,6 +22,7 @@ export class ContactEditComponent implements OnInit {
   groupContacts: Contact[] = [];
   editMode: boolean = false;
   droppedContacts: Contact[] = [];
+  invalidDrop: boolean = false;
   
   constructor(
        private contactService: ContactService,
@@ -49,6 +50,7 @@ export class ContactEditComponent implements OnInit {
   }  
   
   onCancel() {
+    this.invalidDrop = false;
     this.router.navigate(['/contacts']);
   }
 
@@ -57,6 +59,7 @@ export class ContactEditComponent implements OnInit {
        return;
     }
     this.groupContacts.splice(index, 1);
+    this.invalidDrop = false;
  }
 
   onSubmit(form: NgForm) {
@@ -79,18 +82,22 @@ export class ContactEditComponent implements OnInit {
   isInvalidContact(newContact: Contact) {
     // newContact has no value
     if (!newContact) {
+      this.invalidDrop = true;
       return true;
     }
     if (this.contact && newContact.id === this.contact.id) {
+      this.invalidDrop = true;
       return true;
     }
     if (this.groupContacts.length > 0) {
       for (let i = 0; i < this.groupContacts.length; i++){
         if (newContact.id === this.groupContacts[i].id) {
+          this.invalidDrop = true;
           return true;
         }
       }
     }
+    this.invalidDrop = false;
     return false;
   }
 
@@ -105,7 +112,6 @@ export class ContactEditComponent implements OnInit {
 
     // This pushes the new contact to the group.
     this.groupContacts.push(contactCopy);
-
 
     /*      
     // This, recommended by CDK, inserts the new contact at element 0,
