@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Message } from '../message.model';
@@ -11,16 +11,17 @@ import { ContactService } from '../../contacts/contact.service';
   templateUrl: './message-list.component.html',
   styleUrl: './message-list.component.css'
 })
-export class MessageListComponent implements OnInit{
+export class MessageListComponent implements OnInit, OnDestroy {
   messages: Message[] = [];
-  errorMessage = "";
+  errorMessages = "";
+  errorContacts = "";
   subscription1: Subscription = new Subscription();
   subscription2: Subscription = new Subscription();
+  subscription3: Subscription = new Subscription();
 
   constructor(
     private messageService: MessageService,
     private contactService: ContactService) {}
-
 
     ngOnInit(): void {
       this.messages = this.messageService.getMessages();
@@ -29,14 +30,28 @@ export class MessageListComponent implements OnInit{
           this.messages=updatedMessages;
            }
       );
-      this.subscription2 = this.messageService.messageIOError.subscribe(
+      // check for errors fetching contacts
+      this.subscription2 = this.contactService.contactIOError.subscribe(
         (error) => {
-          this.errorMessage = error;
+          this.errorContacts = error;
+           }
+      );
+      // check for errors fetching messages
+      this.subscription3 = this.messageService.messageIOError.subscribe(
+        (error) => {
+          this.errorMessages = error;
            }
       );
     }
     
   onClearError() {
-    this.errorMessage = "";
+    this.errorContacts = "";
+    this.errorMessages = "";
+  }
+
+  ngOnDestroy(): void {
+    this.subscription1.unsubscribe();
+    this.subscription2.unsubscribe();
+    this.subscription3.unsubscribe();
   }
 }

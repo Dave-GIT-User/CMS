@@ -62,10 +62,14 @@ export class MessageService {
         }
       }, 
       // we could perhaps give the user some feedback.
-      error: (error) => console.log(error)
+      error: (error) => {
+        console.log(error);
+        this.messageIOError.next("Error fetching messages!");
+      }
     });
     return null;
   }
+
   noMessages() {
     return this.messages.length  === 0;
   }
@@ -80,7 +84,10 @@ export class MessageService {
         this.messageListChangedEvent.next(this.messages.slice());
       },
       // could / should also inform the user
-      error: (error) => console.log('StoreMessages error '+error.value)
+      error: (error) => {
+        console.log('StoreMessages error '+error.value);
+        this.messageIOError.next("Error storing messages!");
+      }
     })
 
   }  purgeMissingSenders() {

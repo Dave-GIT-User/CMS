@@ -11,8 +11,8 @@
                *ngFor="let messageEl of messages"
 			      [message]="messageEl"
             ></cms-message-item>
-            <div *ngIf="errorMessage.length > 0">
-               <h3>{{ errorMessage }}</h3>
+            <div *ngIf="errorContacts.length > 0 || errorMessages.length > 0">
+               <h3> {{ errorMessages }}<br>{{ errorContacts }}</h3>
                <button type="button" class="btn btn-danger" (click)="onClearError()">Clear Error</button>
              </div>
          </div>
