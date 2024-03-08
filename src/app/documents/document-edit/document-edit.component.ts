@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
+
 import { Document } from '../document.model'
 import { DocumentService } from '../document.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -12,13 +14,15 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 export class DocumentEditComponent implements OnInit{
   document: Document;
   editMode: boolean = false;
+  private subscription1: Subscription;
+  private subscription2: Subscription;
+  errorMessage = "";
 
-  
-constructor(
-  private documentService: DocumentService,
-  private router: Router,
-  private route: ActivatedRoute) {
-}
+  constructor(
+    private documentService: DocumentService,
+    private router: Router,
+    private route: ActivatedRoute) {
+  }
 
   onCancel() {
     this.router.navigate(['/documents']);
@@ -40,10 +44,10 @@ constructor(
   }
 
   ngOnInit() {
-    if (this.documentService.noDocuments()) {
+   /* if (this.documentService.noDocuments()) {
       this.router.navigate(['/documents']);
-    }
-    this.route.params.subscribe(
+    }*/
+    this.subscription1 = this.route.params.subscribe(
       (params: Params) => {
         const id = params.id;
         if (id === null) {
@@ -58,5 +62,14 @@ constructor(
         this.document = JSON.parse(JSON.stringify(this.document));
       }
     );
+    this.subscription2 =     this.subscription2 = this.documentService.documentIOError.subscribe(
+      (error) => {
+        this.errorMessage = error;
+         }
+    );  
+  }
+
+  onClearError() {
+    this.errorMessage = "";
   }
 }

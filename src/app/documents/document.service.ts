@@ -9,8 +9,9 @@ import { Document } from './document.model';
 })
 export class DocumentService {
   private documents: Document[] = [];
-  documentSelectedEvent: Subject<Document>= new Subject();
+  //documentSelectedEvent: Subject<Document>= new Subject();
   documentListChangedEvent: Subject<Document[]>= new Subject();
+  documentIOError: Subject<string>=new Subject();
   private maxDocumentId: number = 0;
   constructor(private http: HttpClient) {  }
   private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/documents.json'
@@ -47,14 +48,18 @@ export class DocumentService {
           return  documentListClone;
         }
       }, 
-      // we could perhaps give the user some feedback.
-      error: (error) => console.log(error)
+      error: (error) => {
+        this.documentIOError.next("Error fetching documents!");
+        console.log('getDocuments error '+error)
+      }
     });
     return null;
   }
+
   noDocuments() {
     return this.documents.length  === 0;
   }
+
   storeDocuments() {
     // may not be necessary since my verion has all string fields.
     // const documents = JSON.stringify(this.documents); 
@@ -65,9 +70,11 @@ export class DocumentService {
         this.documentListChangedEvent.next(this.documents.slice());
       },
       // could / should also inform the user
-      error: (error) => console.log('StoreDocuments error '+error.value)
+      error: (error) => {
+        this.documentIOError.next("Error storing documents!");
+        console.log('storeDocuments error '+error.value);
+      }
     })
-
   }
 
   getDocument(id: string): Document {

@@ -11,20 +11,30 @@ import { MessageService } from '../../messages/message.service';
 })
 export class ContactListComponent implements OnInit, OnDestroy {
   term: string = '';
-
-  contacts: Contact[] = []; 
-  private subscription: Subscription = new Subscription();
+  contacts: Contact[] = [];
+  errorMessage = "";
+  subscription1: Subscription = new Subscription();
+  subscription2: Subscription = new Subscription();
 
   constructor(private contactService: ContactService, private messageService: MessageService) {}
 
   ngOnInit(): void {
     this.contacts = this.contactService.getContacts();
-    this.subscription = this.contactService.contactListChangedEvent.subscribe(
+    this.subscription1 = this.contactService.contactListChangedEvent.subscribe(
       (updatedcontacts: Contact[]) => {
         this.contacts=updatedcontacts;
         this.messageService.purgeMissingSenders();
          }
     ); 
+    this.subscription2 = this.contactService.contactIOError.subscribe(
+      (error) => {
+        this.errorMessage = error;
+         }
+    );
+  }
+
+  onClearError() {
+    this.errorMessage = "";
   }
 
   search(value: string) {
@@ -32,6 +42,6 @@ export class ContactListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscription1.unsubscribe();
   }
 }

@@ -11,18 +11,31 @@ import { DocumentService } from '../document.service';
 })
 export class DocumentListComponent implements OnInit, OnDestroy {
   documents: Document[] = [];
+  errorMessage = "";
   constructor(private documentService: DocumentService) {}
-  private subscription: Subscription;
+  subscription1: Subscription = new Subscription();
+  subscription2: Subscription = new Subscription();
+  
   ngOnInit(): void {
     this.documents = this.documentService.getDocuments();
-    this.subscription = this.documentService.documentListChangedEvent.subscribe(
+    this.subscription1 = this.documentService.documentListChangedEvent.subscribe(
       (updatedDocuments: Document[]) => {
         this.documents=updatedDocuments;
          }
     );
+    this.subscription2 = this.documentService.documentIOError.subscribe(
+      (error) => {
+        this.errorMessage = error;
+         }
+    );
+  }
+
+  onClearError() {
+    this.errorMessage = "";
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscription1.unsubscribe();
+    this.subscription2.unsubscribe();
   }
 }

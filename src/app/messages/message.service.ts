@@ -1,4 +1,5 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { Message } from './message.model';
 import { ContactService } from '../contacts/contact.service';
@@ -9,14 +10,17 @@ import { HttpClient } from '@angular/common/http'
 })
 export class MessageService {
   private messages: Message[] = [];
-  messageSelectedEvent: EventEmitter<Message>= new EventEmitter();
-  messageListChangedEvent: EventEmitter<Message[]>= new EventEmitter();
 
+  //messageSelectedEvent: Subject<Message>=new Subject(); // for future use
+  messageListChangedEvent: Subject<Message[]>=new Subject();
+  messageIOError: Subject<string>=new Subject();
   private maxMessageId = 0;
-
-  constructor(private contactService: ContactService,
-    private http: HttpClient) { }
   private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/messages.json'
+
+
+  constructor(
+    private contactService: ContactService,
+    private http: HttpClient) { }
 
   getMessages(): Message[] {
     // contacts are a prerequisite for messages.
@@ -51,10 +55,10 @@ export class MessageService {
           });
           */
           
-          let MessageListClone: Message[] = this.messages.slice();
-          this.messageListChangedEvent.next(MessageListClone);
+          let messageListClone: Message[] = this.messages.slice();
+          this.messageListChangedEvent.next(messageListClone);
           this.maxMessageId = this.getMaxMessageId();
-          return  MessageListClone;
+          return  messageListClone;
         }
       }, 
       // we could perhaps give the user some feedback.
@@ -86,7 +90,7 @@ export class MessageService {
         this.deleteMessage(message);
       }
     }
-    this.messageListChangedEvent.emit(this.messages.slice());
+    this.messageListChangedEvent.next(this.messages.slice());
   }
 
   // note, this is not being used as of week 6.

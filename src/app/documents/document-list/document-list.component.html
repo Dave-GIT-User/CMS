@@ -12,6 +12,10 @@
       [document]="documentEl"
       [docIndex]="documentEl.id"   
       ></cms-document-item>
+      <div *ngIf="errorMessage.length > 0">
+        <h3>{{ errorMessage }}</h3>
+        <button type="button" class="btn btn-danger" (click)="onClearError()">Clear Error</button>
+      </div>
     </div>
   </div>
 </div>

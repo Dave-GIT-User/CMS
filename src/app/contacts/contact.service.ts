@@ -10,9 +10,11 @@ import { MOCKCONTACTS } from './MOCKCONTACTS';
 })
 export class ContactService {
   private contacts: Contact[] = [];
-  contactSelectedEvent: Subject<Contact>= new Subject();
+
   contactListChangedEvent: Subject<Contact[]>= new Subject();
+  contactIOError: Subject<string>=new Subject();
   maxContactId: number = 0;
+  
   constructor(private http: HttpClient) {  }
   private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
 
@@ -53,7 +55,10 @@ export class ContactService {
         }
       }, 
       // we could perhaps give the user some feedback.
-      error: (error) => console.log(error)
+      error: (error) => {
+        this.contactIOError.next("Error fetching contacts!");
+        console.log('getContacts error '+error)
+      }
     });
     return null;
   }
@@ -70,7 +75,10 @@ export class ContactService {
       this.contactListChangedEvent.next(this.contacts.slice());
     },
       // could / should also inform the user
-      error: (error) => console.log('StoreContacts error '+error.value)
+      error: (error) => {
+        this.contactIOError.next("Error storing contacts!");
+        console.log('storeContacts error '+error)
+      }
     })
   }
   // search for a contact with the expected id.
