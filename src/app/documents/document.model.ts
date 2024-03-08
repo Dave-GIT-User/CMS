@@ -4,13 +4,6 @@ export class Document {
 		public name: string, 
 		public description: string, 
 		public url: string, 
-		/*
-		public children: {
-			id: string, 
-			name: string, 
-			description: string, 
-			url: string}[] = null) {
-		*/
 		public children: Document[] = null) {}
 /*
 

@@ -76,7 +76,7 @@ export class MessageService {
         this.messageListChangedEvent.next(this.messages.slice());
       },
       // could / should also inform the user
-      error: (error) => console.log('StoreRMessages error '+error.value)
+      error: (error) => console.log('StoreMessages error '+error.value)
     })
 
   }  purgeMissingSenders() {
