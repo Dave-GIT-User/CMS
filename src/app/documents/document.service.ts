@@ -43,7 +43,6 @@ export class DocumentService {
           
           let documentListClone: Document[] = this.documents.slice();
           this.documentListChangedEvent.next(documentListClone);
-          console.log('document list has now been updated')
           this.maxDocumentId = this.getMaxDocumentId();
           return  documentListClone;
         }
@@ -57,24 +56,21 @@ export class DocumentService {
     return this.documents.length  === 0;
   }
   storeDocuments() {
-    console.log('commence storing documents');
     // may not be necessary since my verion has all string fields.
     // const documents = JSON.stringify(this.documents); 
     this.http.put<'application/json'>(this.dbUrl, this.documents)
     .subscribe({
       next: (responseData) => {
-        console.log('StoreDocuments success '+responseData), 
         this.maxDocumentId = this.getMaxDocumentId();
         this.documentListChangedEvent.next(this.documents.slice());
       },
       // could / should also inform the user
-      error: (error) => console.log('StoreRDocuments error '+error.value)
+      error: (error) => console.log('StoreDocuments error '+error.value)
     })
 
   }
 
   getDocument(id: string): Document {
-    console.log('searching for one document.'+id);
     for (const document of this.documents) {
       if (document.id === id)
       {

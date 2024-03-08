@@ -1,5 +1,9 @@
 export class Message {
-    constructor(public id: string, public subject: string, public msgText: string, public sender: string) {}
+    constructor(
+        public id: string, 
+        public subject: string, 
+        public msgText: string, 
+        public sender: string) {}
 /*
 id—the id of the message
 

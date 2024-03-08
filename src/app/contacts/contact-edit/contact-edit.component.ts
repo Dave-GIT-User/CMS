@@ -108,7 +108,6 @@ export class ContactEditComponent implements OnInit {
   // but event.currentIndex is incorrect, always 0 for some reason.
   // There is no time to debug this one.
   addToGroup(event: CdkDragDrop<Contact[]>) {
-    console.log('currentIndex is '+event.currentIndex);
     const contactCopy = event.previousContainer.data.at(event.previousIndex);
     if (this.isInvalidContact(contactCopy)) {
       return;

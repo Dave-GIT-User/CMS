@@ -61,13 +61,11 @@ export class ContactService {
     return this.contacts.length  === 0;
   }
   storeContacts() {
-    console.log('commence storing Contacts');
     // may not be necessary since my verion has all string fields.
     // const contacts = JSON.stringify(this.contacts); 
     this.http.put<'application/json'>(this.dbUrl, this.contacts)
     .subscribe({
     next: (responseData) => {
-      console.log('StoreContacts success '+responseData); 
       this.maxContactId = this.getmaxContactId();
       this.contactListChangedEvent.next(this.contacts.slice());
     },

@@ -53,7 +53,6 @@ export class MessageService {
           
           let MessageListClone: Message[] = this.messages.slice();
           this.messageListChangedEvent.next(MessageListClone);
-          console.log('Message list has now been updated')
           this.maxMessageId = this.getMaxMessageId();
           return  MessageListClone;
         }
@@ -68,13 +67,11 @@ export class MessageService {
   }
 
   storeMessages() {
-    console.log('commence storing Messages');
     // may not be necessary since my verion has all string fields.
     // const Messages = JSON.stringify(this.Messages); 
     this.http.put<'application/json'>(this.dbUrl, this.messages)
     .subscribe({
       next: (responseData) => {
-        console.log('StoreMessages success '+responseData), 
         this.maxMessageId = this.getMaxMessageId();
         this.messageListChangedEvent.next(this.messages.slice());
       },
