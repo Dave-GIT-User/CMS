@@ -27,7 +27,8 @@ export class DocumentDetailComponent implements OnInit {
         this.id = params['id'];
           this.document = this.documentService.getDocument(this.id);
           if (this.document === null) {
-            alert('Document not found!');
+            this.router.navigate(['/documents']);
+            //alert('Document not found!');
           }
          }
     );

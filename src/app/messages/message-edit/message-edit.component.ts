@@ -34,9 +34,9 @@ oldMsg: string = ''
     }
     this.oldSubject = this.subject;
     this.oldMsg = this.msgText;
-    const id = this.messageService.getNextId();
+
     this.messageService.addMessage(new Message(
-      id, 
+      '0', 
       this.subject,
       this.msgText, 
       '0' // id of my contact

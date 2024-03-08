@@ -23,7 +23,8 @@ export class ContactDetailComponent implements OnInit{
         this.id = params['id'];
         this.contact = this.contactService.getContact(this.id);
         if (this.contact === null) {
-          alert('Contact not found!');
+          this.router.navigate(['/contacts']);
+          //alert('Contact not found!');
         }
       }
     );

@@ -16,16 +16,11 @@ export class MessageListComponent implements OnInit{
 
   ngOnInit() {
     this.messages = this.messageService.getMessages();
-    if (this.messages) {
-      this.messageService.messageChangedEvent
+      this.messageService.messageListChangedEvent
      .subscribe(
         (messages: Message[]) => {
           this.messages = messages;
         }
       );
     }
-    else {
-      alert('message not found!');
-    }
-  }
 }

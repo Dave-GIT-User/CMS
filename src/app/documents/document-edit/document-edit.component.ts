@@ -40,6 +40,9 @@ constructor(
   }
 
   ngOnInit() {
+    if (this.documentService.noDocuments()) {
+      this.router.navigate(['/documents']);
+    }
     this.route.params.subscribe(
       (params: Params) => {
         const id = params.id;

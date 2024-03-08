@@ -30,6 +30,9 @@ export class ContactEditComponent implements OnInit {
        private route: ActivatedRoute) {}
   
   ngOnInit(): void {
+    if (this.contactService.noContacts()) {
+      this.router.navigate(['/contacts']);
+    }
     this.route.params.subscribe(
       (params: Params) => {
         const id = params.id;
@@ -105,15 +108,16 @@ export class ContactEditComponent implements OnInit {
   // but event.currentIndex is incorrect, always 0 for some reason.
   // There is no time to debug this one.
   addToGroup(event: CdkDragDrop<Contact[]>) {
+    console.log('currentIndex is '+event.currentIndex);
     const contactCopy = event.previousContainer.data.at(event.previousIndex);
     if (this.isInvalidContact(contactCopy)) {
       return;
     }
 
     // This pushes the new contact to the group.
-    this.groupContacts.push(contactCopy);
+   // this.groupContacts.push(contactCopy);
 
-    /*      
+        
     // This, recommended by CDK, inserts the new contact at element 0,
     // but only because it obtains the wrong index at the drop zone.
     copyArrayItem(
@@ -122,7 +126,7 @@ export class ContactEditComponent implements OnInit {
       event.previousIndex,
       event.currentIndex,
     )
-    */
+    
   }
 }
 

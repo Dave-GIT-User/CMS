@@ -10,6 +10,7 @@ import { MessageService } from '../../messages/message.service';
   styleUrl: './contact-list.component.css'
 })
 export class ContactListComponent implements OnInit, OnDestroy {
+  term: string = '';
 
   contacts: Contact[] = []; 
   private subscription: Subscription = new Subscription();
@@ -24,6 +25,10 @@ export class ContactListComponent implements OnInit, OnDestroy {
         this.messageService.purgeMissingSenders();
          }
     ); 
+  }
+
+  search(value: string) {
+    this.term = value;
   }
 
   ngOnDestroy(): void {
