@@ -11,26 +11,11 @@
   </div>
   <div class="panel-body">
     <div class="pad-left-right">
-        <!-- 
-          Lint complained that a label must be associated with a form element.
-          The <br> is also unnecessary. Allow the CSS to do the styling.
       <div class="row">
-        <label>Description:</label>
-        <span class="label-value">{{ document?.description}}</span>
-      </div>
-      <br>
-      <div class="row"> 
-        <label>URL:</label>
-        <span class="label-value">{{ document?.url }}</span>
-      </div> 
-        -->
-      <div class="row">
-        <p>Description:</p>
-        <span class="label-value">{{ document?.description}}</span>
+        <p class="label-value">Description: {{ document?.description}}</p>
       </div>
       <div class="row">
-        <p>URL:</p>
-        <span class="label-value">{{ document?.url }}</span>
+        <p class="label-value">URL: {{ document?.url }}</p>
       </div>
     </div>
   </div>

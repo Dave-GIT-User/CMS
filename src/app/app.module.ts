@@ -23,6 +23,7 @@ import { ContactEditComponent } from './contacts/contact-edit/contact-edit.compo
 import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ContactsfilterPipe } from './contactsfilter.pipe';
+import { MessageDetailComponent } from './messages/message-detail/message-detail.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ContactsfilterPipe } from './contactsfilter.pipe';
     DropdownDirective,
     DocumentEditComponent,
     ContactEditComponent,
-    ContactsfilterPipe
+    ContactsfilterPipe,
+    MessageDetailComponent
   ],
   imports: [
     BrowserModule,

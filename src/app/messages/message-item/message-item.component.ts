@@ -12,15 +12,8 @@ import { Router } from '@angular/router';
   styleUrl: './message-item.component.css'
 })
 export class MessageItemComponent implements OnInit{
-  // strict warning: Property 'message' has no initializer and is
-  // not definitely assigned in the constructor.
-  // @Input() message: Message;
-  // response: set up a default value.
-  @Input() message: Message = new Message(' ', ' ', ' ', ' ');
-  // strict warning: Property 'messageSender' has no initializer and is
-  // not definitely assigned in the constructor.
-  //  messageSender: string;
-  // response: set up a default value.
+  @Input() messageIndex: string;
+  @Input() message: Message; 
   messageSender: string = '';
   constructor(private contactService: ContactService,
     private router: Router) {}
@@ -31,7 +24,6 @@ export class MessageItemComponent implements OnInit{
     }
     else {
       this.router.navigate(['/messages']);
-      //alert('Contact not found!');
     }
   }
 }

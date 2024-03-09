@@ -111,7 +111,7 @@ export class ContactEditComponent implements OnInit {
     }
 
     // This pushes the new contact to the group.
-   // this.groupContacts.push(contactCopy);
+    // this.groupContacts.push(contactCopy);
 
         
     // This, recommended by CDK, inserts the new contact at element 0,
@@ -121,8 +121,7 @@ export class ContactEditComponent implements OnInit {
       event.container.data,
       event.previousIndex,
       event.currentIndex,
-    )
-    
+    )    
   }
 }
 
