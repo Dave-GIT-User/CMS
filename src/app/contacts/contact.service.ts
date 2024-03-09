@@ -48,7 +48,6 @@ export class ContactService {
           */
           
           let ContactListClone: Contact[] = this.contacts.slice();
-          console.log('Contact list has now been updated')
           this.maxContactId = this.getmaxContactId();
           this.contactListChangedEvent.next(ContactListClone);
           return  ContactListClone;
