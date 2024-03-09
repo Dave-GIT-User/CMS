@@ -17,7 +17,12 @@
       <div class="row">
         <p class="label-value">URL: {{ document?.url }}</p>
       </div>
+      <div *ngIf="children.length > 0">
+        Subdocuments:
+        <div *ngFor="let child of children">
+            <cms-document-item class="col-sm-11" [document]="child" style="margin-top: 10px"></cms-document-item>
+        </div>
+    </div>
     </div>
   </div>
 </div>
-

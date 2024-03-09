@@ -18,8 +18,7 @@ export class ContactService {
   constructor(private http: HttpClient) {  }
   private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
 
-  getContacts(): Contact[] {
-   // return this.Contacts.slice();
+  getContacts(): void {
     this.http.get(this.dbUrl)
     .subscribe({ 
       next: (Contacts: Contact[]) => {
@@ -50,7 +49,6 @@ export class ContactService {
           let ContactListClone: Contact[] = this.contacts.slice();
           this.maxContactId = this.getmaxContactId();
           this.contactListChangedEvent.next(ContactListClone);
-          return  ContactListClone;
         }
       }, 
       // we could perhaps give the user some feedback.
@@ -59,8 +57,8 @@ export class ContactService {
         console.log('getContacts error '+error)
       }
     });
-    return null;
   }
+  
   noContacts() {
     return this.contacts.length  === 0;
   }
