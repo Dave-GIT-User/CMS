@@ -24,11 +24,16 @@ oldMessageText: string = ''
     private router: Router) {}
 
   onSendMessage(form: NgForm) {
+    /* does this logic still work with an NgForm?
+    if (this.subject == this.oldSubject && this.messageText.length > 0) {
+      return; // key bounce, most likely.
+    }
+    */
     const value = form.value;
     const newMessage: Message = new Message(
       '0', // message id will be updated by the service
       value.subject,
-      value.msgText,
+      value.message,
       '0' // my contact id, as the sender
       );
       this.messageService.addMessage(newMessage);
