@@ -16,8 +16,7 @@ export class DocumentService {
   constructor(private http: HttpClient) {  }
   private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/documents.json'
 
-  getDocuments(): Document[] {
-   // return this.documents.slice();
+  getDocuments(): void {
     this.http.get(this.dbUrl)
     .subscribe({ 
       next: (documents: Document[]) => {
@@ -45,7 +44,6 @@ export class DocumentService {
           let documentListClone: Document[] = this.documents.slice();
           this.documentListChangedEvent.next(documentListClone);
           this.maxDocumentId = this.getMaxDocumentId();
-          return  documentListClone;
         }
       }, 
       error: (error) => {
@@ -53,7 +51,6 @@ export class DocumentService {
         console.log('getDocuments error '+error)
       }
     });
-    return null;
   }
 
   noDocuments() {

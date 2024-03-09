@@ -22,7 +22,7 @@ export class MessageService {
     private contactService: ContactService,
     private http: HttpClient) { }
 
-  getMessages(): Message[] {
+  getMessages(): void {
     // contacts are a prerequisite for messages.
     // Will this timing work?
     if (this.contactService.noContacts()) {
@@ -58,7 +58,6 @@ export class MessageService {
           let messageListClone: Message[] = this.messages.slice();
           this.messageListChangedEvent.next(messageListClone);
           this.maxMessageId = this.getMaxMessageId();
-          return  messageListClone;
         }
       }, 
       // we could perhaps give the user some feedback.
@@ -67,7 +66,6 @@ export class MessageService {
         this.messageIOError.next("Error fetching messages!");
       }
     });
-    return null;
   }
 
   noMessages() {
