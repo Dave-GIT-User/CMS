@@ -47,10 +47,11 @@ app.use((req, res, next) => {
 
 // Tell express to use the specified director as the
 // root directory for your web site
-app.use(express.static(path.join(__dirname, 'dist/cms')));
+app.use(express.static(path.join(__dirname, 'dist/cms/browser')));
 
 // Tell express to map the default route ('/') to the index route
-app.use('/', index);
+
+app.use("/", index);
 
 // ... ADD YOUR CODE TO MAP YOUR URL'S TO ROUTING FILES HERE ...
 
