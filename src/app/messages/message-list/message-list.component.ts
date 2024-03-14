@@ -30,14 +30,13 @@ export class MessageListComponent implements OnInit, OnDestroy {
 
       this.subscription1 = this.contactService.contactListChangedEvent.subscribe(
         (contacts: Contact[]) => {
-          // we don't need it here, but it would be nice to confirm it happened.
-          console.log('message-list brought in contacts');
+          // we don't need to use contacts here, but it would be nice 
+          // to confirm they are available.
           this.messageService.getMessages();
            }
       );
       this.subscription2 = this.messageService.messageListChangedEvent.subscribe(
         (updatedMessages: Message[]) => {
-          console.log('messsage-list brought in messages');
           this.messages=updatedMessages;
            }
       );
