@@ -9,10 +9,6 @@
                 class="img-responsive" 
                 style="max-height: 50px">                        
             </span>
-            <div class="row pull-right margin-left-right">
-                <a class="btn btn-primary" [routerLink]="['edit']">Edit</a>
-                <a class="btn btn-danger" (click)="onDelete()">Delete</a>
-            </div>
         </div>
     </div>
     <div class="panel-body">
@@ -23,12 +19,7 @@
             <div class="row">
                 <p class="label-value">phone: {{ contact.phone }}</p>
             </div>
-            <div *ngIf="group.length > 0">
-                Contacts in Team:
-                <div *ngFor="let member of group; let i = index">
-                    <cms-contact-item class="col-sm-11" [contactIndex]="member.id" [contact]="member" style="margin-top: 10px"></cms-contact-item>
-                </div>
-            </div>
         </div>
     </div>
 </div>
+

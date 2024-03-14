@@ -76,9 +76,16 @@ export class DocumentService {
 
   getDocument(id: string): Document {
     for (const document of this.documents) {
-      if (document.id === id)
-      {
+      if (document.id === id) {
         return document;
+      } else {
+        if (document.children){
+          for(const subDocument of document.children) {
+            if (id === subDocument.id) {
+              return subDocument;
+            }
+          }
+        }
       }
     }
     return null; 

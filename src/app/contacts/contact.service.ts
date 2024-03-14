@@ -78,17 +78,22 @@ export class ContactService {
       }
     })
   }
-  // search for a contact with the expected id.
+
   getContact(id: string): Contact {
-    // changed let contact to const contact
-    // based on lint.
     for (const contact of this.contacts) {
-      if (contact.id === id)
+      if (contact.id === id) {
         return contact;
+      } else {
+        if (contact.group){
+          for(const subContact of contact.group) {
+            if (id === subContact.id) {
+              return subContact;
+            }
+          }
+        }
+      }
     }
-    // how do we handle failure?
     return null; 
-    // but now null must be intercepted if it happens...
   }
 
   deleteContact(contact: Contact) {
