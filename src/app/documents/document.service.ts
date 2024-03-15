@@ -1,92 +1,41 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
-
 import { Document } from './document.model';
+import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentService {
   private documents: Document[] = [];
-  //documentSelectedEvent: Subject<Document>= new Subject();
+  documentSelectedEvent: Subject<Document>= new Subject();
   documentListChangedEvent: Subject<Document[]>= new Subject();
-  documentIOError: Subject<string>=new Subject();
   private maxDocumentId: number = 0;
-  constructor(private http: HttpClient) {  }
-  private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/documents.json'
+  constructor() { 
+    this.documents = MOCKDOCUMENTS;
+    this.maxDocumentId = this.getMaxDocumentId();
+  }
 
   getDocuments(): Document[] {
-   // return this.documents.slice();
-    this.http.get(this.dbUrl)
-    .subscribe({ 
-      next: (documents: Document[]) => {
-        {
-          this.documents = documents;
-          this.maxDocumentId = this.getMaxDocumentId();
-          // sort the documents.
-          // from sample code at  
-          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-          this.documents.sort((a, b) => {
-            //compare function
-            const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-            const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-            if (nameA < nameB) {
-              return -1;
-            }
-            if (nameA > nameB) {
-              return 1;
-            }
-          
-            // names must be equal
-            return 0;
-          });
-          
-          let documentListClone: Document[] = this.documents.slice();
-          this.documentListChangedEvent.next(documentListClone);
-          this.maxDocumentId = this.getMaxDocumentId();
-          return  documentListClone;
-        }
-      }, 
-      error: (error) => {
-        this.documentIOError.next("Error fetching documents!");
-        console.log('getDocuments error '+error)
-      }
-    });
-    return null;
+    return this.documents.slice();
   }
 
-  noDocuments() {
-    return this.documents.length  === 0;
-  }
-
-  storeDocuments() {
-    // may not be necessary since my verion has all string fields.
-    // const documents = JSON.stringify(this.documents); 
-    this.http.put<'application/json'>(this.dbUrl, this.documents)
-    .subscribe({
-      next: (responseData) => {
-        this.maxDocumentId = this.getMaxDocumentId();
-        this.documentListChangedEvent.next(this.documents.slice());
-      },
-      // could / should also inform the user
-      error: (error) => {
-        this.documentIOError.next("Error storing documents!");
-        console.log('storeDocuments error '+error.value);
-      }
-    })
-  }
-
+  // week 5 note: This is not used.
+  // Presumably we will use it in future.
+  // search for a document with the expected id.
   getDocument(id: string): Document {
+    // changed let document to{ const document
+    // based on Lint complaint.
     for (const document of this.documents) {
       if (document.id === id)
       {
         return document;
       }
     }
+    // how do we handle failure?
     return null; 
+    // but now null must be intercepted if it happens...
   }
-
   deleteDocument(document: Document) {
     if (!document) {
        return;
@@ -96,8 +45,10 @@ export class DocumentService {
        return;
     }
     this.documents.splice(pos, 1);
-    this.storeDocuments();
-   }
+    this.documentListChangedEvent.next(this.documents.slice());
+    // What if we deleted the last document?
+    this.maxDocumentId = this.getMaxDocumentId();
+  }
 
   private getMaxDocumentId(): number {
     let highest: number = 0;
@@ -116,7 +67,7 @@ export class DocumentService {
     newDocument.id = ''+this.maxDocumentId;
     this.documents.push(newDocument);
     let documentListClone: Document[] = this.documents.slice();
-    this.storeDocuments(); 
+    this.documentListChangedEvent.next(documentListClone);
   }
 
   updateDocument(originalDocument: Document, newDocument: Document): Document {
@@ -135,7 +86,8 @@ export class DocumentService {
       return null;
     newDocument.id = id;
     this.documents[i] = newDocument;
-    this.storeDocuments();
+    let documentListClone: Document[] = this.documents.slice();
+    this.documentListChangedEvent.next(documentListClone);
     return newDocument;
   }
 }

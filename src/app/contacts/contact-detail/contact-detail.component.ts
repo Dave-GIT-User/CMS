@@ -12,7 +12,6 @@ import { ContactService } from '../contact.service'
 export class ContactDetailComponent implements OnInit{
   contact: Contact;
   id: string;
-  group: Contact[] = [];
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -23,13 +22,8 @@ export class ContactDetailComponent implements OnInit{
       (params: Params) => {
         this.id = params['id'];
         this.contact = this.contactService.getContact(this.id);
-        if (this.contact.group) {
-          this.group = this.contact.group
-        } else {
-          this.group = [];
-        }
         if (this.contact === null) {
-          this.router.navigate(['/contacts']);
+          alert('Contact not found!');
         }
       }
     );

@@ -1,24 +1,20 @@
 <div class="panel panel-default">
-
-      <div class="panel-heading">
-        <div class="row pad-left-right">
-          <span class="pull-left title">Messages</span>
-          <a class="btn btn-success pull-right" role="presentation" [routerLink]="['/messages', 'new']">New Message</a>
-        </div>
+   <div class="panel-heading">
+      <div class="row pad-left-right">
+         <span class="title pull-left">Messages</span>
       </div>
+   </div>
    <div class="panel-body">
       <div class="row">
          <div class="col-xs-12">
             <cms-message-item
                *ngFor="let messageEl of messages"
 			      [message]="messageEl"
-               [messageIndex]="messageEl.id"  
             ></cms-message-item>
-            <div *ngIf="errorContacts.length > 0 || errorMessages.length > 0">
-               <h3> {{ errorMessages }}<br>{{ errorContacts }}</h3>
-               <button type="button" class="btn btn-danger" (click)="onClearError()">Clear Error</button>
-             </div>
          </div>
       </div>
+   </div>
+   <div class="panel-footer"> 
+      <cms-message-edit></cms-message-edit>
    </div>
 </div>

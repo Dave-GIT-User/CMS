@@ -1,11 +1,7 @@
-
- <a class="list-group-item clearfix">
+<a class="list-group-item clearfix">
     <div class="pull-left">
-        <div class="list-group-item clearfix documentDiv" style="cursor: pointer;"
-            routerLinkActive="active" [routerLink]="[messageIndex]">
-            <span class="messageHeader">{{ messageSender }}</span>
-        <div class="messageText">{{ message?.subject }} </div>
-        </div>
+        <span class="messageHeader">{{ messageSender }}</span>
+        <div class="messageText">{{ message?.msgText }} </div>
     </div>
 </a>
 

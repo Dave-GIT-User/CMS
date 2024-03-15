@@ -1,7 +1,4 @@
 import { Component} from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-
 import { Message } from '../message.model';
 import { MessageService } from '../message.service';
 
@@ -13,59 +10,42 @@ import { MessageService } from '../message.service';
 })
 
 export class MessageEditComponent {
-  message: Message;
 
+
+  // Angular: "Use this API as the last resort when direct access to DOM is needed. 
+  // Use templating and data-binding provided by Angular instead."
+  // https://angular.io/api/core/ElementRef
+  // Corrected 2/17 by using event binding instead of ElementRef
+
+  // strict warning: Property subject / msgText has no initializer and is
+  // not definitely assigned in the constructor.
+  // Corrected 2/17 by turning subject and msgText into normal class properties.
+  //@ViewChild('subject', {static: true}) subject: ElementRef;
+  //@ViewChild('msgText',{static: true}) msgText: ElementRef;
 subject: string = '';
-messageText: string = '';
+msgText: string = '';
 oldSubject: string = '';
-oldMessageText: string = ''
-  constructor (
-    private messageService: MessageService,
-    private router: Router) {}
+oldMsg: string = ''
+  constructor (private messageService: MessageService) {}
 
-  onSendMessage(form: NgForm) {
-    /* does this logic still work with an NgForm?
-    if (this.subject == this.oldSubject && this.messageText.length > 0) {
-      return; // key bounce, most likely.
-    }
-    */
-    const value = form.value;
-    const newMessage: Message = new Message(
-      '0', // message id will be updated by the service
-      value.subject,
-      value.message,
-      '0' // my contact id, as the sender
-      );
-      this.messageService.addMessage(newMessage);
-      this.router.navigate(['/messages']);
-  }
-
-/*
   onSendMessage() {
-    if (this.subject == this.oldSubject && this.messageText.length > 0) {
+    if (this.subject == this.oldSubject && this.msgText) {
       return; // key bounce, most likely.
     }
     this.oldSubject = this.subject;
-    this.oldMessageText = this.messageText;
-
+    this.oldMsg = this.msgText;
+    const id = this.messageService.getNextId();
     this.messageService.addMessage(new Message(
-      '0', 
+      id, 
       this.subject,
-      this.message, 
+      this.msgText, 
       '0' // id of my contact
       ));
   }
- */
-/*
   onUpdateSubject(event: Event) {
     this.subject = (event.target as HTMLInputElement).value;
   }
-
   onUpdateMessage(event: Event) {
-    this.messageText = (event.target as HTMLInputElement).value;
-  }
-*/
-  onCancel() {
-    this.router.navigate(['/contacts']);
+    this.msgText = (event.target as HTMLInputElement).value;
   }
 }
