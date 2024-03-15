@@ -18,7 +18,8 @@ export class ContactService {
   constructor(private http: HttpClient) {  }
   private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
 
-  getContacts(): void {
+  getContacts(): Contact[] {
+   // return this.Contacts.slice();
     this.http.get(this.dbUrl)
     .subscribe({ 
       next: (Contacts: Contact[]) => {
@@ -49,6 +50,7 @@ export class ContactService {
           let ContactListClone: Contact[] = this.contacts.slice();
           this.maxContactId = this.getmaxContactId();
           this.contactListChangedEvent.next(ContactListClone);
+          return  ContactListClone;
         }
       }, 
       // we could perhaps give the user some feedback.
@@ -57,8 +59,8 @@ export class ContactService {
         console.log('getContacts error '+error)
       }
     });
+    return null;
   }
-  
   noContacts() {
     return this.contacts.length  === 0;
   }
@@ -78,22 +80,17 @@ export class ContactService {
       }
     })
   }
-
+  // search for a contact with the expected id.
   getContact(id: string): Contact {
+    // changed let contact to const contact
+    // based on lint.
     for (const contact of this.contacts) {
-      if (contact.id === id) {
+      if (contact.id === id)
         return contact;
-      } else {
-        if (contact.group){
-          for(const subContact of contact.group) {
-            if (id === subContact.id) {
-              return subContact;
-            }
-          }
-        }
-      }
     }
+    // how do we handle failure?
     return null; 
+    // but now null must be intercepted if it happens...
   }
 
   deleteContact(contact: Contact) {

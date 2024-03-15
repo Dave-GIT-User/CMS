@@ -85,11 +85,9 @@
           *ngIf="invalidDrop" style="margin-top: 10px">
           Contact cannot be added to the group. It is already in the group or is the current contact.
         </div>
-        <div *ngFor="let member of groupContacts; let i = index">
+        <div *ngFor="let contact of groupContacts; let i = index">
           <div>
-            <!-- That odd [contactIndex]"'./'" is to suppress clicking away -->
-            <!-- by clicking on subcontact in edit mode. -->
-            <cms-contact-item class="col-sm-11" [contactIndex]="'./'" [contact]="member" style="margin-top: 10px"></cms-contact-item>
+            <cms-contact-item class="col-sm-11" [contact]="contact" style="margin-top: 10px"></cms-contact-item>
             <button class="btn btn-danger col-sm-2 deleteButton" (click)="onRemoveItem(i)">X</button>
           </div>
         </div>
