@@ -5,7 +5,6 @@ const Document = require('../models/document');
 var router = express.Router();
 
 router.get('/', async (req, res, next) => {
-    console.log('documents.js trying to get documents');
     try {
     let documents = await Document.find();
     console.log(documents);
@@ -22,7 +21,7 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/:id', (req, res, next) => {
-    // why do we need this? Angular already computed the new id.
+    // why do we need this? Angular already computes the new id.
     // On the other hand, if it is needed, it must be debugged. 
     //const maxDocumentId = sequenceGenerator.nextId("Document");
     console.log('trying to post from the backend');
@@ -46,13 +45,11 @@ router.post('/:id', (req, res, next) => {
             message: 'An error occurred',
             error: error
         });
-    });
-    
+    });    
 });
 
 // update a single document
 router.put('/:id', (req, res, next) => {
-    console.log('trying to put from the backend');
     Document.findOne({ id: req.params.id })
         .then(document => {
             document.name = req.body.name;

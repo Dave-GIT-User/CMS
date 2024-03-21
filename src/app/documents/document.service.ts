@@ -14,17 +14,14 @@ export class DocumentService {
   documentIOError: Subject<string>=new Subject();
   private maxDocumentId: number = 0;
   constructor(private http: HttpClient) {  }
-  //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/documents.json';
+
   private dbUrl = 'http://localhost:3000/documents';
   getDocuments(): void {
     this.http.get(this.dbUrl)
     .subscribe({ 
       next: (documentData: {message: string, documents: Document[]}) => {
         console.log(documentData.message);
-        //console.log(documentData.documents); 
-
           this.documents = documentData.documents;
-          //console.log(this.documents);
           this.maxDocumentId = this.getMaxDocumentId();
           // sort the documents.
           // from sample code at  
@@ -38,8 +35,7 @@ export class DocumentService {
             }
             if (nameA > nameB) {
               return 1;
-            }
-          
+            }         
             // names must be equal
             return 0;
           });
@@ -57,23 +53,6 @@ export class DocumentService {
 
   noDocuments() {
     return this.documents.length  === 0;
-  }
-  
-  storeDocuments() {
-    // may not be necessary since my verion has all string fields.
-    // const documents = JSON.stringify(this.documents); 
-    this.http.put<'application/json'>(this.dbUrl, this.documents)
-    .subscribe({
-      next: (responseData) => {
-        this.maxDocumentId = this.getMaxDocumentId();
-        this.documentListChangedEvent.next(this.documents.slice());
-      },
-      // could / should also inform the user
-      error: (msg) => {
-        this.documentIOError.next("Error storing document(s)!");
-        console.log('storeDocuments error '+msg.error);
-      }
-    })
   }
 
   getDocument(id: string): Document {
@@ -103,19 +82,16 @@ export class DocumentService {
        return;
     }
     this.documents.splice(pos, 1);
-    // but we no longer put the whole amended document array to the back end.
-    //this.storeDocuments();
     // use the more granular delete operation.
     this.http.delete<'application/json'>(this.dbUrl+'/'+id)
     .subscribe({
       next: (responseData) => {
-        this.maxDocumentId = this.getMaxDocumentId(); // is that true now??
+        this.maxDocumentId = this.getMaxDocumentId();
         this.documentListChangedEvent.next(this.documents.slice());
       },
-      // could / should also inform the user
       error: (msg) => {
-        this.documentIOError.next("Error storing document(s)!");
-        console.log('storeDocuments error '+msg.error);
+        this.documentIOError.next("Error deleting a document!");
+        console.log('Delete document error '+msg.error);
       }
     })
    }
@@ -137,19 +113,16 @@ export class DocumentService {
     newDocument.id = ''+this.maxDocumentId;
     this.documents.push(newDocument);
     let documentListClone: Document[] = this.documents.slice();
-    // we used to put the whole document array for every little change
-    //this.storeDocuments(); 
     // now we will post just this record.
     this.http.post<'application/json'>(this.dbUrl+'/'+newDocument.id, newDocument)
     .subscribe({
       next: (responseData) => {
-        this.maxDocumentId = this.getMaxDocumentId(); // is that true now??
+        this.maxDocumentId = this.getMaxDocumentId();
         this.documentListChangedEvent.next(this.documents.slice());
       },
-      // could / should also inform the user
       error: (msg) => {
-        this.documentIOError.next("Error storing document(s)!");
-        console.log('storeDocuments error '+msg.error);
+        this.documentIOError.next("Error adding a document!");
+        console.log('add document error '+msg.error);
       }
     })
   }
@@ -173,16 +146,13 @@ export class DocumentService {
     this.http.put<'application/json'>(this.dbUrl+'/'+id, newDocument)
     .subscribe({
       next: (responseData) => {
-        //this.maxDocumentId = this.getMaxDocumentId(); // is that true now??
         this.documentListChangedEvent.next(this.documents.slice());
       },
-      // could / should also inform the user
       error: (msg) => {
-        this.documentIOError.next("Error storing document(s)!");
-        console.log('storeDocuments error '+msg.error);
+        this.documentIOError.next("Error updating document!");
+        console.log('Update document error '+msg.error);
       }
     })
-    //this.storeDocuments();
     return newDocument;
   }
 }

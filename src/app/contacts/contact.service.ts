@@ -23,11 +23,11 @@ export class ContactService {
     this.http.get(this.dbUrl)
     .subscribe({ 
       /*
-      next: (documentData: {message: string, documents: Document[]}) => {
-        console.log(documentData.message);
-        //console.log(documentData.documents); 
+      next: (contactData: {message: string, contacts: contact[]}) => {
+        console.log(contactData.message);
+        //console.log(contactData.contacts); 
 
-          this.documents = documentData.documents;
+          this.contacts = contactData.contacts;
       */
       next: (contactData: {message: string, contacts: Contact[]}) => {
         {
@@ -56,7 +56,7 @@ export class ContactService {
           */
           
           let ContactListClone: Contact[] = this.contacts.slice();
-          this.maxContactId = this.getmaxContactId();
+          this.maxContactId = this.getMaxContactId();
           this.contactListChangedEvent.next(ContactListClone);
         }
       }, 
@@ -71,13 +71,14 @@ export class ContactService {
   noContacts() {
     return this.contacts.length  === 0;
   }
+  
   storeContacts() {
     // may not be necessary since my verion has all string fields.
     // const contacts = JSON.stringify(this.contacts); 
     this.http.put<'application/json'>(this.dbUrl, this.contacts)
     .subscribe({
     next: (responseData) => {
-      this.maxContactId = this.getmaxContactId();
+      this.maxContactId = this.getMaxContactId();
       this.contactListChangedEvent.next(this.contacts.slice());
     },
       // could / should also inform the user
@@ -87,6 +88,7 @@ export class ContactService {
       }
     })
   }
+  
 
   getContact(id: string): Contact {
     for (const contact of this.contacts) {
@@ -109,7 +111,8 @@ export class ContactService {
     if (!contact) {
        return;
     }
-    if (contact.id === '0') {
+    const id  = contact.id;
+    if (id == '0') {
       alert('Deleting the primary contact is not allowed!');
       return;
     }
@@ -118,10 +121,45 @@ export class ContactService {
        return;
     }
     this.contacts.splice(pos, 1);
-    this.storeContacts();
+    // use the more granular delete operation.
+    this.http.delete<'application/json'>(this.dbUrl+'/'+id)
+    .subscribe({
+      next: (responseData) => {
+        this.maxContactId = this.getMaxContactId();
+        this.contactListChangedEvent.next(this.contacts.slice());
+      },
+      error: (msg) => {
+        this.contactIOError.next("Error deleting a contact!");
+        console.log('Delete contact error '+msg.error);
+      }
+    })
   }
-  
-  private getmaxContactId(): number {
+  /*
+deletecontact(contact: contact) {
+    if (!contact) {
+       return;
+    }
+    const id = contact.id;
+    const pos = this.contacts.indexOf(contact);
+    if (pos < 0) {
+       return;
+    }
+    this.contacts.splice(pos, 1);
+    // use the more granular delete operation.
+    this.http.delete<'application/json'>(this.dbUrl+'/'+id)
+    .subscribe({
+      next: (responseData) => {
+        this.maxcontactId = this.getMaxcontactId();
+        this.contactListChangedEvent.next(this.contacts.slice());
+      },
+      error: (msg) => {
+        this.contactIOError.next("Error deleting a contact!");
+        console.log('Delete contact error '+msg.error);
+      }
+    })
+   }
+  */
+  private getMaxContactId(): number {
     let highest: number = 0;
     for (let contact of this.contacts) {
       if (+contact.id > highest) {

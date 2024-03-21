@@ -15,8 +15,8 @@ export class MessageService {
   messageListChangedEvent: Subject<Message[]>=new Subject();
   messageIOError: Subject<string>=new Subject();
   private maxMessageId = 0;
-  private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/messages.json'
-
+  //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/messages.json'
+  private dbUrl = 'http://localhost:3000/messages';
 
   constructor(
     private contactService: ContactService,
@@ -31,9 +31,17 @@ export class MessageService {
    // return this.Messages.slice();
     this.http.get(this.dbUrl)
     .subscribe({ 
-      next: (Messages: Message[]) => {
+      next: (messageData: {message: string, messages: Message[]}) => {
         {
-          this.messages = Messages;
+          // the populate() method at the server pulled down full contact
+          // information based on the foreign key of the sender.
+          // We only need the friendly id of the sender.
+          for (let msg of messageData.messages) {
+            msg.sender = msg.sender['id'];
+          }
+          this.messages = messageData.messages;
+
+          //console.log(this.messages);
           this.maxMessageId = this.getMaxMessageId();
           /*
           // sort the Messages.
