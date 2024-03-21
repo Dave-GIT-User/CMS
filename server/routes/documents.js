@@ -8,6 +8,7 @@ router.get('/', async (req, res, next) => {
     console.log('documents.js trying to get documents');
     try {
     let documents = await Document.find();
+    console.log(documents);
     return res.status(200).json({
         message: 'fetched Documents.',
         documents: documents
@@ -20,12 +21,14 @@ router.get('/', async (req, res, next) => {
     }    
 });
 
-router.post('/', (req, res, next) => {
-    const maxDocumentId = sequenceGenerator.nextId("Document");
+router.post('/:id', (req, res, next) => {
+    // why do we need this? Angular already computed the new id.
+    // On the other hand, if it is needed, it must be debugged. 
+    //const maxDocumentId = sequenceGenerator.nextId("Document");
     console.log('trying to post from the backend');
-    console.log('maxDocumentId: '+maxDocumentId);
+    //console.log('maxDocumentId: '+maxDocumentId);
     const document = new Document({
-        id: maxDocumentId,
+        id: req.body.id,
         name: req.body.name,
         description: req.body.description,
         url: req.body.url        
@@ -47,7 +50,8 @@ router.post('/', (req, res, next) => {
     
 });
 
-router.put('/', (req, res, next) => {
+// update a single document
+router.put('/:id', (req, res, next) => {
     console.log('trying to put from the backend');
     Document.findOne({ id: req.params.id })
         .then(document => {

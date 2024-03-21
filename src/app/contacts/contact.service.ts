@@ -16,14 +16,23 @@ export class ContactService {
   maxContactId: number = 0;
   
   constructor(private http: HttpClient) {  }
-  private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
+  //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
+  private dbUrl = 'http://localhost:3000/contacts';
 
   getContacts(): void {
     this.http.get(this.dbUrl)
     .subscribe({ 
-      next: (Contacts: Contact[]) => {
+      /*
+      next: (documentData: {message: string, documents: Document[]}) => {
+        console.log(documentData.message);
+        //console.log(documentData.documents); 
+
+          this.documents = documentData.documents;
+      */
+      next: (contactData: {message: string, contacts: Contact[]}) => {
         {
-          this.contacts = Contacts;
+          console.log(contactData.message);
+          this.contacts = contactData.contacts;
           /*
           // hold off sorting contacts for now.
           // perhaps single contacts could be sorted,followed by group contacts

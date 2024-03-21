@@ -15,14 +15,16 @@ export class DocumentService {
   private maxDocumentId: number = 0;
   constructor(private http: HttpClient) {  }
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/documents.json';
-  //private dbUrl = 'http://localhost:3000/documents';
+  private dbUrl = 'http://localhost:3000/documents';
   getDocuments(): void {
     this.http.get(this.dbUrl)
     .subscribe({ 
       next: (documentData: {message: string, documents: Document[]}) => {
-        console.log(documentData.message); 
+        console.log(documentData.message);
+        //console.log(documentData.documents); 
 
           this.documents = documentData.documents;
+          //console.log(this.documents);
           this.maxDocumentId = this.getMaxDocumentId();
           // sort the documents.
           // from sample code at  
@@ -56,7 +58,6 @@ export class DocumentService {
   noDocuments() {
     return this.documents.length  === 0;
   }
-  private dbUrl = 'http://localhost:3000/documents';
   
   storeDocuments() {
     // may not be necessary since my verion has all string fields.
@@ -96,12 +97,27 @@ export class DocumentService {
     if (!document) {
        return;
     }
+    const id = document.id;
     const pos = this.documents.indexOf(document);
     if (pos < 0) {
        return;
     }
     this.documents.splice(pos, 1);
-    this.storeDocuments();
+    // but we no longer put the whole amended document array to the back end.
+    //this.storeDocuments();
+    // use the more granular delete operation.
+    this.http.delete<'application/json'>(this.dbUrl+'/'+id)
+    .subscribe({
+      next: (responseData) => {
+        this.maxDocumentId = this.getMaxDocumentId(); // is that true now??
+        this.documentListChangedEvent.next(this.documents.slice());
+      },
+      // could / should also inform the user
+      error: (msg) => {
+        this.documentIOError.next("Error storing document(s)!");
+        console.log('storeDocuments error '+msg.error);
+      }
+    })
    }
 
   private getMaxDocumentId(): number {
@@ -121,7 +137,21 @@ export class DocumentService {
     newDocument.id = ''+this.maxDocumentId;
     this.documents.push(newDocument);
     let documentListClone: Document[] = this.documents.slice();
-    this.storeDocuments(); 
+    // we used to put the whole document array for every little change
+    //this.storeDocuments(); 
+    // now we will post just this record.
+    this.http.post<'application/json'>(this.dbUrl+'/'+newDocument.id, newDocument)
+    .subscribe({
+      next: (responseData) => {
+        this.maxDocumentId = this.getMaxDocumentId(); // is that true now??
+        this.documentListChangedEvent.next(this.documents.slice());
+      },
+      // could / should also inform the user
+      error: (msg) => {
+        this.documentIOError.next("Error storing document(s)!");
+        console.log('storeDocuments error '+msg.error);
+      }
+    })
   }
 
   updateDocument(originalDocument: Document, newDocument: Document): Document {
@@ -140,7 +170,19 @@ export class DocumentService {
       return null;
     newDocument.id = id;
     this.documents[i] = newDocument;
-    this.storeDocuments();
+    this.http.put<'application/json'>(this.dbUrl+'/'+id, newDocument)
+    .subscribe({
+      next: (responseData) => {
+        //this.maxDocumentId = this.getMaxDocumentId(); // is that true now??
+        this.documentListChangedEvent.next(this.documents.slice());
+      },
+      // could / should also inform the user
+      error: (msg) => {
+        this.documentIOError.next("Error storing document(s)!");
+        console.log('storeDocuments error '+msg.error);
+      }
+    })
+    //this.storeDocuments();
     return newDocument;
   }
 }
