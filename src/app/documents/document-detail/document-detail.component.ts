@@ -12,6 +12,7 @@ import { WindRefService } from '../../wind-ref.service';
 export class DocumentDetailComponent implements OnInit {
   document: Document;
   id: string;
+  children: Document[] = [];
   nativeWindow: any;
 
   constructor (
@@ -19,19 +20,25 @@ export class DocumentDetailComponent implements OnInit {
     private route: ActivatedRoute, 
     private windRefService: WindRefService,
     private router:Router) {}
-
-  ngOnInit(): void {
-    this.nativeWindow=this.windRefService.getNativeWindow();
-    this.route.params.subscribe(
-      (params: Params) => {
-        this.id = params['id'];
+    ngOnInit(): void {
+      this.nativeWindow=this.windRefService.getNativeWindow();
+      this.route.params.subscribe(
+        (params: Params) => {
+          this.id = params['id'];
           this.document = this.documentService.getDocument(this.id);
           if (this.document === null) {
-            alert('Document not found!');
+            this.router.navigate(['/documents']);
+          } else {
+            if (this.document.children) {
+              this.children = this.document.children
+            } else {
+              this.children = [];
+            }
           }
-         }
-    );
-  }
+        }
+      );
+    }
+
   onView() {
     const url: string = this.document.url;
     this.nativeWindow.open(url);

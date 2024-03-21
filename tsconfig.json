@@ -7,7 +7,6 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
-    "strict": false,
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,

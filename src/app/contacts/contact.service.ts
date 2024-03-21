@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 import { Contact } from './contact.model';
 import { MOCKCONTACTS } from './MOCKCONTACTS';
@@ -9,30 +10,92 @@ import { MOCKCONTACTS } from './MOCKCONTACTS';
 })
 export class ContactService {
   private contacts: Contact[] = [];
-  contactSelectedEvent: Subject<Contact>= new Subject();
+
   contactListChangedEvent: Subject<Contact[]>= new Subject();
+  contactIOError: Subject<string>=new Subject();
   maxContactId: number = 0;
-  constructor() {
-    this.contacts = MOCKCONTACTS;
-    this.maxContactId = this.getMaxcontactId();
+  
+  constructor(private http: HttpClient) {  }
+  private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
+
+  getContacts(): void {
+    this.http.get(this.dbUrl)
+    .subscribe({ 
+      next: (Contacts: Contact[]) => {
+        {
+          this.contacts = Contacts;
+          /*
+          // hold off sorting contacts for now.
+          // perhaps single contacts could be sorted,followed by group contacts
+          // sort the Contacts.
+          // from sample code at  
+          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+          this.contacts.sort((a, b) => {
+            //compare function
+            const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+            const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+          
+            // names must be equal
+            return 0;
+          });
+          */
+          
+          let ContactListClone: Contact[] = this.contacts.slice();
+          this.maxContactId = this.getmaxContactId();
+          this.contactListChangedEvent.next(ContactListClone);
+        }
+      }, 
+      // we could perhaps give the user some feedback.
+      error: (error) => {
+        this.contactIOError.next("Error fetching contacts!");
+        console.log('getContacts error '+error)
+      }
+    });
   }
-  // get a copy of the contacts array.
-  getContacts(): Contact[] {
-    return this.contacts.slice();
+  
+  noContacts() {
+    return this.contacts.length  === 0;
+  }
+  storeContacts() {
+    // may not be necessary since my verion has all string fields.
+    // const contacts = JSON.stringify(this.contacts); 
+    this.http.put<'application/json'>(this.dbUrl, this.contacts)
+    .subscribe({
+    next: (responseData) => {
+      this.maxContactId = this.getmaxContactId();
+      this.contactListChangedEvent.next(this.contacts.slice());
+    },
+      // could / should also inform the user
+      error: (error) => {
+        this.contactIOError.next("Error storing contacts!");
+        console.log('storeContacts error '+error)
+      }
+    })
   }
 
-  // search for a contact with the expected id.
   getContact(id: string): Contact {
-    // changed let contact to const contact
-    // based on lint.
     for (const contact of this.contacts) {
-      if (contact.id === id)
+      if (contact.id === id) {
         return contact;
+      } else {
+        if (contact.group){
+          for(const subContact of contact.group) {
+            if (id === subContact.id) {
+              return subContact;
+            }
+          }
+        }
+      }
     }
-    // how do we handle failure?
     return null; 
-    // but now null must be intercepted if it happens...
   }
+
   deleteContact(contact: Contact) {
     if (!contact) {
        return;
@@ -46,9 +109,10 @@ export class ContactService {
        return;
     }
     this.contacts.splice(pos, 1);
-    this.contactListChangedEvent.next(this.contacts.slice());
+    this.storeContacts();
   }
-  private getMaxcontactId(): number {
+  
+  private getmaxContactId(): number {
     let highest: number = 0;
     for (let contact of this.contacts) {
       if (+contact.id > highest) {
@@ -58,14 +122,14 @@ export class ContactService {
     return highest;
   }
 
-  addcontact(newContact: Contact ) {
+  addContact(newContact: Contact ) {
     if (newContact === null)
       return;
     this.maxContactId++;
     newContact.id = ''+this.maxContactId;
     this.contacts.push(newContact);
     let contactListClone: Contact[] = this.contacts.slice();
-    this.contactListChangedEvent.next(contactListClone);
+    this.storeContacts();
   }
 
   updateContact(originalContact: Contact, newContact: Contact): Contact {
@@ -85,7 +149,7 @@ export class ContactService {
     newContact.id = id;
     this.contacts[i] = newContact;
     let ContactListClone: Contact[] = this.contacts.slice();
-    this.contactListChangedEvent.next(ContactListClone);
+    this.storeContacts();
     return newContact;
   }
 }

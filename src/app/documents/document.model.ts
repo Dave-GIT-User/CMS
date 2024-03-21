@@ -1,6 +1,10 @@
 export class Document {
-	constructor(public id: string, public name: string, public description: string, public url: string, 
-		public children: {id: string, name: string, description: string, url: string}[]=null) {}
+	constructor(
+		public id: string, 
+		public name: string, 
+		public description: string, 
+		public url: string, 
+		public children: Document[] = null) {}
 /*
 
 id—the document id

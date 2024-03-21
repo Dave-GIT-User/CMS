@@ -1,29 +1,101 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { Message } from './message.model';
-import { MOCKMESSAGES } from './MOCKMESSAGES';
 import { ContactService } from '../contacts/contact.service';
+import { HttpClient } from '@angular/common/http'
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
   private messages: Message[] = [];
-  messageSelectedEvent: EventEmitter<Message>= new EventEmitter();
-  messageChangedEvent: EventEmitter<Message[]>= new EventEmitter();
 
-  constructor(private contactService: ContactService) {
-    this.messages = MOCKMESSAGES;
+  //messageSelectedEvent: Subject<Message>=new Subject(); // for future use
+  messageListChangedEvent: Subject<Message[]>=new Subject();
+  messageIOError: Subject<string>=new Subject();
+  private maxMessageId = 0;
+  private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/messages.json'
+
+
+  constructor(
+    private contactService: ContactService,
+    private http: HttpClient) { }
+
+  getMessages(): void {
+    // contacts are a prerequisite for messages.
+    // Will this timing work?
+    if (this.contactService.noContacts()) {
+      this.contactService.getContacts();
+    }
+   // return this.Messages.slice();
+    this.http.get(this.dbUrl)
+    .subscribe({ 
+      next: (Messages: Message[]) => {
+        {
+          this.messages = Messages;
+          this.maxMessageId = this.getMaxMessageId();
+          /*
+          // sort the Messages.
+          // from sample code at  
+          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+          this.messages.sort((a, b) => {
+            //compare function
+            const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+            const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+          
+            // names must be equal
+            return 0;
+          });
+          */
+          
+          let messageListClone: Message[] = this.messages.slice();
+          this.messageListChangedEvent.next(messageListClone);
+          this.maxMessageId = this.getMaxMessageId();
+        }
+      }, 
+      // we could perhaps give the user some feedback.
+      error: (error) => {
+        console.log(error);
+        this.messageIOError.next("Error fetching messages!");
+      }
+    });
   }
-  
-  purgeMissingSenders() {
+
+  noMessages() {
+    return this.messages.length  === 0;
+  }
+
+  storeMessages() {
+    // may not be necessary since my verion has all string fields.
+    // const Messages = JSON.stringify(this.Messages); 
+    this.http.put<'application/json'>(this.dbUrl, this.messages)
+    .subscribe({
+      next: (responseData) => {
+        this.maxMessageId = this.getMaxMessageId();
+        this.messageListChangedEvent.next(this.messages.slice());
+      },
+      // could / should also inform the user
+      error: (error) => {
+        console.log('StoreMessages error '+error.value);
+        this.messageIOError.next("Error storing messages!");
+      }
+    })
+
+  }  purgeMissingSenders() {
     for (const message of this.messages) {
       const sender: string = message.sender;
       if (this.contactService.getContact(sender)===null) {
         this.deleteMessage(message);
       }
     }
-    this.messageChangedEvent.emit(this.messages.slice());
+    this.messageListChangedEvent.next(this.messages.slice());
   }
 
   // note, this is not being used as of week 6.
@@ -36,12 +108,9 @@ export class MessageService {
        return;
     }
     this.messages.splice(pos, 1);
+    this.storeMessages();
  }
  
-  getMessages() {
-    return this.messages.slice();
-  }
-
   // week 5 note: This is not used.
   // Presumably we will use it in future.
   // search for a message with the expected id.
@@ -58,18 +127,19 @@ export class MessageService {
   }
 
   addMessage(message: Message) {
+    this.maxMessageId++;
+    message.id = ''+this.maxMessageId;
     this.messages.push(message);
-    this.messageChangedEvent.emit(this.messages.slice());
+    this.storeMessages();
   }
 
-  // it will work for a while to just take the size of the array as the next id.
-  // The problem is if a record has been deleted from the middle and then
-  // one adds a new one on the end. This just adds one to the id of the last message.
-  getNextId(): string {
-    if (this.messages.length == 0)
-      return '0';
-    else {
-      return '' + parseInt(this.messages[this.messages.length-1].id) + 1
+  private getMaxMessageId(): number {
+    let highest: number = 0;
+    for (let message of this.messages) {
+      if (+message.id > highest) {
+        highest = +message.id;
+      }
     }
+    return highest;
   }
 }

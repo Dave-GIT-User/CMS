@@ -6,21 +6,31 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component'; 
 import { ContactDetailComponent } from './contacts/contact-detail/contact-detail.component';
 import { MessagesComponent } from './messages/messages.component'; 
+import { MessageEditComponent } from './messages/message-edit/message-edit.component';
+import { MessageDetailComponent } from './messages/message-detail/message-detail.component';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { DocumentDetailComponent } from './documents/document-detail/document-detail.component';
+import { SubdocDetailComponent } from './documents/subdoc-detail/subdoc-detail.component';
+import { SubconDetailComponent } from './contacts/subcon-detail/subcon-detail.component';
 
 const routes: Routes = [  
   { path: '', redirectTo: '/documents', pathMatch: 'full'},
   { path: 'documents', component: DocumentsComponent, children: [
     { path: 'new', component: DocumentEditComponent },
     { path: ':id', component: DocumentDetailComponent},
-    { path: ':id/edit', component: DocumentEditComponent }
+    { path: ':id/edit', component: DocumentEditComponent },
+    { path: ':id/:id', component: SubdocDetailComponent}
   ]},
-  { path: 'messages', component: MessagesComponent},
+  { path: 'messages', component: MessagesComponent, children: [
+    { path: 'new', component: MessageEditComponent },
+    { path: ':id', component: MessageDetailComponent},
+    { path: ':id/edit', component: MessageEditComponent}
+  ]},
   { path: 'contacts', component: ContactsComponent, children: [
     { path: 'new', component: ContactEditComponent },
     { path: ':id', component: ContactDetailComponent},
-    { path: ':id/edit', component: ContactEditComponent}
+    { path: ':id/edit', component: ContactEditComponent},
+    { path: ':id/:id', component: SubconDetailComponent}
   ]},
 ];
 

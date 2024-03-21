@@ -1,0 +1,17 @@
+const mongoose = require('mongoose');
+/*
+  {
+    _id: ObjectId('65f89c7b1fa842d59e8bf204'),
+    maxDocumentId: 100,
+    maxMessageId: 101,
+    maxContactId: 100
+  }
+*/
+const sequenceSchema = mongoose.Schema({
+   _id: { type: mongoose.Schema.Types.ObjectId, required: true},
+   maxDocumentId: { type: String, required: true },
+   maxMessageId: { type: Number, required: true },
+   maxContactId: { type: Number, required: true }
+});
+
+module.exports = mongoose.model('Sequence', sequenceSchema);

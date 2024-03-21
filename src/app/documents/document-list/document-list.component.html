@@ -2,7 +2,7 @@
   <div class="panel-heading">
     <div class="row pad-left-right">
       <span class="pull-left title">Documents</span>
-      <a class="btn btn-success pull-right" role="presentation" [routerLink]="['/documents', 'new']">Add Document</a>
+      <a class="btn btn-success pull-right" role="presentation" [routerLink]="['/documents', 'new']">New Document</a>
     </div>
   </div>
   <div class="panel-body">
@@ -12,6 +12,10 @@
       [document]="documentEl"
       [docIndex]="documentEl.id"   
       ></cms-document-item>
+      <div *ngIf="errorMessage.length > 0">
+        <h3>{{ errorMessage }}</h3>
+        <button type="button" class="btn btn-danger" (click)="onClearError()">Clear Error</button>
+      </div>
     </div>
   </div>
 </div>
