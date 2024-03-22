@@ -4,7 +4,8 @@ var maxDocumentId;
 var maxMessageId;
 var maxContactId;
 var sequenceId = null;
-
+// this crashes, but isn't needed anyway. maxDocumentId, maxMessageId and MaxContactId are all handled 
+// nicely from Angular. There should be no need to bother the backend about them.
 const sequenceGenerator = {   //First, I restructured sequenceGenerator to be a variable containing the various methods.
   async init() {    //Make this init() function asynchronous
        try {

@@ -22,13 +22,6 @@ export class ContactService {
   getContacts(): void {
     this.http.get(this.dbUrl)
     .subscribe({ 
-      /*
-      next: (contactData: {message: string, contacts: contact[]}) => {
-        console.log(contactData.message);
-        //console.log(contactData.contacts); 
-
-          this.contacts = contactData.contacts;
-      */
       next: (contactData: {message: string, contacts: Contact[]}) => {
         {
           console.log(contactData.message);
@@ -71,25 +64,7 @@ export class ContactService {
   noContacts() {
     return this.contacts.length  === 0;
   }
-  
-  storeContacts() {
-    // may not be necessary since my verion has all string fields.
-    // const contacts = JSON.stringify(this.contacts); 
-    this.http.put<'application/json'>(this.dbUrl, this.contacts)
-    .subscribe({
-    next: (responseData) => {
-      this.maxContactId = this.getMaxContactId();
-      this.contactListChangedEvent.next(this.contacts.slice());
-    },
-      // could / should also inform the user
-      error: (error) => {
-        this.contactIOError.next("Error storing contacts!");
-        console.log('storeContacts error '+error)
-      }
-    })
-  }
-  
-
+ 
   getContact(id: string): Contact {
     for (const contact of this.contacts) {
       if (contact.id === id) {
@@ -111,8 +86,8 @@ export class ContactService {
     if (!contact) {
        return;
     }
-    const id  = contact.id;
-    if (id == '0') {
+    const id = contact.id
+    if (id === '0') {
       alert('Deleting the primary contact is not allowed!');
       return;
     }
@@ -121,7 +96,7 @@ export class ContactService {
        return;
     }
     this.contacts.splice(pos, 1);
-    // use the more granular delete operation.
+   // use the more granular delete operation.
     this.http.delete<'application/json'>(this.dbUrl+'/'+id)
     .subscribe({
       next: (responseData) => {
@@ -133,32 +108,8 @@ export class ContactService {
         console.log('Delete contact error '+msg.error);
       }
     })
-  }
-  /*
-deletecontact(contact: contact) {
-    if (!contact) {
-       return;
-    }
-    const id = contact.id;
-    const pos = this.contacts.indexOf(contact);
-    if (pos < 0) {
-       return;
-    }
-    this.contacts.splice(pos, 1);
-    // use the more granular delete operation.
-    this.http.delete<'application/json'>(this.dbUrl+'/'+id)
-    .subscribe({
-      next: (responseData) => {
-        this.maxcontactId = this.getMaxcontactId();
-        this.contactListChangedEvent.next(this.contacts.slice());
-      },
-      error: (msg) => {
-        this.contactIOError.next("Error deleting a contact!");
-        console.log('Delete contact error '+msg.error);
-      }
-    })
    }
-  */
+
   private getMaxContactId(): number {
     let highest: number = 0;
     for (let contact of this.contacts) {
@@ -176,9 +127,20 @@ deletecontact(contact: contact) {
     newContact.id = ''+this.maxContactId;
     this.contacts.push(newContact);
     let contactListClone: Contact[] = this.contacts.slice();
-    this.storeContacts();
+    // now we will post just this record.
+    this.http.post<'application/json'>(this.dbUrl+'/'+newContact.id, newContact)
+    .subscribe({
+      next: (responseData) => {
+        this.maxContactId = this.getMaxContactId();
+        this.contactListChangedEvent.next(this.contacts.slice());
+      },
+      error: (msg) => {
+        this.contactIOError.next("Error adding a contact!");
+        console.log('add contact error '+msg.error);
+      }
+    })
   }
-
+  
   updateContact(originalContact: Contact, newContact: Contact): Contact {
     if (newContact === null)
       return null;
@@ -196,7 +158,16 @@ deletecontact(contact: contact) {
     newContact.id = id;
     this.contacts[i] = newContact;
     let ContactListClone: Contact[] = this.contacts.slice();
-    this.storeContacts();
+    this.http.put<'application/json'>(this.dbUrl+'/'+id, newContact)
+    .subscribe({
+      next: (responseData) => {
+        this.contactListChangedEvent.next(this.contacts.slice());
+      },
+      error: (msg) => {
+        this.contactIOError.next("Error updating contact!");
+        console.log('Update contact error '+msg.error);
+      }
+    })
     return newContact;
   }
 }

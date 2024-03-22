@@ -20,11 +20,7 @@ router.get('/', (req, res, next) => {
   });
 
   router.post('/:id', (req, res, next) => {
-    // why do we need this? Angular already computes the new id.
-    // On the other hand, if it is needed, it must be debugged. 
-    //const maxContactId = sequenceGenerator.nextId("contact");
-    //console.log('maxcontactId: '+maxcontactId);
-    const contact = new contact({
+    const contact = new Contact({
         id: req.body.id,
         name: req.body.name,
         email: req.body.email,
@@ -70,14 +66,22 @@ router.delete("/:id", (req, res, next) => {
       });
   });
 });
-
+/*
+    id: { type: String, required: true },
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String },
+    imageUrl: { type: String },
+*/
 // update a single contact
 router.put('/:id', (req, res, next) => {
     Contact.findOne({ id: req.params.id })
         .then(contact => {
+            contact.id = req.body.id;
             contact.name = req.body.name;
-            contact.description = req.body.description;
-            contact.url = req.body.url;
+            contact.email = req.body.email;
+            contact.phone = req.body.phone;
+            contact.imageUrl = req.body.imageUrl;
   
             contact.updateOne({ id: req.params.id }, contact)
                 .then(result => {

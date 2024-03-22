@@ -37,11 +37,19 @@ export class MessageService {
           // information based on the foreign key of the sender.
           // We only need the friendly id of the sender.
           for (let msg of messageData.messages) {
-            msg.sender = msg.sender['id'];
+            if (msg.sender) {
+              msg.sender = msg.sender['id'];
+            }
           }
+          // purge message with missing senders  
           this.messages = messageData.messages;
+          for (let msg of this.messages) {
+            if (!msg.sender) {
+              this.deleteMessage(msg);
+            }
+          }
 
-          //console.log(this.messages);
+          console.log(messageData.message);
           this.maxMessageId = this.getMaxMessageId();
           /*
           // sort the Messages.
@@ -68,7 +76,6 @@ export class MessageService {
           this.maxMessageId = this.getMaxMessageId();
         }
       }, 
-      // we could perhaps give the user some feedback.
       error: (error) => {
         console.log(error);
         this.messageIOError.next("Error fetching messages!");
@@ -79,49 +86,31 @@ export class MessageService {
   noMessages() {
     return this.messages.length  === 0;
   }
-
-  storeMessages() {
-    // may not be necessary since my verion has all string fields.
-    // const Messages = JSON.stringify(this.Messages); 
-    this.http.put<'application/json'>(this.dbUrl, this.messages)
-    .subscribe({
-      next: (responseData) => {
-        this.maxMessageId = this.getMaxMessageId();
-        this.messageListChangedEvent.next(this.messages.slice());
-      },
-      // could / should also inform the user
-      error: (error) => {
-        console.log('StoreMessages error '+error.value);
-        this.messageIOError.next("Error storing messages!");
-      }
-    })
-
-  }  purgeMissingSenders() {
-    for (const message of this.messages) {
-      const sender: string = message.sender;
-      if (this.contactService.getContact(sender)===null) {
-        this.deleteMessage(message);
-      }
-    }
-    this.messageListChangedEvent.next(this.messages.slice());
-  }
-
-  // note, this is not being used as of week 6.
+ 
   deleteMessage(message: Message) { //may need more if user can separately delete a message.
     if (!message) {
        return;
     }
+    const id = message.id;
     const pos = this.messages.indexOf(message); 
     if (pos < 0) {
        return;
     }
     this.messages.splice(pos, 1);
-    this.storeMessages();
+  // use the more granular delete operation.
+  this.http.delete<'application/json'>(this.dbUrl+'/'+id)
+  .subscribe({
+    next: (responseData) => {
+      this.maxMessageId = this.getMaxMessageId();
+      this.messageListChangedEvent.next(this.messages.slice());
+    },
+    error: (msg) => {
+      this.messageIOError.next("Error deleting a message!");
+      console.log('Delete message error '+msg.error);
+    }
+  })
  }
- 
-  // week 5 note: This is not used.
-  // Presumably we will use it in future.
-  // search for a message with the expected id.
+
   getMessage(id: string): Message {
     // changed let message to const message
     // based on Lint complaint.
@@ -134,11 +123,22 @@ export class MessageService {
     // but now null must be intercepted if it happens...
   }
 
-  addMessage(message: Message) {
+  addMessage(newMessage: Message) {
     this.maxMessageId++;
-    message.id = ''+this.maxMessageId;
-    this.messages.push(message);
-    this.storeMessages();
+    newMessage.id = ''+this.maxMessageId;
+    this.messages.push(newMessage);
+
+    this.http.post<'application/json'>(this.dbUrl+'/'+newMessage.id, newMessage)
+    .subscribe({
+      next: (responseData) => {
+        this.maxMessageId = this.getMaxMessageId();
+        this.messageListChangedEvent.next(this.messages.slice());
+      },
+      error: (msg) => {
+        this.messageIOError.next("Error adding a message!");
+        console.log('Add message error '+msg.error);
+      }
+    })
   }
 
   private getMaxMessageId(): number {

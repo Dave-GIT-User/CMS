@@ -7,7 +7,6 @@ var router = express.Router();
 router.get('/', async (req, res, next) => {
     try {
     let documents = await Document.find();
-    console.log(documents);
     return res.status(200).json({
         message: 'fetched Documents.',
         documents: documents
@@ -21,11 +20,6 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/:id', (req, res, next) => {
-    // why do we need this? Angular already computes the new id.
-    // On the other hand, if it is needed, it must be debugged. 
-    //const maxDocumentId = sequenceGenerator.nextId("Document");
-    console.log('trying to post from the backend');
-    //console.log('maxDocumentId: '+maxDocumentId);
     const document = new Document({
         id: req.body.id,
         name: req.body.name,
@@ -52,6 +46,7 @@ router.post('/:id', (req, res, next) => {
 router.put('/:id', (req, res, next) => {
     Document.findOne({ id: req.params.id })
         .then(document => {
+            document.id = req.body.id;
             document.name = req.body.name;
             document.description = req.body.description;
             document.url = req.body.url;

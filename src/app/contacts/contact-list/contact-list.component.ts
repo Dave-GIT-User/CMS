@@ -23,7 +23,6 @@ export class ContactListComponent implements OnInit, OnDestroy {
     this.subscription1 = this.contactService.contactListChangedEvent.subscribe(
       (updatedcontacts: Contact[]) => {
         this.contacts=updatedcontacts;
-        this.messageService.purgeMissingSenders();
          }
     ); 
     this.subscription2 = this.contactService.contactIOError.subscribe(
