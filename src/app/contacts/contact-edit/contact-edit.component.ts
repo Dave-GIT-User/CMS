@@ -29,27 +29,26 @@ export class ContactEditComponent implements OnInit {
        private router: Router,
        private route: ActivatedRoute) {}
   
-  ngOnInit(): void {
-    this.route.params.subscribe(
-      (params: Params) => {
-        const id = params.id;
-        if (id === null) {
-          this.editMode = false;
-          this.onCancel();
-        }
-        //this.contact = JSON.parse(JSON.stringify(this.contactService.getContact(id)));
-        this.contact = this.contactService.getContact(id);
-        if (this.contact === null) {
-          this.onCancel();
-        }
-        this.editMode = true;
-        if (this.contact.group !== null) {
-         //this.groupContacts = JSON.parse(JSON.stringify(this.contact.group));
-         this.groupContacts = this.contact.group;
-        }
-      }
-    );
-  }  
+       ngOnInit(): void {
+        this.route.params.subscribe(
+          (params: Params) => {
+            const id = params.id;
+            if (!id) {
+              this.editMode = false;
+              return;
+            }
+            this.contact = this.contactService.getContact(id);
+            if (this.contact === null) {
+              this.onCancel();
+              return;
+            }
+            this.editMode = true;
+            if (this.contact.group !== null) {
+             this.groupContacts = this.contact.group;
+            }
+          }
+        );
+      }  
   
   onCancel() {
     this.invalidDrop = false;

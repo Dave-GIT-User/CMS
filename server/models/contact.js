@@ -9,6 +9,7 @@ const contactSchema = mongoose.Schema({
     imageUrl: { type: String },
     group: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }]
 });
+var owner;
 
-module.exports = mongoose.model('Contact', contactSchema);
+module.exports = mongoose.model('Contact', contactSchema), owner;
 

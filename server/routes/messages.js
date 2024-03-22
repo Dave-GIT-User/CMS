@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const Message = require('../models/message');
+const Contact = require('../models/contact');
 
 router.get('/', async (req, res, next) => {
     Message.find()
@@ -28,7 +29,7 @@ router.get('/', async (req, res, next) => {
         // this is too specific.
         // The sender is always id 0 in the contacts.
         // tried using Contact.findOne({"id": "0"})._id but that is trash.
-        sender: '65fc5ebfb4ff7f63e78bf202'
+        sender: owner//'65fc5ebfb4ff7f63e78bf202'
     });
   
     message.save()

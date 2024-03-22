@@ -6,6 +6,7 @@ router.get('/', (req, res, next) => {
     Contact.find()
       .populate('group')
       .then(contacts => {
+        owner = contacts[0]._id;
         res.status(200).json({
             message: 'Contacts fetched successfully!',
             contacts: contacts
