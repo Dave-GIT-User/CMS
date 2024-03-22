@@ -8,7 +8,6 @@ const mongoose = require('mongoose');
   }
 */
 const sequenceSchema = mongoose.Schema({
-   _id: { type: mongoose.Schema.Types.ObjectId, required: true},
    maxDocumentId: { type: String, required: true },
    maxMessageId: { type: Number, required: true },
    maxContactId: { type: Number, required: true }

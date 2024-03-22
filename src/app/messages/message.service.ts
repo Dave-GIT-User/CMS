@@ -24,32 +24,21 @@ export class MessageService {
 
   getMessages(): void {
     // contacts are a prerequisite for messages.
-    // Will this timing work?
     if (this.contactService.noContacts()) {
       this.contactService.getContacts();
     }
-   // return this.Messages.slice();
     this.http.get(this.dbUrl)
     .subscribe({ 
       next: (messageData: {message: string, messages: Message[]}) => {
         {
-          // the populate() method at the server pulled down full contact
-          // information based on the foreign key of the sender.
-          // We only need the friendly id of the sender.
-          for (let msg of messageData.messages) {
-            if (msg.sender) {
-              msg.sender = msg.sender['id'];
-            }
-          }
-          // purge message with missing senders  
+          // the messages are now clean, without _id and with the friendly id of the sender.  
           this.messages = messageData.messages;
           for (let msg of this.messages) {
             if (!msg.sender) {
               this.deleteMessage(msg);
             }
           }
-
-          console.log(messageData.message);
+          //console.log(messageData.message);
           this.maxMessageId = this.getMaxMessageId();
           /*
           // sort the Messages.

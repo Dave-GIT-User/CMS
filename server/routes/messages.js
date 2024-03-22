@@ -3,13 +3,20 @@ var router = express.Router();
 const Message = require('../models/message');
 const Contact = require('../models/contact');
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res, next) => {   
+    var msgArray = new Array;
     Message.find()
         .populate('sender') 
         .then(messages => {
+        // clean this up before sending it back to the client!
+        for (msg of messages) {
+            id = msg.id; subject = msg.subject; msgText = msg.msgText; sender = msg.sender.id;
+            msgArray.push({id, subject, msgText, sender});
+        }
+        //console.log('server: '+msgArray);
         res.status(200).json({
             message: 'messages fetched successfully!',
-            messages: messages
+            messages: msgArray
         });
     })
     .catch(error => {
@@ -26,10 +33,15 @@ router.get('/', async (req, res, next) => {
         id: req.body.id,
         subject: req.body.subject,
         msgText: req.body.msgText,
-        // this is too specific.
-        // The sender is always id 0 in the contacts.
-        // tried using Contact.findOne({"id": "0"})._id but that is trash.
-        sender: owner//'65fc5ebfb4ff7f63e78bf202'
+        // Any new messages are only from the "owner". the first contact.
+        // This is initialized when the list of 
+        // contacts is fetched (prerequisite for
+        // doing anything with messages).
+        // Holding onto it seems more efficient
+        // than going through some database
+        // operation each time a new message must
+        // be sent.
+        sender: owner
     });
   
     message.save()

@@ -5,6 +5,17 @@ const Document = require('../models/document');
 var router = express.Router();
 
 router.get('/', async (req, res, next) => {
+    /*
+    var msgArray = new Array;
+    Message.find()
+        .populate('sender') 
+        .then(messages => {
+        // clean this up before sending it back to the client!
+        for (msg of messages) {
+            id = msg.id; subject = msg.subject; msgText = msg.msgText; sender = msg.sender.id;
+            msgArray.push({id, subject, msgText, sender});
+        }
+    */
     try {
     let documents = await Document.find();
     console.log(documents);
