@@ -23,13 +23,13 @@ export class ContactDetailComponent implements OnInit{
       (params: Params) => {
         this.id = params['id'];
         this.contact = this.contactService.getContact(this.id);
+        if (this.contact === null) {
+          this.router.navigate(['/contacts']);
+        }
         if (this.contact.group) {
           this.group = this.contact.group
         } else {
           this.group = [];
-        }
-        if (this.contact === null) {
-          this.router.navigate(['/contacts']);
         }
       }
     );

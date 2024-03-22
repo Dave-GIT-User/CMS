@@ -35,15 +35,17 @@ export class ContactEditComponent implements OnInit {
         const id = params.id;
         if (id === null) {
           this.editMode = false;
-          return;
+          this.onCancel();
         }
-        this.contact = JSON.parse(JSON.stringify(this.contactService.getContact(id)));
+        //this.contact = JSON.parse(JSON.stringify(this.contactService.getContact(id)));
+        this.contact = this.contactService.getContact(id);
         if (this.contact === null) {
-          return;
+          this.onCancel();
         }
         this.editMode = true;
         if (this.contact.group !== null) {
-         this.groupContacts = JSON.parse(JSON.stringify(this.contact.group));
+         //this.groupContacts = JSON.parse(JSON.stringify(this.contact.group));
+         this.groupContacts = this.contact.group;
         }
       }
     );

@@ -44,25 +44,22 @@ export class DocumentEditComponent implements OnInit{
   }
 
   ngOnInit() {
-   /* if (this.documentService.noDocuments()) {
-      this.router.navigate(['/documents']);
-    }*/
     this.subscription1 = this.route.params.subscribe(
       (params: Params) => {
         const id = params.id;
         if (id === null) {
           this.editMode = false;
-          return;
+          this.onCancel();
         }
-        this.document = JSON.parse(JSON.stringify(this.documentService.getDocument(id)));
+        //this.document = JSON.parse(JSON.stringify(this.documentService.getDocument(id)));
+        this.document = this.documentService.getDocument(id)        
         if (this.document === null) {
-          return;
+          this.onCancel();
         }
         this.editMode = true;
-        this.document = JSON.parse(JSON.stringify(this.document));
       }
     );
-    this.subscription2 =     this.subscription2 = this.documentService.documentIOError.subscribe(
+    this.subscription2 = this.subscription2 = this.documentService.documentIOError.subscribe(
       (error) => {
         this.errorMessage = error;
          }

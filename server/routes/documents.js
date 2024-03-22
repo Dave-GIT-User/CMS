@@ -7,6 +7,7 @@ var router = express.Router();
 router.get('/', async (req, res, next) => {
     try {
     let documents = await Document.find();
+    console.log(documents);
     return res.status(200).json({
         message: 'fetched Documents.',
         documents: documents

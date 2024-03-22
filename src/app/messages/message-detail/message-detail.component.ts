@@ -28,11 +28,11 @@ export class MessageDetailComponent implements OnInit {
       (params: Params) => {
         this.id = params['id'];
           this.message = this.messageService.getMessage(this.id);
-          this.contact = this.contactService.getContact(this.message.sender);        
           if (this.message === null) {
             this.router.navigate(['/messages']);
             //alert('Message not found!');
           }
+          this.contact = this.contactService.getContact(this.message.sender);        
          }
     );
   }
