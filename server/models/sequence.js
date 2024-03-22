@@ -12,5 +12,6 @@ const sequenceSchema = mongoose.Schema({
    maxMessageId: { type: Number, required: true },
    maxContactId: { type: Number, required: true }
 });
+var ticket = null;
 
-module.exports = mongoose.model('Sequence', sequenceSchema);
+module.exports = mongoose.model('Sequence', sequenceSchema), ticket;

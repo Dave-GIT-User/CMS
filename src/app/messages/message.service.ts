@@ -14,7 +14,6 @@ export class MessageService {
   //messageSelectedEvent: Subject<Message>=new Subject(); // for future use
   messageListChangedEvent: Subject<Message[]>=new Subject();
   messageIOError: Subject<string>=new Subject();
-  private maxMessageId = 0;
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/messages.json'
   private dbUrl = 'http://localhost:3000/messages';
 
@@ -33,13 +32,14 @@ export class MessageService {
         {
           // the messages are now clean, without _id and with the friendly id of the sender.  
           this.messages = messageData.messages;
+          // drop any messages that are orphaned by deleted contacts
           for (let msg of this.messages) {
             if (!msg.sender) {
               this.deleteMessage(msg);
             }
           }
-          //console.log(messageData.message);
-          this.maxMessageId = this.getMaxMessageId();
+          console.log(messageData.message);
+          console.log(this.messages);
           /*
           // sort the Messages.
           // from sample code at  
@@ -62,7 +62,6 @@ export class MessageService {
           
           let messageListClone: Message[] = this.messages.slice();
           this.messageListChangedEvent.next(messageListClone);
-          this.maxMessageId = this.getMaxMessageId();
         }
       }, 
       error: (error) => {
@@ -90,7 +89,6 @@ export class MessageService {
   this.http.delete<'application/json'>(this.dbUrl+'/'+id)
   .subscribe({
     next: (responseData) => {
-      this.maxMessageId = this.getMaxMessageId();
       this.messageListChangedEvent.next(this.messages.slice());
     },
     error: (msg) => {
@@ -113,14 +111,11 @@ export class MessageService {
   }
 
   addMessage(newMessage: Message) {
-    this.maxMessageId++;
-    newMessage.id = ''+this.maxMessageId;
     this.messages.push(newMessage);
 
     this.http.post<'application/json'>(this.dbUrl+'/'+newMessage.id, newMessage)
     .subscribe({
       next: (responseData) => {
-        this.maxMessageId = this.getMaxMessageId();
         this.messageListChangedEvent.next(this.messages.slice());
       },
       error: (msg) => {
@@ -128,15 +123,5 @@ export class MessageService {
         console.log('Add message error '+msg.error);
       }
     })
-  }
-
-  private getMaxMessageId(): number {
-    let highest: number = 0;
-    for (let message of this.messages) {
-      if (+message.id > highest) {
-        highest = +message.id;
-      }
-    }
-    return highest;
   }
 }

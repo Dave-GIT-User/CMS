@@ -12,7 +12,6 @@ export class DocumentService {
   //documentSelectedEvent: Subject<Document>= new Subject();
   documentListChangedEvent: Subject<Document[]>= new Subject();
   documentIOError: Subject<string>=new Subject();
-  private maxDocumentId: number = 0;
   constructor(private http: HttpClient) {  }
 
   private dbUrl = 'http://localhost:3000/documents';
@@ -22,7 +21,6 @@ export class DocumentService {
       next: (documentData: {message: string, documents: Document[]}) => {
         console.log(documentData.message);
           this.documents = documentData.documents;
-          this.maxDocumentId = this.getMaxDocumentId();
           // sort the documents.
           // from sample code at  
           // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
@@ -42,7 +40,6 @@ export class DocumentService {
           
           let documentListClone: Document[] = this.documents.slice();
           this.documentListChangedEvent.next(documentListClone);
-          this.maxDocumentId = this.getMaxDocumentId();
       }, 
       error: (error) => {
         this.documentIOError.next("Error fetching documents!");
@@ -86,7 +83,6 @@ export class DocumentService {
     this.http.delete<'application/json'>(this.dbUrl+'/'+id)
     .subscribe({
       next: (responseData) => {
-        this.maxDocumentId = this.getMaxDocumentId();
         this.documentListChangedEvent.next(this.documents.slice());
       },
       error: (msg) => {
@@ -96,28 +92,17 @@ export class DocumentService {
     })
    }
 
-  private getMaxDocumentId(): number {
-    let highest: number = 0;
-    for (let document of this.documents) {
-      if (+document.id > highest) {
-        highest = +document.id;
-      }
-    }
-    return highest;
-  }
+ 
 
   addDocument(newDocument: Document ) {
     if (newDocument === null)
       return;
-    this.maxDocumentId++;
-    newDocument.id = ''+this.maxDocumentId;
-    this.documents.push(newDocument);
     let documentListClone: Document[] = this.documents.slice();
     // now we will post just this record.
-    this.http.post<'application/json'>(this.dbUrl+'/'+newDocument.id, newDocument)
+    this.http.post(this.dbUrl+'/1', newDocument)
     .subscribe({
-      next: (responseData) => {
-        this.maxDocumentId = this.getMaxDocumentId();
+      next: (responseData: {message: string, document: Document}) => {
+        this.documents.push(responseData.document);
         this.documentListChangedEvent.next(this.documents.slice());
       },
       error: (msg) => {

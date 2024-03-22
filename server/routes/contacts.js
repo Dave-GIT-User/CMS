@@ -3,21 +3,22 @@ const Contact = require('../models/contact');
 var router = express.Router();
 
 router.get('/', (req, res, next) => {
-    /*
-    var msgArray = new Array;
-    Message.find()
-        .populate('sender') 
-        .then(messages => {
-        // clean this up before sending it back to the client!
-        for (msg of messages) {
-            id = msg.id; subject = msg.subject; msgText = msg.msgText; sender = msg.sender.id;
-            msgArray.push({id, subject, msgText, sender});
-        }
-    */
+    var contactArray = new Array;
     Contact.find()
       .populate('group')
       .then(contacts => {
+        // this is so new messages can set the sender foreign key.
         owner = contacts[0]._id;
+        // clean this up before sending it back to the client!
+        for (contact of contacts) {
+            let id = contact.id; 
+            let name = contact.name; 
+            let email = contact.email; 
+            let phone = contact.phone; 
+            let imageUrl = contact.imageUrl; 
+            let group = contact.group;
+            contactArray.push({id, name, email, phone, imageUrl, group});
+        }
         res.status(200).json({
             message: 'Contacts fetched successfully!',
             contacts: contacts

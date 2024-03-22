@@ -5,23 +5,21 @@ const Document = require('../models/document');
 var router = express.Router();
 
 router.get('/', async (req, res, next) => {
-    /*
-    var msgArray = new Array;
-    Message.find()
-        .populate('sender') 
-        .then(messages => {
-        // clean this up before sending it back to the client!
-        for (msg of messages) {
-            id = msg.id; subject = msg.subject; msgText = msg.msgText; sender = msg.sender.id;
-            msgArray.push({id, subject, msgText, sender});
-        }
-    */
+    var documentArray = new Array();
     try {
     let documents = await Document.find();
-    console.log(documents);
+    // clean this up before sending it back to the client!
+    for (document of documents) {
+        let id = document.id; 
+        let name = document.name; 
+        let description = document.description; 
+        let url = document.url;
+        let children = document.children; 
+        documentArray.push({id, name, url, description, children});
+    }
     return res.status(200).json({
         message: 'fetched Documents.',
-        documents: documents
+        documents: documentArray
         }); 
     } catch (error) {
         console.error('Error fetching documents:', error);
@@ -31,27 +29,40 @@ router.get('/', async (req, res, next) => {
     }    
 });
 
-router.post('/:id', (req, res, next) => {
-    const document = new Document({
-        id: req.body.id,
-        name: req.body.name,
-        description: req.body.description,
-        url: req.body.url        
-    });
-  
-    document.save()
-        .then(createdDocument => {
-            res.status(201).json({
-                message: 'Document added successfully',
-                document: createdDocument
-            });
-        })
-        .catch(error => {
-            res.status(500).json({
-            message: 'An error occurred',
-            error: error
+// Aaron Picker fixed sequenceGenerator, but this way to use it is my idea. DH
+
+router.post("/:id", async (req, res, next) => { 
+    try {
+        await sequenceGenerator.nextId("documents");
+        
+        if (ticket)
+            console.log('maxDocumentId: '+ticket);
+        else {
+            console.log('Darn! Sequence Generator failed.');
+            throw("Sequence Generator failed.");
+        }
+        const document = new Document({
+            id: ticket,
+            name: req.body.name,
+            description: req.body.description,
+            url: req.body.url
         });
-    });    
+        console.log(document);
+        document
+            .save()
+            .then((createdDocument) => {
+                return res.status(201).json({
+                    message: "Document added successfully.",
+                    document: createdDocument,
+                });
+            })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "An error occurred saving the document.",
+            error: error,
+        });
+    }
 });
 
 // update a single document
