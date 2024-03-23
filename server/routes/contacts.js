@@ -32,6 +32,43 @@ router.get('/', (req, res, next) => {
       });
   });
 
+// Aaron Picker fixed sequenceGenerator, but this way to use it is my idea. DH
+router.post("/:id", async (req, res, next) => { 
+    try {
+        await sequenceGenerator.nextId("contacts");
+        
+        if (ticket)
+            console.log('maxContactId: '+ticket);
+        else {
+            console.log('Darn! Sequence Generator failed.');
+            throw("Sequence Generator failed.");
+        }
+        const contact = new contact({
+        id: ticket,
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        imageUrl: req.body.imageUrl
+        });
+        console.log(contact);
+        contact
+            .save()
+            .then((createdContact) => {
+                return res.status(201).json({
+                    message: "Contact added successfully.",
+                    contact: createdContact,
+                });
+            })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "An error occurred saving the contact.",
+            error: error,
+        });
+    }
+});
+
+/*
   router.post('/:id', (req, res, next) => {
     const contact = new Contact({
         id: req.body.id,
@@ -55,7 +92,7 @@ router.get('/', (req, res, next) => {
         });
     });  
 });
-
+*/
 router.delete("/:id", (req, res, next) => {
   Contact.findOne({ id: req.params.id })
       .then(contact => {

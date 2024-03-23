@@ -13,7 +13,6 @@ export class ContactService {
 
   contactListChangedEvent: Subject<Contact[]>= new Subject();
   contactIOError: Subject<string>=new Subject();
-  maxContactId: number = 0;
   
   constructor(private http: HttpClient) {  }
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
@@ -22,9 +21,9 @@ export class ContactService {
   getContacts(): void {
     this.http.get(this.dbUrl)
     .subscribe({ 
-      next: (contactData: {message: string, contacts: Contact[]}) => {
+      next: (contactData: {contact: string, contacts: Contact[]}) => {
         {
-          console.log(contactData.message);
+          console.log(contactData.contact);
           this.contacts = contactData.contacts;
           /*
           // hold off sorting contacts for now.
@@ -49,7 +48,6 @@ export class ContactService {
           */
           
           let ContactListClone: Contact[] = this.contacts.slice();
-          this.maxContactId = this.getMaxContactId();
           this.contactListChangedEvent.next(ContactListClone);
         }
       }, 
@@ -100,7 +98,6 @@ export class ContactService {
     this.http.delete<'application/json'>(this.dbUrl+'/'+id)
     .subscribe({
       next: (responseData) => {
-        this.maxContactId = this.getMaxContactId();
         this.contactListChangedEvent.next(this.contacts.slice());
       },
       error: (msg) => {
@@ -110,33 +107,22 @@ export class ContactService {
     })
    }
 
-  private getMaxContactId(): number {
-    let highest: number = 0;
-    for (let contact of this.contacts) {
-      if (+contact.id > highest) {
-        highest = +contact.id;
-      }
-    }
-    return highest;
-  }
-
-  addContact(newContact: Contact ) {
-    if (newContact === null)
+  addContact(newcontact: Contact ) {
+    if (newcontact === null)
       return;
-    this.maxContactId++;
-    newContact.id = ''+this.maxContactId;
-    this.contacts.push(newContact);
     let contactListClone: Contact[] = this.contacts.slice();
-    // now we will post just this record.
-    this.http.post<'application/json'>(this.dbUrl+'/'+newContact.id, newContact)
+    // now we will post just this record
+    newcontact.id = '1';
+    this.http.post(this.dbUrl+'/1', newcontact)
     .subscribe({
-      next: (responseData) => {
-        this.maxContactId = this.getMaxContactId();
+      next: (responseData: {status: string, contact: Contact}) => {
+        this.contacts.push(responseData.contact);
+        console.log(responseData.contact);
         this.contactListChangedEvent.next(this.contacts.slice());
       },
-      error: (msg) => {
+      error: (contact) => {
         this.contactIOError.next("Error adding a contact!");
-        console.log('add contact error '+msg.error);
+        console.log(contact);
       }
     })
   }

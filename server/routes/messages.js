@@ -33,53 +33,17 @@ router.get('/', async (req, res, next) => {
 });
 
 // Aaron Picker fixed sequenceGenerator, but this way to use it is my idea. DH
-/*
-router.post("/:id", async (req, res, next) => { *
-    try {*
-        await sequenceGenerator.nextId("documents");*
-        
-        if (ticket)*
-            console.log('maxDocumentId: '+ticket);*
-        else {*
-            console.log('Darn! Sequence Generator failed.');*
-            throw("Sequence Generator failed.");*
-        }*
-        const document = new Document({*
-            id: ticket,
-            name: req.body.name,
-            description: req.body.description,
-            url: req.body.url
-        });*
-        console.log(document);
-        document
-            .save()
-            .then((createdDocument) => {
-                return res.status(201).json({
-                    message: "Document added successfully.",
-                    document: createdDocument,
-                });
-            })
-
-    } catch (error) {
-        return res.status(500).json({
-            message: "An error occurred saving the document.",
-            error: error,
-        });
-    }
-});
-*/
-// Aaron Picker fixed sequenceGenerator, but this way to use it is my idea. DH
 router.post('/:id', async (req, res, next) => {
     try {
         await sequenceGenerator.nextId("messages");
         if (ticket) {
-            console.log('maxDocumentId: '+ticket);
+            console.log('maxMessageId: '+ticket);
         } else {
             console.log('Darn! Sequence Generator failed.');
             throw("Sequence Generator failed.");
         }   
         const message = new Message({
-            id: req.body.id,
+            id: ticket,
             subject: req.body.subject,
             msgText: req.body.msgText,
             // any new messages are currently authored by the user with id 0.
@@ -87,12 +51,13 @@ router.post('/:id', async (req, res, next) => {
             // on the server side.
             sender: owner
         });
-        console.log(message);
+        // but do not send the forein key back to the cliernt.
         message.save()
-        .then((createdmessage) => {
+        .then((createdMessage) => {
+            // don't send back a foreign key to the owner.
             res.status(201).json({
                 message: 'message added successfully',
-                message: createdmessage
+                message: createdMessage
             });
         })
     } catch(error) {
@@ -102,14 +67,14 @@ router.post('/:id', async (req, res, next) => {
         });
     }
 });
-
 router.delete("/:id", (req, res, next) => {
     Message.findOne({ id: req.params.id })
         .then(message => {
             message.deleteOne({ id: req.params.id })
-            .then(result => {
+            .then(message => {
                 res.status(204).json({
-                message: "Message deleted successfully"
+                status: "Message deleted successfully",
+                message: message
             });
         })
             .catch(error => {
@@ -122,7 +87,7 @@ router.delete("/:id", (req, res, next) => {
         .catch(error => {
             res.status(500).json({
                 message: 'Message not found.',
-                error: { message: 'Message not found'}
+                error: error
         });
     });
 });

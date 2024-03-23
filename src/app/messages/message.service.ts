@@ -110,17 +110,24 @@ export class MessageService {
     // but now null must be intercepted if it happens...
   }
 
-  addMessage(newMessage: Message) {
-    this.messages.push(newMessage);
-
-    this.http.post<'application/json'>(this.dbUrl+'/'+newMessage.id, newMessage)
+  addMessage(newMessage: Message ) {
+    if (newMessage === null)
+      return;
+    let messageListClone: Message[] = this.messages.slice();
+    newMessage.id = '1';
+    // now will post just this record. we
+    this.http.post(this.dbUrl+'/1', newMessage)
     .subscribe({
-      next: (responseData) => {
+      next: (responseData: {status: string, message: Message}) => {
+        // replace sender field foreign key with the id '0', the "owner"
+        responseData.message.sender = '0'
+        this.messages.push(responseData.message);
+        console.log(responseData.message);
         this.messageListChangedEvent.next(this.messages.slice());
       },
-      error: (msg) => {
+      error: (message) => {
         this.messageIOError.next("Error adding a message!");
-        console.log('Add message error '+msg.error);
+        console.log(message);
       }
     })
   }

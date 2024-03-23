@@ -30,7 +30,6 @@ router.get('/', async (req, res, next) => {
 });
 
 // Aaron Picker fixed sequenceGenerator, but this way to use it is my idea. DH
-
 router.post("/:id", async (req, res, next) => { 
     try {
         await sequenceGenerator.nextId("documents");
