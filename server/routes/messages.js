@@ -1,7 +1,8 @@
 var express = require('express');
-const sequenceGenerator = require('./sequenceGenerator');
 const Message = require('../models/message');
+const sequenceGenerator = require('./sequenceGenerator');
 const Contact = require('../models/contact');
+const { max } = require('rxjs');
 
 var router = express.Router();
 router.get('/', async (req, res, next) => {   
@@ -32,18 +33,11 @@ router.get('/', async (req, res, next) => {
     });
 });
 
-// Aaron Picker fixed sequenceGenerator, but this way to use it is my idea. DH
 router.post('/:id', async (req, res, next) => {
     try {
-        await sequenceGenerator.nextId("messages");
-        if (ticket) {
-            console.log('maxMessageId: '+ticket);
-        } else {
-            console.log('Darn! Sequence Generator failed.');
-            throw("Sequence Generator failed.");
-        }   
+        const maxMessageId = await sequenceGenerator.nextId("messages");
         const message = new Message({
-            id: ticket,
+            id: maxMessageId,
             subject: req.body.subject,
             msgText: req.body.msgText,
             // any new messages are currently authored by the user with id 0.

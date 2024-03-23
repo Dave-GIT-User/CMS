@@ -1,5 +1,7 @@
 var express = require('express');
 const Contact = require('../models/contact');
+const sequenceGenerator = require('./sequenceGenerator');
+
 var router = express.Router();
 
 router.get('/', (req, res, next) => {
@@ -32,19 +34,11 @@ router.get('/', (req, res, next) => {
       });
   });
 
-// Aaron Picker fixed sequenceGenerator, but this way to use it is my idea. DH
 router.post("/:id", async (req, res, next) => { 
     try {
-        await sequenceGenerator.nextId("contacts");
-        
-        if (ticket)
-            console.log('maxContactId: '+ticket);
-        else {
-            console.log('Darn! Sequence Generator failed.');
-            throw("Sequence Generator failed.");
-        }
-        const contact = new contact({
-        id: ticket,
+        const maxContactId = await sequenceGenerator.nextId("contacts");
+        const contact = new Contact({
+        id: maxContactId,
         name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,
