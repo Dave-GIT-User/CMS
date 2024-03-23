@@ -19,9 +19,21 @@ export class DocumentService {
     this.http.get(this.dbUrl)
     .subscribe({ 
       next: (documentData: {message: string, documents: Document[]}) => {
-        console.log(documentData.message);
           this.documents = documentData.documents;
-          // sort the documents.
+
+          this.sortDocuments();
+          
+          let documentListClone: Document[] = this.documents.slice();
+          this.documentListChangedEvent.next(documentListClone);
+      }, 
+      error: (error) => {
+        this.documentIOError.next("Error fetching documents!");
+        console.log(error);
+      }
+    });
+  }
+    sortDocuments() {
+          // sort the documents by document name (alphabetically)
           // from sample code at  
           // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
           this.documents.sort((a, b) => {
@@ -37,16 +49,7 @@ export class DocumentService {
             // names must be equal
             return 0;
           });
-          
-          let documentListClone: Document[] = this.documents.slice();
-          this.documentListChangedEvent.next(documentListClone);
-      }, 
-      error: (error) => {
-        this.documentIOError.next("Error fetching documents!");
-        console.log(error);
-      }
-    });
-  }
+    }
 
   noDocuments() {
     return this.documents.length  === 0;
@@ -103,6 +106,10 @@ export class DocumentService {
     .subscribe({
       next: (responseData: {message: string, document: Document}) => {
         this.documents.push(responseData.document);
+        // Sort - otherwise, the new document tacks on the end,
+        // but then positions alphabetically upon refresh or returning
+        // from looking at messages or contacts.
+        this.sortDocuments();
         this.documentListChangedEvent.next(this.documents.slice());
       },
       error: (msg) => {

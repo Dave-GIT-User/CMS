@@ -23,29 +23,9 @@ export class ContactService {
     .subscribe({ 
       next: (contactData: {contact: string, contacts: Contact[]}) => {
         {
-          console.log(contactData.contact);
           this.contacts = contactData.contacts;
-          /*
-          // hold off sorting contacts for now.
-          // perhaps single contacts could be sorted,followed by group contacts
-          // sort the Contacts.
-          // from sample code at  
-          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-          this.contacts.sort((a, b) => {
-            //compare function
-            const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-            const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-            if (nameA < nameB) {
-              return -1;
-            }
-            if (nameA > nameB) {
-              return 1;
-            }
-          
-            // names must be equal
-            return 0;
-          });
-          */
+
+          this.sortContacts();
           
           let ContactListClone: Contact[] = this.contacts.slice();
           this.contactListChangedEvent.next(ContactListClone);
@@ -57,6 +37,26 @@ export class ContactService {
         console.log('getContacts error '+error)
       }
     });
+  }
+
+  sortContacts() {
+              // sort the Contacts on id (chronologically).
+          // from sample code at  
+          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+          this.contacts.sort((a, b) => {
+            //compare function
+            const nameA = +a.id;
+            const nameB = +b.id;
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+          
+            // names must be equal
+            return 0;
+          });
   }
   
   noContacts() {
@@ -117,7 +117,12 @@ export class ContactService {
     .subscribe({
       next: (responseData: {status: string, contact: Contact}) => {
         this.contacts.push(responseData.contact);
-        console.log(responseData.contact);
+        // we want the next contact below the last normal contact
+        // and above the staged contact groups like Programming Team.
+        // The backend sets it up so in the event a contact id hits 100,
+        // it becomes 200 instead. This leaves room for more groups
+        // and not threaten to overwrite them.
+        this.sortContacts();
         this.contactListChangedEvent.next(this.contacts.slice());
       },
       error: (contact) => {

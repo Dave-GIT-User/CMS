@@ -38,16 +38,14 @@ export class MessageService {
               this.deleteMessage(msg);
             }
           }
-          console.log(messageData.message);
-          console.log(this.messages);
-          /*
-          // sort the Messages.
+         
+          // sort the Messages on the id field (chronologically)
           // from sample code at  
           // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
           this.messages.sort((a, b) => {
             //compare function
-            const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-            const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+            const nameA = +a.id;
+            const nameB = +b.id;
             if (nameA < nameB) {
               return -1;
             }
@@ -57,8 +55,7 @@ export class MessageService {
           
             // names must be equal
             return 0;
-          });
-          */
+          });          
           
           let messageListClone: Message[] = this.messages.slice();
           this.messageListChangedEvent.next(messageListClone);
@@ -122,7 +119,6 @@ export class MessageService {
         // replace sender field foreign key with the id '0', the "owner"
         responseData.message.sender = '0'
         this.messages.push(responseData.message);
-        console.log(responseData.message);
         this.messageListChangedEvent.next(this.messages.slice());
       },
       error: (message) => {

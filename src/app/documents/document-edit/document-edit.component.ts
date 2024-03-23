@@ -44,24 +44,17 @@ export class DocumentEditComponent implements OnInit{
   }
 
   ngOnInit() {
-    console.log('contact edit OnInit ');
-    console.log('edit mode is '+this.editMode);
+
      this.subscription1 = this.route.params.subscribe(
        (params: Params) => {
-        console.log('contact edit route changed?');
-        console.log('edit mode is '+this.editMode);
          const id = params.id;
          if (!id) {
            this.editMode = false;
-           console.log('it must not be edit mode');
            return;
          }
-         console.log(id);
          this.editMode = true;
-         console.log('looking for document '+id);
          this.document = this.documentService.getDocument(id);
          if (this.document === null) {
-          console.log('it is supposed to be edit mode but where is the document?');
            this.onCancel();
            return;
          }

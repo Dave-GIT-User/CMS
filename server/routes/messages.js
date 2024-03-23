@@ -18,8 +18,9 @@ router.get('/', async (req, res, next) => {
             let msgText = msg.msgText; 
             let sender = msg.sender.id;
             msgArray.push({id, subject, msgText, sender});
+            console.log('server-side message: '+msg);
         }
-        
+        //console.log('server: '+msgArray);
         res.status(200).json({
             message: 'messages fetched successfully!',
             messages: msgArray
