@@ -3,6 +3,9 @@ var express = require('express');
 var path = require('path');
 var http = require('http');
 var mongoose = require('mongoose');
+require('dotenv').config()
+//const { MongoClient } = require('mongodb');
+//const client = new MongoClient(uri); // what?
 
 // deprecated, now included in Express
 //var bodyParser = require('body-parser');
@@ -74,7 +77,7 @@ app.set('port', port);
 //from https://mongoosejs.com/docs/connections.html
 mongoose.connection.on('connected', () => console.log('Connected to database!'));
 //mongoose.connect('mongodb://localhost:27017/cms')
-mongoose.connect("mongodb+srv://dahendricks1:UHlpjcMraTTjnYRp@cluster0.9xewfbq.mongodb.net/CMS?retryWrites=true")
+mongoose.connect(process.env.MONGO_URI)
   .catch(error => {
     console.log('Connection failed: ' + error);
   });
