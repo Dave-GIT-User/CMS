@@ -16,7 +16,7 @@ export class ContactService {
   
   constructor(private http: HttpClient) {  }
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
-  private dbUrl = 'http://://wdd433dh-cms.netlify.app:3000/contacts';
+  private dbUrl = 'https://wdd433dh-cms.netlify.app:3000/contacts';
 
   getContacts(): void {
     this.http.get(this.dbUrl)
