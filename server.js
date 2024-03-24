@@ -3,9 +3,7 @@ var express = require('express');
 var path = require('path');
 var http = require('http');
 var mongoose = require('mongoose');
-require('dotenv').config()
-//const { MongoClient } = require('mongodb');
-//const client = new MongoClient(uri); // what?
+require('dotenv').config();
 
 // deprecated, now included in Express
 //var bodyParser = require('body-parser');
