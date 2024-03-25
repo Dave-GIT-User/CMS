@@ -40,8 +40,10 @@ app.use(logger('dev')); // Tell express to use the Morgan logger
 /*
 documents:1 Access to XMLHttpRequest at 'https://wdd433dh-cms.netlify.app/api/documents' from origin 'http://localhost:4200' 
 has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+However, was this code even struck? It is possible Netlify was only running Angular, not the server.
 */
-/*
+
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
@@ -54,10 +56,10 @@ app.use((req, res, next) => {
   );
   next();
 });
-*/
+
 
 // Add support for CORS
-app.use(cors());
+//app.use(cors());
 // Tell express to use the specified director as the
 // root directory for your web site
 app.use(express.static(path.join(__dirname, 'dist/cms/browser')));
