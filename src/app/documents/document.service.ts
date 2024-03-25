@@ -27,9 +27,9 @@ export class DocumentService {
           let documentListClone: Document[] = this.documents.slice();
           this.documentListChangedEvent.next(documentListClone);
       }, 
-      error: (error) => {
+      error: (errorResponse: {message: string, error: string}) => {
         this.documentIOError.next("Error fetching documents!");
-        console.log(error);
+        console.log("Get Documents: "+errorResponse.message);
       }
     });
   }
