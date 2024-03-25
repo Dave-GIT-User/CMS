@@ -57,7 +57,6 @@ app.use((req, res, next) => {
 */
 
 // Add support for CORS
-app.use(cors());
 
 // Tell express to use the specified director as the
 // root directory for your web site
@@ -67,6 +66,7 @@ app.use(express.static(path.join(__dirname, 'dist/cms/browser')));
 
 
 app.use("/", index);
+app.use(cors());
 
 // ... ADD YOUR CODE TO MAP YOUR URL'S TO ROUTING FILES HERE ...
 app.use('/api/messages', messageRoutes);

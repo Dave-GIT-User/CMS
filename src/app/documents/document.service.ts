@@ -29,7 +29,7 @@ export class DocumentService {
       }, 
       error: (errorResponse: {message: string, error: string}) => {
         this.documentIOError.next("Error fetching documents!");
-        console.log("Get Documents: "+errorResponse.message);
+        console.log("Get Documents: "+errorResponse.message+'\n'+errorResponse.error);
       }
     });
   }
