@@ -22,7 +22,7 @@ export class MessageService {
   //private localServer = 'http://localhost:3000';
   //private baseUrl = process.env.SERVER || this.localServer;
 
-  private dbUrl = 'https://wdd433dh-cms.netlify.app/messages';
+  private dbUrl = 'https://wdd433dh-cms.netlify.app:3000/messages';
 
   constructor(
     private contactService: ContactService,
