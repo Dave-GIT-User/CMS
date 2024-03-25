@@ -17,9 +17,9 @@ export class DocumentService {
   constructor(private http: HttpClient) {  }
 
   // nice try but this needs different handling on the Angular side
-  //private localServer = 'http://localhost:3000';
+  private dbUrl = 'http://localhost:3000/documents';
   //private baseUrl = process.env.SERVER || this.localServer;
-  private dbUrl = 'https://wdd433dh-cms.netlify.app:3000/documents';
+  //private dbUrl = 'https://wdd433dh-cms.netlify.app:3000/documents';
 
   getDocuments(): void {
     this.http.get(this.dbUrl)

@@ -18,9 +18,9 @@ export class ContactService {
   
   // nice try but this needs different handling on the Angular side
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
-  //private localServer = 'http://localhost:3000';
+  private dbUrl = 'http://localhost:3000/contacts';
   //private baseUrl = process.env.SERVER || this.localServer;
-  private dbUrl = 'https://wdd433dh-cms.netlify.app:3000/contacts';
+ // private dbUrl = 'https://wdd433dh-cms.netlify.app:3000/contacts';
 
 
   getContacts(): void {

@@ -19,10 +19,10 @@ export class MessageService {
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/messages.json'
   
   // nice try but this needs different handling on the Angular side
-  //private localServer = 'http://localhost:3000';
+  private dbUrl = 'http://localhost:/messages';
   //private baseUrl = process.env.SERVER || this.localServer;
 
-  private dbUrl = 'https://wdd433dh-cms.netlify.app:3000/messages';
+  //private dbUrl = 'https://wdd433dh-cms.netlify.app:3000/messages';
 
   constructor(
     private contactService: ContactService,
