@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+// nice try but this needs different handling on the Angular side
+//require('dotenv').config();
 
 import { Contact } from './contact.model';
 import { MOCKCONTACTS } from './MOCKCONTACTS';
@@ -10,19 +12,18 @@ import { MOCKCONTACTS } from './MOCKCONTACTS';
 })
 export class ContactService {
   private contacts: Contact[] = [];
-
   contactListChangedEvent: Subject<Contact[]>= new Subject();
   contactIOError: Subject<string>=new Subject();
-  
   constructor(private http: HttpClient) {  }
+  
+  // nice try but this needs different handling on the Angular side
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
-  private localServer = 'http://localhost:3000';
-  private baseUrl = process.env.SERVER || this.localServer;
-  private dbUrl = this.baseUrl+'/contacts';
+  //private localServer = 'http://localhost:3000';
+  //private baseUrl = process.env.SERVER || this.localServer;
+  private dbUrl = 'https://wdd433dh-cms.netlify.app/contacts';
 
 
   getContacts(): void {
-    console.log('angular is sending requests to '+dbUrl);
     this.http.get(this.dbUrl)
     .subscribe({ 
       next: (contactData: {contact: string, contacts: Contact[]}) => {

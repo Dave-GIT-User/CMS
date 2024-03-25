@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+// nice try but this needs different handling on the Angular side
+//require('dotenv').config(); // no good here
 
 import { Message } from './message.model';
 import { ContactService } from '../contacts/contact.service';
@@ -16,9 +18,11 @@ export class MessageService {
   messageIOError: Subject<string>=new Subject();
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/messages.json'
   
-  private localServer = 'http://localhost:3000';
-  private baseUrl = process.env.SERVER || this.localServer;
-  private dbUrl = this.baseUrl+'/messages';
+  // nice try but this needs different handling on the Angular side
+  //private localServer = 'http://localhost:3000';
+  //private baseUrl = process.env.SERVER || this.localServer;
+
+  private dbUrl = 'https://wdd433dh-cms.netlify.app/messages';
 
   constructor(
     private contactService: ContactService,

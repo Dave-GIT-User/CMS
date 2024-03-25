@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
+// nice try but this needs different handling on the Angular side
+//require('dotenv').config();
 
 import { Document } from './document.model';
 
@@ -14,9 +16,10 @@ export class DocumentService {
   documentIOError: Subject<string>=new Subject();
   constructor(private http: HttpClient) {  }
 
-  private localServer = 'http://localhost:3000';
-  private baseUrl = process.env.SERVER || this.localServer;
-  private dbUrl = this.baseUrl+'/documents';
+  // nice try but this needs different handling on the Angular side
+  //private localServer = 'http://localhost:3000';
+  //private baseUrl = process.env.SERVER || this.localServer;
+  private dbUrl = 'https://wdd433dh-cms.netlify.app/documents';
 
   getDocuments(): void {
     this.http.get(this.dbUrl)
