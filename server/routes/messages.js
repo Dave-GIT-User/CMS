@@ -62,6 +62,7 @@ router.post('/:id', async (req, res, next) => {
         });
     }
 });
+
 router.delete("/:id", (req, res, next) => {
     Message.findOne({ id: req.params.id })
         .then(message => {
