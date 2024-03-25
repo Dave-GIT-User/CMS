@@ -16,9 +16,13 @@ export class ContactService {
   
   constructor(private http: HttpClient) {  }
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
-  private dbUrl = 'https://wdd433dh-cms.netlify.app/contacts';
+  private localServer = 'http://localhost:3000';
+  private baseUrl = process.env.SERVER || this.localServer;
+  private dbUrl = this.baseUrl+'/contacts';
+
 
   getContacts(): void {
+    console.log('angular is sending requests to '+dbUrl);
     this.http.get(this.dbUrl)
     .subscribe({ 
       next: (contactData: {contact: string, contacts: Contact[]}) => {

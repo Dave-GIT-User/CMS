@@ -15,7 +15,10 @@ export class MessageService {
   messageListChangedEvent: Subject<Message[]>=new Subject();
   messageIOError: Subject<string>=new Subject();
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/messages.json'
-  private dbUrl = 'https://wdd433dh-cms.netlify.app/messages';
+  
+  private localServer = 'http://localhost:3000';
+  private baseUrl = process.env.SERVER || this.localServer;
+  private dbUrl = this.baseUrl+'/messages';
 
   constructor(
     private contactService: ContactService,
