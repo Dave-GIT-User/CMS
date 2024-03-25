@@ -14,7 +14,7 @@ export class DocumentService {
   documentIOError: Subject<string>=new Subject();
   constructor(private http: HttpClient) {  }
 
-  private dbUrl = 'https://wdd433dh-cms.netlify.app:3000/documents';
+  private dbUrl = 'https://wdd433dh-cms.netlify.app/documents';
   getDocuments(): void {
     this.http.get(this.dbUrl)
     .subscribe({ 
