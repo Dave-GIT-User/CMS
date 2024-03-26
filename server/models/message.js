@@ -8,4 +8,5 @@ const messageSchema = mongoose.Schema({
    sender: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact'}
 });
 
+
 module.exports = mongoose.model('Message', messageSchema);

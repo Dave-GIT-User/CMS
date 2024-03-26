@@ -21,10 +21,9 @@ router.get('/', async (req, res, next) => {
         message: 'fetched Documents.',
         documents: documentArray
         }); 
-    } catch (errorResponse) {
+    } catch (error) {
         console.error('Error fetching documents:', error);
         res.status(500).json({
-            message: 'what just happened?',
             error: error
         });
     }    

@@ -1,8 +1,7 @@
 var express = require('express');
-const Message = require('../models/message');
 const sequenceGenerator = require('./sequenceGenerator');
+const Message = require('../models/message');
 const Contact = require('../models/contact');
-const { max } = require('rxjs');
 
 var router = express.Router();
 router.get('/', async (req, res, next) => {   
@@ -18,9 +17,8 @@ router.get('/', async (req, res, next) => {
             let msgText = msg.msgText; 
             let sender = msg.sender.id;
             msgArray.push({id, subject, msgText, sender});
-            console.log('server-side message: '+msg);
         }
-        //console.log('server: '+msgArray);
+        
         res.status(200).json({
             message: 'messages fetched successfully!',
             messages: msgArray
@@ -36,7 +34,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/:id', async (req, res, next) => {
     try {
-        const maxMessageId = await sequenceGenerator.nextId("messages");
+        maxMessageId = await sequenceGenerator.nextId("messages");
         const message = new Message({
             id: maxMessageId,
             subject: req.body.subject,
@@ -46,13 +44,12 @@ router.post('/:id', async (req, res, next) => {
             // on the server side.
             sender: owner
         });
-        // but do not send the forein key back to the cliernt.
+        console.log(message);
         message.save()
-        .then((createdMessage) => {
-            // don't send back a foreign key to the owner.
+        .then((createdmessage) => {
             res.status(201).json({
                 message: 'message added successfully',
-                message: createdMessage
+                message: createdmessage
             });
         })
     } catch(error) {
@@ -62,14 +59,14 @@ router.post('/:id', async (req, res, next) => {
         });
     }
 });
+
 router.delete("/:id", (req, res, next) => {
     Message.findOne({ id: req.params.id })
         .then(message => {
             message.deleteOne({ id: req.params.id })
-            .then(message => {
+            .then(result => {
                 res.status(204).json({
-                status: "Message deleted successfully",
-                message: message
+                message: "Message deleted successfully"
             });
         })
             .catch(error => {
@@ -82,7 +79,7 @@ router.delete("/:id", (req, res, next) => {
         .catch(error => {
             res.status(500).json({
                 message: 'Message not found.',
-                error: error
+                error: { message: 'Message not found'}
         });
     });
 });

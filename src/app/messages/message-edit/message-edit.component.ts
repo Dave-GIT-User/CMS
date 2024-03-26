@@ -61,6 +61,6 @@ oldMessageText: string = ''
   }
 */
   onCancel() {
-    this.router.navigate(['/messages']);
+    this.router.navigate(['/contacts']);
   }
 }

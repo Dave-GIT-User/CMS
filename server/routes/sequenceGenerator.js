@@ -12,9 +12,9 @@ const sequenceGenerator = {
     maxDocumentId: 0,
     maxMessageId: 0,
     maxContactId: 0,
+
     async init() {
         try {
-            //ticket = null;
             const sequence = await Sequence.findOne({}).exec();
             if (!sequence) {
                 throw new Error('Sequence not found');
@@ -50,11 +50,7 @@ const sequenceGenerator = {
                 nextId = this.maxMessageId;
                 break;
             case "contacts":
-                // skip over formal groups like "Network/OS Team"
                 this.maxContactId++;
-                if (this.maxContacts == 100) {
-                    this.maxContacts = 200;
-                }
                 updateObject = { maxContactId: this.maxContactId };
                 nextId = this.maxContactId;
                 break;
@@ -64,13 +60,13 @@ const sequenceGenerator = {
 
         try {
             await Sequence.updateOne({ _id: this.sequenceId }, { $set: updateObject }).exec();
-            //ticket = nextId;
             return nextId;
         } catch (err) {
             console.error('Error updating sequence for', collectionType, err);
             throw err;
         }
     },
+
 };
 
 module.exports = sequenceGenerator;
