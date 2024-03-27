@@ -16,7 +16,7 @@ export class MessageService {
   messageIOError: Subject<string>=new Subject();
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/messages.json'
   //private dbUrl = 'http://localhost:3000/messages';
-  private dbUrl = 'https://cms-api-3t5r.onrender.com/messages'
+  private dbUrl = 'https://cms-api-3t5r.onrender.com/messages';
   constructor(
     private contactService: ContactService,
     private http: HttpClient) { }
@@ -38,16 +38,14 @@ export class MessageService {
               this.deleteMessage(msg);
             }
           }
-          console.log(messageData.message);
-          console.log(this.messages);
-          /*
-          // sort the Messages.
+         
+          // sort the Messages on the id field (chronologically)
           // from sample code at  
           // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
           this.messages.sort((a, b) => {
             //compare function
-            const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-            const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+            const nameA = +a.id;
+            const nameB = +b.id;
             if (nameA < nameB) {
               return -1;
             }
@@ -57,8 +55,7 @@ export class MessageService {
           
             // names must be equal
             return 0;
-          });
-          */
+          });          
           
           let messageListClone: Message[] = this.messages.slice();
           this.messageListChangedEvent.next(messageListClone);
@@ -110,17 +107,23 @@ export class MessageService {
     // but now null must be intercepted if it happens...
   }
 
-  addMessage(newMessage: Message) {
-    this.messages.push(newMessage);
-
-    this.http.post<'application/json'>(this.dbUrl+'/'+newMessage.id, newMessage)
+  addMessage(newMessage: Message ) {
+    if (newMessage === null)
+      return;
+    let messageListClone: Message[] = this.messages.slice();
+    newMessage.id = '1';
+    // now will post just this record. we
+    this.http.post(this.dbUrl+'/1', newMessage)
     .subscribe({
-      next: (responseData) => {
+      next: (responseData: {status: string, message: Message}) => {
+        // replace sender field foreign key with the id '0', the "owner"
+        responseData.message.sender = '0'
+        this.messages.push(responseData.message);
         this.messageListChangedEvent.next(this.messages.slice());
       },
-      error: (msg) => {
+      error: (message) => {
         this.messageIOError.next("Error adding a message!");
-        console.log('Add message error '+msg.error);
+        console.log(message);
       }
     })
   }

@@ -13,29 +13,41 @@ export class ContactService {
 
   contactListChangedEvent: Subject<Contact[]>= new Subject();
   contactIOError: Subject<string>=new Subject();
-  maxContactId: number = 0;
   
   constructor(private http: HttpClient) {  }
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
+  //private dbUrl = 'http://localhost:3000/contacts';
   private dbUrl = 'https://cms-api-3t5r.onrender.com/contacts';
 
   getContacts(): void {
     this.http.get(this.dbUrl)
     .subscribe({ 
-      next: (contactData: {message: string, contacts: Contact[]}) => {
+      next: (contactData: {contact: string, contacts: Contact[]}) => {
         {
-          console.log(contactData.message);
           this.contacts = contactData.contacts;
-          /*
-          // hold off sorting contacts for now.
-          // perhaps single contacts could be sorted,followed by group contacts
-          // sort the Contacts.
+
+          this.sortContacts();
+          
+          let ContactListClone: Contact[] = this.contacts.slice();
+          this.contactListChangedEvent.next(ContactListClone);
+        }
+      }, 
+      // we could perhaps give the user some feedback.
+      error: (error) => {
+        this.contactIOError.next("Error fetching contacts!");
+        console.log('getContacts error '+error)
+      }
+    });
+  }
+
+  sortContacts() {
+              // sort the Contacts on id (chronologically).
           // from sample code at  
           // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
           this.contacts.sort((a, b) => {
             //compare function
-            const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-            const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+            const nameA = +a.id;
+            const nameB = +b.id;
             if (nameA < nameB) {
               return -1;
             }
@@ -46,19 +58,6 @@ export class ContactService {
             // names must be equal
             return 0;
           });
-          */
-          
-          let ContactListClone: Contact[] = this.contacts.slice();
-          this.maxContactId = this.getMaxContactId();
-          this.contactListChangedEvent.next(ContactListClone);
-        }
-      }, 
-      // we could perhaps give the user some feedback.
-      error: (error) => {
-        this.contactIOError.next("Error fetching contacts!");
-        console.log('getContacts error '+error)
-      }
-    });
   }
   
   noContacts() {
@@ -100,7 +99,6 @@ export class ContactService {
     this.http.delete<'application/json'>(this.dbUrl+'/'+id)
     .subscribe({
       next: (responseData) => {
-        this.maxContactId = this.getMaxContactId();
         this.contactListChangedEvent.next(this.contacts.slice());
       },
       error: (msg) => {
@@ -110,33 +108,27 @@ export class ContactService {
     })
    }
 
-  private getMaxContactId(): number {
-    let highest: number = 0;
-    for (let contact of this.contacts) {
-      if (+contact.id > highest) {
-        highest = +contact.id;
-      }
-    }
-    return highest;
-  }
-
-  addContact(newContact: Contact ) {
-    if (newContact === null)
+  addContact(newcontact: Contact ) {
+    if (newcontact === null)
       return;
-    this.maxContactId++;
-    newContact.id = ''+this.maxContactId;
-    this.contacts.push(newContact);
     let contactListClone: Contact[] = this.contacts.slice();
-    // now we will post just this record.
-    this.http.post<'application/json'>(this.dbUrl+'/'+newContact.id, newContact)
+    // now we will post just this record
+    newcontact.id = '1';
+    this.http.post(this.dbUrl+'/1', newcontact)
     .subscribe({
-      next: (responseData) => {
-        this.maxContactId = this.getMaxContactId();
+      next: (responseData: {status: string, contact: Contact}) => {
+        this.contacts.push(responseData.contact);
+        // we want the next contact below the last normal contact
+        // and above the staged contact groups like Programming Team.
+        // The backend sets it up so in the event a contact id hits 100,
+        // it becomes 200 instead. This leaves room for more groups
+        // and not threaten to overwrite them.
+        this.sortContacts();
         this.contactListChangedEvent.next(this.contacts.slice());
       },
-      error: (msg) => {
+      error: (contact) => {
         this.contactIOError.next("Error adding a contact!");
-        console.log('add contact error '+msg.error);
+        console.log(contact);
       }
     })
   }
