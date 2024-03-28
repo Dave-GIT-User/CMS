@@ -71,7 +71,8 @@ export class ContactEditComponent implements OnInit {
       value.email,
       value.phone,
       value.imageUrl, 
-      this.groupContacts.slice());
+      this.groupContacts.slice(),
+      '#');
     if (this.editMode) {
       this.contactService.updateContact(this.contact, newContact)
     } else {

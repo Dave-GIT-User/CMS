@@ -3,7 +3,6 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { Contact } from './contact.model';
-import { MOCKCONTACTS } from './MOCKCONTACTS';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,17 @@ export class ContactService {
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
   //private dbUrl = 'http://localhost:3000/contacts';
   private dbUrl = 'https://cms-api-3t5r.onrender.com/contacts';
-
+  hashCode(str): number {
+    var hash = 0,
+    i, chr;
+  if (str.length === 0) return hash;
+  for (i = 0; i < str.length; i++) {
+    chr = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash; 
+}
   getContacts(): void {
     this.http.get(this.dbUrl)
     .subscribe({ 
@@ -27,6 +36,10 @@ export class ContactService {
           this.contacts = contactData.contacts;
 
           this.sortContacts();
+          for (const contact of this.contacts) {
+            var str = contact.name+'ByuIdaho';
+            console.log(contact.name+' -- '+this.hashCode(str))
+          }
           
           let ContactListClone: Contact[] = this.contacts.slice();
           this.contactListChangedEvent.next(ContactListClone);
