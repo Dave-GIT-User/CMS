@@ -106,7 +106,27 @@ export class MessageService {
     return null; 
     // but now null must be intercepted if it happens...
   }
-
+  
+  addMessage(newMessage: Message ) {
+    if (newMessage === null) {
+      return;
+    }
+    newMessage.sender = '0';
+    // now we will post just this record.
+    this.http.post(this.dbUrl+'/0', newMessage)
+    .subscribe({
+      next: (createdMessage: {statusMessage: string, returnedMessage: Message}) => {
+        console.log(createdMessage.statusMessage);
+        this.messages.push(createdMessage.returnedMessage);
+        this.messageListChangedEvent.next(this.messages.slice());
+      },
+      error: (msg) => {
+        this.messageIOError.next("Error adding a message!");
+        console.log('Add message error '+msg.error);
+      }
+    })
+  }
+/*
   addMessage(newMessage: Message ) {
     if (newMessage === null)
       return;
@@ -127,4 +147,5 @@ export class MessageService {
       }
     })
   }
+  */
 }
