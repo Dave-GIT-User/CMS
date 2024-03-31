@@ -15,8 +15,8 @@ export class MessageService {
   messageListChangedEvent: Subject<Message[]>=new Subject();
   messageIOError: Subject<string>=new Subject();
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/messages.json'
-  //private dbUrl = 'http://localhost:3000/messages';
-  private dbUrl = 'https://cms-api-3t5r.onrender.com/messages';
+  private dbUrl = 'http://localhost:3000/messages';
+  //private dbUrl = 'https://cms-api-3t5r.onrender.com/messages';
   constructor(
     private contactService: ContactService,
     private http: HttpClient) { }
@@ -106,17 +106,7 @@ export class MessageService {
     return null; 
     // but now null must be intercepted if it happens...
   }
-  hashCode(str): number {
-    var hash = 0,
-    i, chr;
-  if (str.length === 0) return hash;
-  for (i = 0; i < str.length; i++) {
-    chr = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + chr;
-    hash |= 0; // Convert to 32bit integer
-  }
-  return hash;    
-}
+  
   addMessage(newMessage: Message ) {
     if (newMessage === null) {
       return;
@@ -126,8 +116,11 @@ export class MessageService {
     this.http.post(this.dbUrl+'/0', newMessage)
     .subscribe({
       next: (createdMessage: {statusMessage: string, returnedMessage: Message}) => {
-        console.log(createdMessage.statusMessage);
         this.messages.push(createdMessage.returnedMessage);
+
+        // this fixes a timing issue observed after adding a new message
+        this.getMessages();
+
         this.messageListChangedEvent.next(this.messages.slice());
       },
       error: (msg) => {
@@ -136,26 +129,5 @@ export class MessageService {
       }
     })
   }
-/*
-  addMessage(newMessage: Message ) {
-    if (newMessage === null)
-      return;
-    let messageListClone: Message[] = this.messages.slice();
-    newMessage.id = '1';
-    // now will post just this record. we
-    this.http.post(this.dbUrl+'/1', newMessage)
-    .subscribe({
-      next: (responseData: {status: string, message: Message}) => {
-        // replace sender field foreign key with the id '0', the "owner"
-        responseData.message.sender = '0'
-        this.messages.push(responseData.message);
-        this.messageListChangedEvent.next(this.messages.slice());
-      },
-      error: (message) => {
-        this.messageIOError.next("Error adding a message!");
-        console.log(message);
-      }
-    })
-  }
-  */
+
 }

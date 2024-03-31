@@ -12,22 +12,26 @@ export class ContactService {
 
   contactListChangedEvent: Subject<Contact[]>= new Subject();
   contactIOError: Subject<string>=new Subject();
+
+  // courtesy https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
+  
+  hashValue(name: string, password: string) {
+    const str = name + password;
+    var hash = 0, i, chr;
+    if (str.length === 0) return 'xyz'+hash;
+    for (i = 0; i < str.length; i++) {
+      chr = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return 'xyz'+hash;
+  }
   
   constructor(private http: HttpClient) {  }
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
-  //private dbUrl = 'http://localhost:3000/contacts';
-  private dbUrl = 'https://cms-api-3t5r.onrender.com/contacts';
-  hashCode(str): number {
-    var hash = 0,
-    i, chr;
-  if (str.length === 0) return hash;
-  for (i = 0; i < str.length; i++) {
-    chr = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + chr;
-    hash |= 0; // Convert to 32bit integer
-  }
-  return hash; 
-}
+  private dbUrl = 'http://localhost:3000/contacts';
+  //private dbUrl = 'https://cms-api-3t5r.onrender.com/contacts';
+
   getContacts(): void {
     this.http.get(this.dbUrl)
     .subscribe({ 
@@ -36,10 +40,6 @@ export class ContactService {
           this.contacts = contactData.contacts;
 
           this.sortContacts();
-          for (const contact of this.contacts) {
-            var str = contact.name+'ByuIdaho';
-            console.log(contact.name+' -- '+this.hashCode(str))
-          }
           
           let ContactListClone: Contact[] = this.contacts.slice();
           this.contactListChangedEvent.next(ContactListClone);
@@ -121,13 +121,13 @@ export class ContactService {
     })
    }
 
-  addContact(newcontact: Contact ) {
-    if (newcontact === null)
+  addContact(newContact: Contact ) {
+    if (newContact === null)
       return;
     let contactListClone: Contact[] = this.contacts.slice();
     // now we will post just this record
-    newcontact.id = '1';
-    this.http.post(this.dbUrl+'/1', newcontact)
+    newContact.id = '1';
+    this.http.post(this.dbUrl+'/1', newContact)
     .subscribe({
       next: (responseData: {status: string, contact: Contact}) => {
         this.contacts.push(responseData.contact);
@@ -146,24 +146,23 @@ export class ContactService {
     })
   }
   
-  updateContact(originalContact: Contact, newContact: Contact): Contact {
+  updateContact(newContact: Contact): Contact {
     if (newContact === null)
-      return null;
-    const id: string = originalContact.id;
-    // look for the original Contact
-    let i: number = 0;
-    for (const Contact of this.contacts) {
-      if (Contact.id === id)
-        break;
-      i++;
-    }
-    // did we find it?
-    if (i==this.contacts.length) 
-      return null;
-    newContact.id = id;
-    this.contacts[i] = newContact;
-    let ContactListClone: Contact[] = this.contacts.slice();
-    this.http.put<'application/json'>(this.dbUrl+'/'+id, newContact)
+    return null;
+  const id: string = newContact.id;
+  // look for the original contact
+  let i: number = 0;
+  for (const contact of this.contacts) {
+    if (contact.id === id)
+      break;
+    i++;
+  }
+  // did we find it?
+  if (i==this.contacts.length) 
+    return null;
+  newContact.id = id;
+  this.contacts[i] = newContact;
+    this.http.put(this.dbUrl+'/'+newContact.id, newContact)
     .subscribe({
       next: (responseData) => {
         this.contactListChangedEvent.next(this.contacts.slice());

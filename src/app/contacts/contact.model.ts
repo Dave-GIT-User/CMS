@@ -6,7 +6,8 @@ export class Contact {
         public phone: string,
         public imageUrl: string,
         public group: Contact[] = null,
-        public hash: string
+        public hash: string,
+        public admin: string
     ) { }
         /*
         id—the id of the contact.

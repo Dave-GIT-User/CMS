@@ -9,6 +9,7 @@ import {
   copyArrayItem,
 } from '@angular/cdk/drag-drop';
 import { group } from '@angular/animations';
+import { ContactsComponent } from '../contacts.component';
 
 
 @Component({
@@ -65,16 +66,21 @@ export class ContactEditComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     const value = form.value;
+    const hash = this.editMode ? this.contact.hash : this.contactService.hashValue(value.name, 'ByuIdaho');
+    const admin = this.editMode ? this.contact.admin : '0'; // do not provide a way to become an admin right now.
+    const group = (this.groupContacts && this.groupContacts.length > 0) ? this.groupContacts.slice() : [];
+    const id = this.editMode ? this.contact.id : '1';
     const newContact: Contact = new Contact(
-      value.id,
+      id,
       value.name,
       value.email,
       value.phone,
       value.imageUrl, 
-      this.groupContacts.slice(),
-      '#');
+      group,
+      hash,
+      admin);
     if (this.editMode) {
-      this.contactService.updateContact(this.contact, newContact)
+      this.contactService.updateContact(newContact)
     } else {
       this.contactService.addContact(newContact);
     }
@@ -111,11 +117,7 @@ export class ContactEditComponent implements OnInit {
     if (this.isInvalidContact(contactCopy)) {
       return;
     }
-
-    // This pushes the new contact to the group.
-    // this.groupContacts.push(contactCopy);
-
-        
+   
     // This, recommended by CDK, inserts the new contact at element 0,
     // but only because it obtains the wrong index at the drop zone.
     copyArrayItem(
