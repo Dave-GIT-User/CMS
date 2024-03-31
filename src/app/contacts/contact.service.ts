@@ -29,8 +29,8 @@ export class ContactService {
   
   constructor(private http: HttpClient) {  }
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
-  private dbUrl = 'http://localhost:3000/contacts';
-  //private dbUrl = 'https://cms-api-3t5r.onrender.com/contacts';
+  //private dbUrl = 'http://localhost:3000/contacts';
+  private dbUrl = 'https://cms-api-3t5r.onrender.com/contacts';
 
   getContacts(): void {
     this.http.get(this.dbUrl)
