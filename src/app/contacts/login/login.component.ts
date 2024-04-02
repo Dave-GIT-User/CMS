@@ -39,7 +39,6 @@ error = false;
     }
     else {
       this.error = true;
-      console.log("login failed");
     }
   }
 

@@ -26,11 +26,11 @@
                     <ul class="dropdown-menu">
                         <div *ngIf="!getUserName()">
                             <li><a routerLink="login">Login</a></li>
-                            <li routerLink="contacts/new" >Create Account</li>    
+                            <li><a routerLink="contacts/new" >Create Account</a></li>    
                         </div>  
                         <div *ngIf="getUserName()">
                             <li><a (click)="logout()" >Logout</a></li>                 
-                            <li (click)="editAccount()" >Edit Account</li> 
+                            <li><a (click)="editAccount()" >Edit Account</a></li> 
                         </div>                                                        
                     </ul>
             </li>

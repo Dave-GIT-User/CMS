@@ -174,12 +174,12 @@ export class ContactService {
     return newContact;
   }
   getContactByHash(name: string, hash: string): Contact {
+console.log('getContactByHash()');
           for (const contact of this.contacts) {
         if (contact.hash === hash) {
-          if (contact.name === name)
             return contact;
         }
-      return null; 
     }
+    return null; 
   } 
 }
