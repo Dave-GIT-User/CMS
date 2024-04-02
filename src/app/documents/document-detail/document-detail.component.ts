@@ -3,6 +3,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Document } from '../document.model';
 import { DocumentService } from '../document.service';
 import { WindRefService } from '../../wind-ref.service';
+import { LoginService } from '../../contacts/login/login.service';
+import { ContactService } from '../../contacts/contact.service';
 
 @Component({
   selector: 'cms-document-detail',
@@ -19,7 +21,10 @@ export class DocumentDetailComponent implements OnInit {
     private documentService: DocumentService, 
     private route: ActivatedRoute, 
     private windRefService: WindRefService,
-    private router:Router) {}
+    private router:Router,
+    private loginService: LoginService,
+    private contactService: ContactService) {}
+
     ngOnInit(): void {
       this.nativeWindow=this.windRefService.getNativeWindow();
       this.route.params.subscribe(
@@ -38,7 +43,17 @@ export class DocumentDetailComponent implements OnInit {
         }
       );
     }
+    canEdit() {
+      //this.contactService.getContacts();
+      return this.loginService.getLoggedAdmin() === "1";
 
+    }
+    canDelete() {
+      // since the template calls canEdit first,
+      // it may not be necessary to refresh the contacts again.
+      // this.contactService.getContacts();
+      return this.loginService.getLoggedAdmin() === "1";
+    }
   onView() {
     const url: string = this.document.url;
     this.nativeWindow.open(url);
