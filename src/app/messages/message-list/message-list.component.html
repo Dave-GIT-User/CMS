@@ -3,8 +3,10 @@
       <div class="panel-heading">
         <div class="row pad-left-right">
           <span class="pull-left title">Messages</span>
-          <a class="btn btn-success pull-right" role="presentation" [routerLink]="['/messages', 'new']">New Message</a>
-        </div>
+          <div *ngIf="loggedIn()">
+            <a class="btn btn-success pull-right" role="presentation" [routerLink]="['/messages', 'new']">New Message</a>
+         </div>          
+         </div>
       </div>
    <div class="panel-body">
       <div class="row">

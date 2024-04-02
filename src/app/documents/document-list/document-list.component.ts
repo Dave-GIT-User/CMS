@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Document } from '../document.model';
 import { DocumentService } from '../document.service';
+import { LoginService } from '../../contacts/login/login.service';
 
 
 @Component({
@@ -12,7 +13,8 @@ import { DocumentService } from '../document.service';
 export class DocumentListComponent implements OnInit, OnDestroy {
   documents: Document[] = [];
   errorMessage = "";
-  constructor(private documentService: DocumentService) {}
+  constructor(private documentService: DocumentService,
+    private loginService: LoginService) {}
   subscription1: Subscription = new Subscription();
   subscription2: Subscription = new Subscription();
   
@@ -28,6 +30,11 @@ export class DocumentListComponent implements OnInit, OnDestroy {
         this.errorMessage = error;
          }
     );
+  }
+
+  loggedIn() {
+    const id = this.loginService.getLoggedId();
+    return (id) && (id.length > 0);
   }
 
   onClearError() {

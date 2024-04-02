@@ -5,6 +5,7 @@ import { Message } from '../message.model';
 import { MessageService } from '../message.service';
 import { ContactService } from '../../contacts/contact.service';
 import { Contact } from '../../contacts/contact.model';
+import { LoginService } from '../../contacts/login/login.service';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class MessageListComponent implements OnInit, OnDestroy {
 
   constructor(
     private messageService: MessageService,
-    private contactService: ContactService) {}
+    private contactService: ContactService,
+    private loginService: LoginService) {}
 
     ngOnInit(): void {
       this.contactService.getContacts();
@@ -52,6 +54,11 @@ export class MessageListComponent implements OnInit, OnDestroy {
           this.errorMessages = error;
            }
       );
+    }
+
+    loggedIn() {
+      const id = this.loginService.getLoggedId()
+      return (id) && (id.length > 0)
     }
     
   onClearError() {

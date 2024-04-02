@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { Message } from './message.model';
 import { ContactService } from '../contacts/contact.service';
 import { HttpClient } from '@angular/common/http'
+import { LoginService } from '../contacts/login/login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ export class MessageService {
   private dbUrl = 'https://cms-api-3t5r.onrender.com/messages';
   constructor(
     private contactService: ContactService,
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private loginService: LoginService) { }
 
   getMessages(): void {
     // contacts are a prerequisite for messages.
@@ -111,7 +113,7 @@ export class MessageService {
     if (newMessage === null) {
       return;
     }
-    newMessage.sender = '0';
+    newMessage.sender = this.loginService.getLoggedId();
     // now we will post just this record.
     this.http.post(this.dbUrl+'/0', newMessage)
     .subscribe({

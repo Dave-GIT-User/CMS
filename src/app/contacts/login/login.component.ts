@@ -46,6 +46,6 @@ error = false;
     if (this.error)
       return "Incorrect user name or password.";
     else 
-      return "The Name, Password, and Email fields are required."
+      return "The Name and Password fields are required."
   }
 }
