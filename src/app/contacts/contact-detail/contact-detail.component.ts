@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Contact } from '../contact.model';
 import { ContactService } from '../contact.service'
+import { LoginService } from '../login/login.service';
 
 @Component({
   selector: 'cms-contact-detail',
@@ -16,8 +17,15 @@ export class ContactDetailComponent implements OnInit{
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private loginService: LoginService
   ) {}
+
+  isAdmin() {
+    const admin = this.loginService.getLoggedAdmin();
+    return admin === '1';
+  }
+
   ngOnInit(): void {
     this.route.params.subscribe(
       (params: Params) => {

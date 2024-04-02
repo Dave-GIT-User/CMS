@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { Contact } from '../contact.model'
 import { ContactService } from '../contact.service';
 import { MessageService } from '../../messages/message.service';
+import { LoginService } from '../login/login.service';
 
 @Component({
   selector: 'cms-contact-list',
@@ -15,8 +16,14 @@ export class ContactListComponent implements OnInit, OnDestroy {
   errorMessage = "";
   subscription1: Subscription = new Subscription();
   subscription2: Subscription = new Subscription();
-
-  constructor(private contactService: ContactService, private messageService: MessageService) {}
+  
+  isAdmin() {
+    const admin = this.loginService.getLoggedAdmin();
+    return admin === '1';
+  }
+  constructor(private contactService: ContactService, 
+    private messageService: MessageService,
+    private loginService: LoginService) {}
 
   ngOnInit(): void {
     this.contactService.getContacts();

@@ -25,6 +25,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ContactsfilterPipe } from './contactsfilter.pipe';
 import { MessageDetailComponent } from './messages/message-detail/message-detail.component';
 import { SubdocDetailComponent } from './documents/subdoc-detail/subdoc-detail.component';
+import { LoginComponent } from './contacts/login/login.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { SubdocDetailComponent } from './documents/subdoc-detail/subdoc-detail.c
     ContactsfilterPipe,
     MessageDetailComponent,
     SubdocDetailComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

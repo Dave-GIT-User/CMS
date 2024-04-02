@@ -29,8 +29,8 @@ export class ContactService {
   
   constructor(private http: HttpClient) {  }
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
-  //private dbUrl = 'http://localhost:3000/contacts';
-  private dbUrl = 'https://cms-api-3t5r.onrender.com/contacts';
+  private dbUrl = 'http://localhost:3000/contacts';
+  //private dbUrl = 'https://cms-api-3t5r.onrender.com/contacts';
 
   getContacts(): void {
     this.http.get(this.dbUrl)
@@ -124,7 +124,6 @@ export class ContactService {
   addContact(newContact: Contact ) {
     if (newContact === null)
       return;
-    let contactListClone: Contact[] = this.contacts.slice();
     // now we will post just this record
     newContact.id = '1';
     this.http.post(this.dbUrl+'/1', newContact)
@@ -174,4 +173,13 @@ export class ContactService {
     })
     return newContact;
   }
+  getContactByHash(name: string, hash: string): Contact {
+          for (const contact of this.contacts) {
+        if (contact.hash === hash) {
+          if (contact.name === name)
+            return contact;
+        }
+      return null; 
+    }
+  } 
 }

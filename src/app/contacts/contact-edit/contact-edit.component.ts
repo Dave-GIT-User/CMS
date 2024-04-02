@@ -5,11 +5,9 @@ import { Contact } from '../contact.model';
 import { ContactService } from '../contact.service';
 import {
   CdkDragDrop,
-  moveItemInArray,
   copyArrayItem,
 } from '@angular/cdk/drag-drop';
-import { group } from '@angular/animations';
-import { ContactsComponent } from '../contacts.component';
+
 
 
 @Component({
@@ -66,8 +64,8 @@ export class ContactEditComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     const value = form.value;
-    const hash = this.editMode ? this.contact.hash : this.contactService.hashValue(value.name, 'ByuIdaho');
-    const admin = this.editMode ? this.contact.admin : '0'; // do not provide a way to become an admin right now.
+    const hash = value.password? this.contactService.hashValue(value.name, value.password ) : this.contact.hash;
+    const admin = this.editMode ? this.contact.admin : '0';
     const group = (this.groupContacts && this.groupContacts.length > 0) ? this.groupContacts.slice() : [];
     const id = this.editMode ? this.contact.id : '1';
     const newContact: Contact = new Contact(

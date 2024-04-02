@@ -1,6 +1,11 @@
 <div class="panel panel-default">
   <div class="panel-body">
-
+    <div *ngIf="editMode">
+      <h3>Edit Account<hr></h3>
+    </div>
+    <div *ngIf="!editMode">
+      <h3>Create Account<hr></h3>
+    </div>
     <form id="contact-edit" (ngSubmit)="onSubmit(f)" #f="ngForm">
       <div class="row">
         <div class="col-sm-12 form-group">
@@ -16,6 +21,24 @@
             required
             [ngModel]=contact?.name
             #name="ngModel">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-control invalid"
+            size="150"
+            max="255"
+            ngModel
+            [ngModel]=""
+            #password="ngModel"
+            pattern="\D*(?=.*[a-z])(?=.*[A-Z]).{8,20}\D*">
+            <span class="help-block" *ngIf="password.value !=' ' && !password.valid && password.touched">Password at least 8 characters, upper and lower case</span>
         </div>
       </div>
 
@@ -52,7 +75,6 @@
             [ngModel]=contact?.phone
             #phone="ngModel"
             pattern="\D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D*">
-            <!-- \D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D* (\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$  -->
             <span class="help-block" *ngIf="phone.value !=' ' && !phone.valid && phone.touched">Please enter a 10 digit phone number!</span>
         </div>
       </div>
@@ -97,8 +119,10 @@
       </div>
       <div 
         class="alert alert-danger"
-        *ngIf="!name.valid && !name.touched || !email.valid && !email.touched" style="margin-top: 10px">
-        The Name and Email fields are required.
+        *ngIf="!name.valid && !name.touched || 
+        !email.valid && !email.touched ||
+        !password.valid && !password.touched" style="margin-top: 10px">
+        The Name, Password, and Email fields are required.
       </div>
 
       <div class="row">

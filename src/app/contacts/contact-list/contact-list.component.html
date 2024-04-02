@@ -12,7 +12,7 @@
               <input type="text" class="form-control" (keyup)="search(searchBox.value)" placeholder="Enter a search value" #searchBox>
               <div class="glyphicon glyphicon-search input-group-addon" (click)="search(searchBox.value)"></div>
             </div>
-            <div class="pull-right pad-left-right">
+            <div class="pull-right pad-left-right" *ngIf="isAdmin()">
               <a class="btn btn-success" [routerLink]="['/contacts', 'new']">New Contact</a>
             </div>
           </div>
