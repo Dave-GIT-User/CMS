@@ -15,8 +15,8 @@ export class MessageService {
   messageListChangedEvent: Subject<Message[]>=new Subject();
   messageIOError: Subject<string>=new Subject();
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/messages.json'
-  private dbUrl = 'http://localhost:3000/messages';
-  //private dbUrl = 'https://cms-api-3t5r.onrender.com/messages';
+  //private dbUrl = 'http://localhost:3000/messages';
+  private dbUrl = 'https://cms-api-3t5r.onrender.com/messages';
   constructor(
     private contactService: ContactService,
     private http: HttpClient) { }
