@@ -38,8 +38,8 @@
    
         <div 
           class="alert alert-danger"
-          *ngIf="!subject.valid && !subject.touched || !msgText.valid && !msgText.touched" style="margin-top: 10px">
-          The Name and Email fields are required.
+          *ngIf="!subject.valid && !subject.touched || !msgText.valid && !msgText.touched || invalidForm(f)" style="margin-top: 10px">
+          The Subject and Message fields are required.
         </div>
   
         <div class="row">

@@ -2,13 +2,15 @@
     <div class="panel-heading">
         <div class="row pad-all">          
             <span class="pull-left">Message Detail</span>
-            <a class="btn btn-danger pull-right" style="margin-right: 10px;" (click)="onDelete()">Delete</a>
+            <div *ngIf="canDelete()">
+                <a class="btn btn-danger pull-right" style="margin-right: 10px;" (click)="onDelete()">Delete</a>
+            </div>
         </div>
     </div>
     <div class="panel-body">
         <div class="pad-left-right">
             <div class="row">
-                <p class="label-value">Message Sender: {{ contact.name }}</p>
+                <p class="label-value">Message Sender: {{ getSender() }}</p>
             </div>
             <div class="row">
                 <p class="label-value">Message Subject: {{ message?.subject}}</p>

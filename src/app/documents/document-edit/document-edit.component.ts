@@ -29,18 +29,37 @@ export class DocumentEditComponent implements OnInit{
   }
 
   onSubmit(form: NgForm) {
+    if (this.invalidForm(form)) {
+      return;
+    }
     const value = form.value;
+    const id = this.editMode ? this.document.id : "0";
     const newDocument: Document = new Document(
-      value.id,
-      value.name,
-      value.description,
-      value.url);
+      id,
+      // scrape off leading and trailing whitespace.
+      value.name.trim(),
+      value.description.trim(),
+      value.url.trim());
     if (this.editMode) {
       this.documentService.updateDocument(this.document, newDocument)
     } else {
       this.documentService.addDocument(newDocument);
     }
     this.router.navigate(['/documents']);
+  }
+
+  // defend against someone submitting a form with whitespace but no real content.
+  invalidForm(form: NgForm) {
+    const value = form.value;
+    if (!value) {
+      return true;
+    }
+    const name: string = value.name;
+    const url: string = value.url;
+    if (!value.name || !value.url) {
+      return true;
+    }
+    return (value.name.trim().length == 0 || value.url.trim().length == 0);
   }
 
   ngOnInit() {
@@ -67,7 +86,7 @@ export class DocumentEditComponent implements OnInit{
           }
      );  
    }
-
+in
   onClearError() {
     this.errorMessage = "";
   }

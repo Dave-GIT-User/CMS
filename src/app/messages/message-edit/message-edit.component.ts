@@ -24,42 +24,34 @@ oldMessageText: string = ''
     private router: Router) {}
 
   onSendMessage(form: NgForm) {
+    if (this.invalidForm(form)) {
+      return;
+    }
+    console.log('onSendMessage 2');
     const value = form.value;
     const newMessage: Message = new Message(
-      '0', // message id will be updated by the service
-      value.subject,
-      value.msgText,
-      '0' // my contact id, as the sender
+      '0', // message id will be updated by the API
+      // scrape off leading or trailing whitespace
+      value.subject.trim(),
+      value.msgText.trim(),
+      '0' // sender id will be updated by the messageService
       );
       this.messageService.addMessage(newMessage);
       this.router.navigate(['/messages']);
   }
 
-/*
-  onSendMessage() {
-    if (this.subject == this.oldSubject && this.messageText.length > 0) {
-      return; // key bounce, most likely.
+    // defend against someone submitting a form with whitespace but no real content.
+    invalidForm(form: NgForm) {
+      const value = form.value;
+      if (!value) {
+        return true;
+      }
+      if (!value.subject || !value.msgText) {
+        return true;
+      }
+      return (value.subject.trim().length == 0 || value.msgText.trim().length == 0);
     }
-    this.oldSubject = this.subject;
-    this.oldMessageText = this.messageText;
 
-    this.messageService.addMessage(new Message(
-      '0', 
-      this.subject,
-      this.message, 
-      '0' // id of my contact
-      ));
-  }
- */
-/*
-  onUpdateSubject(event: Event) {
-    this.subject = (event.target as HTMLInputElement).value;
-  }
-
-  onUpdateMessage(event: Event) {
-    this.messageText = (event.target as HTMLInputElement).value;
-  }
-*/
   onCancel() {
     this.router.navigate(['/messages']);
   }
