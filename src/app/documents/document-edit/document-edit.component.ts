@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Document } from '../document.model'
 import { DocumentService } from '../document.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { LoginService } from '../../contacts/login/login.service';
 
 @Component({
   selector: 'cms-document-edit',
@@ -21,7 +22,8 @@ export class DocumentEditComponent implements OnInit{
   constructor(
     private documentService: DocumentService,
     private router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private loginService: LoginService) {
   }
 
   onCancel() {
@@ -36,9 +38,10 @@ export class DocumentEditComponent implements OnInit{
     const id = this.editMode ? this.document.id : "0";
     const newDocument: Document = new Document(
       id,
+      this.loginService.getLoggedId(),
       // scrape off leading and trailing whitespace.
       value.name.trim(),
-      value.description.trim(),
+      value.description ? value.description.trim(): "",
       value.url.trim());
     if (this.editMode) {
       this.documentService.updateDocument(this.document, newDocument)

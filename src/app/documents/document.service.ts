@@ -105,8 +105,12 @@ export class DocumentService {
     // now we will post just this record.
     this.http.post(this.dbUrl+'/1', newDocument)
     .subscribe({
-      next: (responseData: {message: string, document: Document}) => {
-        this.documents.push(responseData.document);
+      next: (response: {statusMessage: string, document: Document}) => {
+        this.documents.push(response.document);
+        
+        // this fixes a timing issue observed after adding a new message
+        this.getDocuments();
+
         // Sort - otherwise, the new document tacks on the end,
         // but then positions alphabetically upon refresh or returning
         // from looking at messages or contacts.

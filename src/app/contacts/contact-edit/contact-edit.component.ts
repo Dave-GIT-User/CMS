@@ -78,7 +78,6 @@ export class ContactEditComponent implements OnInit {
       hash,
       admin);
     if (this.editMode) {
-      console.log('updating contact '+this.contact.name);
       this.contactService.updateContact(newContact)
     } else {
       this.contactService.addContact(newContact);

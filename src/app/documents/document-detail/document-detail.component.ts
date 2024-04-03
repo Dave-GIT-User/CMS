@@ -43,21 +43,21 @@ export class DocumentDetailComponent implements OnInit {
         }
       );
     }
-    canEdit() {
-      //this.contactService.getContacts();
-      return this.loginService.getLoggedAdmin() === "1";
 
+    canEdit() {
+      return this.document && this.loginService.getLoggedId() === this.document.author;
     }
+
     canDelete() {
-      // since the template calls canEdit first,
-      // it may not be necessary to refresh the contacts again.
-      // this.contactService.getContacts();
-      return this.loginService.getLoggedAdmin() === "1";
+      return this.loginService.getLoggedAdmin() === "1" ||
+        this.document && this.loginService.getLoggedId() === this.document.author;
     }
+
   onView() {
     const url: string = this.document.url;
     this.nativeWindow.open(url);
   }
+  
   onDelete() {
     this.documentService.deleteDocument(this.document);
     this.router.navigate(['/documents']);

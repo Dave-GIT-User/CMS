@@ -27,7 +27,6 @@ oldMessageText: string = ''
     if (this.invalidForm(form)) {
       return;
     }
-    console.log('onSendMessage 2');
     const value = form.value;
     const newMessage: Message = new Message(
       '0', // message id will be updated by the API
