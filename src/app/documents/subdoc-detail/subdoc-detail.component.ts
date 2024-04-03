@@ -3,6 +3,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Document } from '../document.model';
 import { DocumentService } from '../document.service';
 import { WindRefService } from '../../wind-ref.service';
+import { Contact } from '../../contacts/contact.model'
+import { ContactService } from '../../contacts/contact.service';
 
 // This is detail for a "subdocument"
 // To avoid a rabbit hole of further changes and debugging,
@@ -22,7 +24,9 @@ export class SubdocDetailComponent {
     private documentService: DocumentService, 
     private route: ActivatedRoute, 
     private windRefService: WindRefService,
-    private router:Router) {}
+    private router:Router,
+    private contactService: ContactService) {}
+
     ngOnInit(): void {
       this.nativeWindow=this.windRefService.getNativeWindow();
       this.route.params.subscribe(
@@ -46,5 +50,18 @@ export class SubdocDetailComponent {
     const url: string = this.document.url;
     this.nativeWindow.open(url);
   }
+
+  getAuthor() {
+    const authorId = this.document.author;
+    if (authorId) {
+      const author: Contact = this.contactService.getContact(authorId);
+      if (author) {
+        return author.name;
+      }
+      else return "anonymous";
+    }
+    else return "anonymous";
+  } 
 }
+
 

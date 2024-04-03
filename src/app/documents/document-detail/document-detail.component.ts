@@ -5,7 +5,7 @@ import { DocumentService } from '../document.service';
 import { WindRefService } from '../../wind-ref.service';
 import { LoginService } from '../../contacts/login/login.service';
 import { ContactService } from '../../contacts/contact.service';
-
+import { Contact } from '../../contacts/contact.model';
 @Component({
   selector: 'cms-document-detail',
   templateUrl: './document-detail.component.html',
@@ -45,12 +45,12 @@ export class DocumentDetailComponent implements OnInit {
     }
 
     canEdit() {
-      return this.document && this.loginService.getLoggedId() === this.document.author;
+      return this.loginService.getLoggedId() === this.document.author;
     }
 
     canDelete() {
       return this.loginService.getLoggedAdmin() === "1" ||
-        this.document && this.loginService.getLoggedId() === this.document.author;
+        this.loginService.getLoggedId() === this.document.author;
     }
 
   onView() {
@@ -62,4 +62,15 @@ export class DocumentDetailComponent implements OnInit {
     this.documentService.deleteDocument(this.document);
     this.router.navigate(['/documents']);
   }
+  getAuthor() {
+    const authorId = this.document.author;
+    if (authorId) {
+      const author: Contact = this.contactService.getContact(authorId);
+      if (author) {
+        return author.name;
+      }
+      else return "anonymous";
+    }
+    else return "anonymous";
+  } 
 }

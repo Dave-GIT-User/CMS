@@ -1,2 +1,15 @@
 <a class="list-group-item clearfix documentDiv" style="cursor: pointer;"
- routerLinkActive="active" [routerLink]="[docIndex]">{{ document.name }}</a>
+ routerLinkActive="active" [routerLink]="[docIndex]">{{ getAuthor() }}<br>{{ document?.name}} </a>
+
+ 
+ <!--a class="list-group-item clearfix">
+    <div class="pull-left">
+        <div class="list-group-item clearfix documentDiv" style="cursor: pointer;"
+            routerLinkActive="active" [routerLink]="[docIndex]">
+            <span class="messageHeader">{{ documentAuthor }}</span>
+        <div class="messageText">{{ document?.name }} </div>
+        </div>
+    </div>
+</a-->
+
+ 
