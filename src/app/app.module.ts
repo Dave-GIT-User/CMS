@@ -26,6 +26,7 @@ import { ContactsfilterPipe } from './contactsfilter.pipe';
 import { MessageDetailComponent } from './messages/message-detail/message-detail.component';
 import { SubdocDetailComponent } from './documents/subdoc-detail/subdoc-detail.component';
 import { LoginComponent } from './contacts/login/login.component';
+import { HelpComponent } from './help/help.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { LoginComponent } from './contacts/login/login.component';
     ContactsfilterPipe,
     MessageDetailComponent,
     SubdocDetailComponent,
-    LoginComponent
+    LoginComponent,
+    HelpComponent
   ],
   imports: [
     BrowserModule,

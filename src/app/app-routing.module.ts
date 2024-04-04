@@ -13,10 +13,12 @@ import { DocumentDetailComponent } from './documents/document-detail/document-de
 import { SubdocDetailComponent } from './documents/subdoc-detail/subdoc-detail.component';
 import { SubconDetailComponent } from './contacts/subcon-detail/subcon-detail.component';
 import { LoginComponent } from './contacts/login/login.component';
+import { HelpComponent } from './help/help.component';
 
 const routes: Routes = [  
   { path: '', redirectTo: '/documents', pathMatch: 'full'},
   { path: 'login', component: LoginComponent},
+  { path: 'help', component: HelpComponent},
   { path: 'documents', component: DocumentsComponent, children: [
     { path: 'new', component: DocumentEditComponent },
     { path: ':id', component: DocumentDetailComponent},
