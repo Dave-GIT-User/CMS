@@ -51,7 +51,7 @@ oldMessageText: string = ''
       return (value.subject.trim().length == 0 || value.msgText.trim().length == 0);
     }
 
-  onCancel() {
+   onCancel() {
     this.router.navigate(['/messages']);
   }
 }

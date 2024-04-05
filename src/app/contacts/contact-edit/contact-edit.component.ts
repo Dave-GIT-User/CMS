@@ -107,6 +107,10 @@ export class ContactEditComponent implements OnInit {
     return false;
   }
 
+  phoneOk(str) {
+    return true;
+  }
+
   // It would be great to insert the new contact where the user dropped it,
   // but event.currentIndex is incorrect, always 0 for some reason.
   // There is no time to debug this one.
@@ -125,5 +129,17 @@ export class ContactEditComponent implements OnInit {
       event.currentIndex,
     )    
   }
+
+      // defend against someone submitting a form with whitespace but no real content.
+      invalidForm(form: NgForm) {
+        const value = form.value;
+        if (!value) {
+          return true;
+        }
+        if (!value.name || !value.password || !value.email) {
+          return true;
+        }
+        return (value.name.trim().length == 0 || value.password.trim().length < 8 || value.email.trim().length == 0);
+      }
 }
 

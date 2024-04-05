@@ -76,7 +76,7 @@
             [ngModel]=contact?.phone
             #phone="ngModel"
             pattern="\D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D*">
-            <span class="help-block" *ngIf="phone.value !=' ' && !phone.valid && phone.touched">Please enter a 10 digit phone number!</span>
+            <span class="help-block" *ngIf="phone.value !=' ' && !phone.valid && phone.touched">Phone number 10 digits with or without separators</span>
         </div>
       </div>
 
@@ -122,13 +122,13 @@
         class="alert alert-danger"
         *ngIf="!name.valid && !name.touched || 
         !email.valid && !email.touched ||
-        !password.valid && !password.touched" style="margin-top: 10px">
+        !password.valid && !password.touched || invalidForm(f)" style="margin-top: 10px">
         The Name, Password, and Email fields are required.
       </div>
 
       <div class="row">
         <div class="col-xs-12 btn-toolbar" style="margin-top: 10px">
-          <button class="btn btn-success" type="submit" [disabled]="!f.valid">Save</button>
+          <button class="btn btn-success" type="submit" [disabled]="!f.valid || invalidForm(f)">Save</button>
           <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
         </div>
       </div>
