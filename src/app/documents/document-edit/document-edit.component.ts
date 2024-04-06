@@ -14,6 +14,7 @@ import { LoginService } from '../../contacts/login/login.service';
 })
 export class DocumentEditComponent implements OnInit{
   document: Document;
+  children: Document[] = [];
   editMode: boolean = false;
   private subscription1: Subscription;
   private subscription2: Subscription;
@@ -42,9 +43,10 @@ export class DocumentEditComponent implements OnInit{
       // scrape off leading and trailing whitespace.
       value.name.trim(),
       value.description ? value.description.trim(): "",
-      value.url.trim());
+      value.url ? value.url.trim() : "",
+      this.document.children ? this.document.children : []);
     if (this.editMode) {
-      this.documentService.updateDocument(this.document, newDocument)
+      this.documentService.updateDocument(newDocument)
     } else {
       this.documentService.addDocument(newDocument);
     }
@@ -66,31 +68,48 @@ export class DocumentEditComponent implements OnInit{
   }
 
   ngOnInit() {
-
-     this.subscription1 = this.route.params.subscribe(
-       (params: Params) => {
-         const id = params.id;
-         if (!id) {
-           this.editMode = false;
-           return;
+    this.subscription1 = this.route.params.subscribe(
+      (params: Params) => {
+        const id = params.id;
+        if (!id) {
+          this.editMode = false;
+          return;
+        }
+        this.editMode = true;
+        this.document = this.documentService.getDocument(id);
+        if (this.document === null) {
+          this.onCancel();
+          return;
+        } else {
+         if (this.document.children) {
+           this.children = this.document.children
+         } else {
+           this.children = [];
          }
-         this.editMode = true;
-         this.document = this.documentService.getDocument(id);
-         if (this.document === null) {
-           this.onCancel();
-           return;
-         }
-
        }
-     );
-     this.subscription2 =     this.subscription2 = this.documentService.documentIOError.subscribe(
-       (error) => {
-         this.errorMessage = error;
-          }
-     );  
-   }
-in
+
+      }
+    );
+    this.subscription2 =     this.subscription2 = this.documentService.documentIOError.subscribe(
+      (error) => {
+        this.errorMessage = error;
+         }
+    );  
+ }
+
   onClearError() {
     this.errorMessage = "";
+  }
+
+  onEditSubdocument(index: number) {
+
+  }
+
+  onDeleteSubdocument(index: number) {
+    this.documentService.deleteSubdocument(index, this.document);
+  }
+
+  onAddChild(form: NgForm) {
+
   }
 }

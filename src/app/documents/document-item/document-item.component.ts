@@ -34,21 +34,15 @@ export class DocumentItemComponent implements OnInit{
     private router: Router) {}
   ngOnInit() {
     if (!this.document) {
-      console.log('no document in document item');
       return;
     }
     if (!this.document.author) {
       this.documentAuthor = "anonymous"
-      console.log('no author found');
       return;
     }
     const contact: Contact = this.contactService.getContact(this.document.author);
     if (contact) {
       this.documentAuthor = contact.name;
-    }
-    else {
-      console.log('author '+this.documentAuthor+' not found in contacts');
-      //this.router.navigate(['/documents']);
     }
   }
 

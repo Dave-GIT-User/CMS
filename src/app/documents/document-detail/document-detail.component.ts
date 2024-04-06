@@ -45,10 +45,16 @@ export class DocumentDetailComponent implements OnInit {
     }
 
     canEdit() {
+      if (!this.document) {
+        return false;
+      }
       return this.loginService.getLoggedId() === this.document.author;
     }
 
     canDelete() {
+      if (!this.document) {
+        return false;
+      }
       return this.loginService.getLoggedAdmin() === "1" ||
         this.loginService.getLoggedId() === this.document.author;
     }
@@ -63,6 +69,10 @@ export class DocumentDetailComponent implements OnInit {
     this.router.navigate(['/documents']);
   }
   getAuthor() {
+    if (!this.document) {
+      return "anonymous";
+    }
+
     const authorId = this.document.author;
     if (authorId) {
       const author: Contact = this.contactService.getContact(authorId);

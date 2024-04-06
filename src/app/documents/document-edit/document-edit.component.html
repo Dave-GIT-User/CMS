@@ -51,7 +51,35 @@
             #url="ngModel">
         </div>
       </div>
+      <button class="btn btn-success pull-right" role="presentation" (click)="onAddChild(f)" *ngIf="editMode" >Add Child Document</button><br>
+      <hr>
+      <!--div *ngFor="let member of groupContacts; let i = index"> this is from contact edit
+        <div *ngFor="let member of groupContacts; let i = index">
+          <div>
+            <cms-contact-item class="col-sm-11" [contactIndex]="'./'" [contact]="member" style="margin-top: 10px"></cms-contact-item>
+            <button class="btn btn-danger col-sm-2 deleteButton" (click)="onRemoveItem(i)">X</button>
+          </div>
+        </div>
+        <span class="drop-area" *ngIf="groupContacts?.length < 1">Drag contacts in group here</span>
+      </div-->
+      <div *ngIf="children.length > 0"> 
+        Subdocuments:
+        <div *ngFor="let child of children; let i = index">
+          <div>
+            <cms-document-item class="col-sm-40" [docIndex]="child.id" [document]="child" style="margin-top: 10px"></cms-document-item>
+            
+            <div class="row"><br>
+              <span>
+                <button type="button" class="btn btn-info col-sm-3 deleteButton pull-left " style="margin-left: 10px" (click)="onEditSubdocument(i)">Edit Child</button>
+                <button type="button" class="btn btn-danger col-sm-4 deleteButton" style="margin-left: 10px;" (click)="onDeleteSubdocument(i)">Delete Child</button>
+              </span>
 
+            </div>
+            
+          </div>
+
+        </div>
+      </div>
       <div 
         class="alert alert-danger"
         *ngIf="!name.valid && !name.touched || !url.valid && !url.touched || invalidForm(f)">

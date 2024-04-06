@@ -14,10 +14,10 @@ export class DocumentService {
   documentIOError: Subject<string>=new Subject();
   constructor(private http: HttpClient) {  }
 
-  //private dbUrl = 'http://localhost:3000/documents';
-  private dbUrl = 'https://cms-api-3t5r.onrender.com/documents';
+  //private dbUrl = 'http://localhost:3000';
+  private dbUrl = 'https://cms-api-3t5r.onrender.com';
   getDocuments(): void {
-    this.http.get(this.dbUrl)
+    this.http.get(this.dbUrl+'/documents')
     .subscribe({ 
       next: (documentData: {message: string, documents: Document[]}) => {
           this.documents = documentData.documents;
@@ -84,7 +84,7 @@ export class DocumentService {
     }
     this.documents.splice(pos, 1);
     // use the more granular delete operation.
-    this.http.delete<'application/json'>(this.dbUrl+'/'+id)
+    this.http.delete(this.dbUrl+'/documents/'+id)
     .subscribe({
       next: (responseData) => {
         this.documentListChangedEvent.next(this.documents.slice());
@@ -96,14 +96,35 @@ export class DocumentService {
     })
    }
 
- 
+    deleteSubdocument(index: number, newDocument: Document) {
+    // look for the the index into the array of the updated document
+    const pos = this.documents.indexOf(newDocument);
+    if (pos < 0) {
+       return;
+    }
+    // did we find it?
+    if (pos <0) {
+      return;
+    }
+    this.http.put<'application/json'>(this.dbUrl+'/subdocuments/'+index, newDocument)
+    .subscribe({
+      next: (responseData) => {
+        this.documents[pos].children.splice(index, 1);
+        this.documentListChangedEvent.next(this.documents.slice());
+      },
+      error: (msg) => {
+        this.documentIOError.next("Error deleting subdocument!");
+        console.log('Delete subdocument error '+msg.error);
+      }
+    })
+  }
 
   addDocument(newDocument: Document ) {
     if (newDocument === null)
       return;
     let documentListClone: Document[] = this.documents.slice();
     // now we will post just this record.
-    this.http.post(this.dbUrl+'/1', newDocument)
+    this.http.post(this.dbUrl+'/documents/1', newDocument)
     .subscribe({
       next: (response: {statusMessage: string, document: Document}) => {
         this.documents.push(response.document);
@@ -124,11 +145,9 @@ export class DocumentService {
     })
   }
 
-  updateDocument(originalDocument: Document, newDocument: Document): Document {
-    if (newDocument === null)
-      return null;
-    const id: string = originalDocument.id;
-    // look for the original document
+  updateDocument(newDocument: Document): Document {
+    const id: string = newDocument.id;
+    // look for the the index into the array of the updated document
     let i: number = 0;
     for (const document of this.documents) {
       if (document.id === id)
@@ -140,7 +159,7 @@ export class DocumentService {
       return null;
     newDocument.id = id;
     this.documents[i] = newDocument;
-    this.http.put<'application/json'>(this.dbUrl+'/'+id, newDocument)
+    this.http.put<'application/json'>(this.dbUrl+'/documents/'+id, newDocument)
     .subscribe({
       next: (responseData) => {
         this.documentListChangedEvent.next(this.documents.slice());
