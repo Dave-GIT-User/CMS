@@ -28,12 +28,13 @@ export class ContactService {
   }
   
   constructor(private http: HttpClient) {  }
+    
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/contacts.json'
-  //private dbUrl = 'http://localhost:3000/contacts';
-  private dbUrl = 'https://cms-api-3t5r.onrender.com/contacts';
+  //private dbUrl = 'http://localhost:3000';
+  private dbUrl = 'https://cms-api-3t5r.onrender.com';
 
   getContacts(): void {
-    this.http.get(this.dbUrl)
+    this.http.get(this.dbUrl+'/contacts')
     .subscribe({ 
       next: (contactData: {contact: string, contacts: Contact[]}) => {
         {
@@ -109,7 +110,7 @@ export class ContactService {
     }
     this.contacts.splice(pos, 1);
    // use the more granular delete operation.
-    this.http.delete<'application/json'>(this.dbUrl+'/'+id)
+    this.http.delete<'application/json'>(this.dbUrl+'/contacts/'+id)
     .subscribe({
       next: (responseData) => {
         this.contactListChangedEvent.next(this.contacts.slice());
@@ -126,7 +127,7 @@ export class ContactService {
       return;
     // now we will post just this record
     newContact.id = '1';
-    this.http.post(this.dbUrl+'/1', newContact)
+    this.http.post(this.dbUrl+'/contacts/1', newContact)
     .subscribe({
       next: (responseData: {status: string, contact: Contact}) => {
         this.contacts.push(responseData.contact);
@@ -161,7 +162,7 @@ export class ContactService {
     return null;
   newContact.id = id;
   this.contacts[i] = newContact;
-    this.http.put(this.dbUrl+'/'+newContact.id, newContact)
+    this.http.put(this.dbUrl+'/contacts/'+newContact.id, newContact)
     .subscribe({
       next: (responseData) => {
         this.contactListChangedEvent.next(this.contacts.slice());

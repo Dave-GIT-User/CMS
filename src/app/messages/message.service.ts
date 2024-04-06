@@ -16,8 +16,8 @@ export class MessageService {
   messageListChangedEvent: Subject<Message[]>=new Subject();
   messageIOError: Subject<string>=new Subject();
   //private dbUrl = 'https://wdd430-cms-e3d85-default-rtdb.firebaseio.com/messages.json'
-  //private dbUrl = 'http://localhost:3000/messages';
-  private dbUrl = 'https://cms-api-3t5r.onrender.com/messages';
+  private dbUrl = 'http://localhost:3000';
+  //private dbUrl = 'https://cms-api-3t5r.onrender.com';
   constructor(
     private contactService: ContactService,
     private http: HttpClient,
@@ -28,19 +28,12 @@ export class MessageService {
     if (this.contactService.noContacts()) {
       this.contactService.getContacts();
     }
-    this.http.get(this.dbUrl)
+    this.http.get(this.dbUrl+'/messages')
     .subscribe({ 
       next: (messageData: {message: string, messages: Message[]}) => {
         {
-          // the messages are now clean, without _id and with the friendly id of the sender.  
           this.messages = messageData.messages;
-          // drop any messages that are orphaned by deleted contacts
-          for (let msg of this.messages) {
-            if (!msg.sender) {
-              this.deleteMessage(msg);
-            }
-          }
-         
+        
           // sort the Messages on the id field (chronologically)
           // from sample code at  
           // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
@@ -85,7 +78,7 @@ export class MessageService {
     }
     this.messages.splice(pos, 1);
   // use the more granular delete operation.
-  this.http.delete<'application/json'>(this.dbUrl+'/'+id)
+  this.http.delete<'application/json'>(this.dbUrl+'/messages'+id)
   .subscribe({
     next: (responseData) => {
       this.messageListChangedEvent.next(this.messages.slice());
@@ -115,7 +108,7 @@ export class MessageService {
     }
     newMessage.sender = this.loginService.getLoggedId();
     // now we will post just this record.
-    this.http.post(this.dbUrl+'/0', newMessage)
+    this.http.post(this.dbUrl+'/messages/0', newMessage)
     .subscribe({
       next: (createdMessage: {statusMessage: string, returnedMessage: Message}) => {
         this.messages.push(createdMessage.returnedMessage);

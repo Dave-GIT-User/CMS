@@ -21,11 +21,6 @@ export class ContactDetailComponent implements OnInit{
     private loginService: LoginService
   ) {}
 
-  isAdmin() {
-    const admin = this.loginService.getLoggedAdmin();
-    return admin === '1';
-  }
-
   ngOnInit(): void {
     this.route.params.subscribe(
       (params: Params) => {
@@ -33,6 +28,7 @@ export class ContactDetailComponent implements OnInit{
         this.contact = this.contactService.getContact(this.id);
         if (this.contact === null) {
           this.router.navigate(['/contacts']);
+          return;
         }
         if (this.contact.group) {
           this.group = this.contact.group
@@ -42,8 +38,51 @@ export class ContactDetailComponent implements OnInit{
       }
     );
   }
+
   onDelete() {
     this.contactService.deleteContact(this.contact);
     this.router.navigate(['/contacts']);
+  }
+  canEdit() {
+    const admin = this.loginService.getLoggedAdmin();
+    // admin only edits contacts like "Network Team"
+    return admin === '1' && +this.id > 99 && +this.id < 200;
+  }
+
+  canDelete () {
+    const admin = this.loginService.getLoggedAdmin();
+    return admin === '1' || (this.loginService.getLoggedId() == this.id);
+  }  
+
+  getName() {
+    if (!this.contact) {
+      this.router.navigate(['/contacts']);
+      return "";     
+    }
+    return this.contact.name;
+  }
+
+  getImageUrl() {
+    if (!this.contact) {
+      this.router.navigate(['/contacts']);
+      return "";     
+    }
+    return this.contact.imageUrl;
+  }
+
+  getEmail() {
+    if (!this.contact) {
+      this.router.navigate(['/contacts']);
+      return "";     
+    }
+    return this.contact.email;
+  }
+
+  getPhone() {
+    if (!this.contact) {
+      this.router.navigate(['/contacts']);
+      return "";     
+    }
+    return this.contact.phone;
   }
 }
