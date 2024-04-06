@@ -34,8 +34,8 @@
                             <li><a routerLink="contacts/new" >Create Account</a></li>    
                         </div>  
                         <div *ngIf="getUserName()">
-                            <li><a (click)="logout()" >Logout</a></li>                 
-                            <li><a (click)="editAccount()" >Edit Account</a></li> 
+                            <li><a style="cursor: pointer;" (click)="logout()" >Logout</a></li>                 
+                            <li><a style="cursor: pointer;" (click)="editAccount()" >Edit Account</a></li> 
                         </div>                                                        
                     </ul>
             </li>
