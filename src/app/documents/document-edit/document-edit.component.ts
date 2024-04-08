@@ -37,14 +37,15 @@ export class DocumentEditComponent implements OnInit{
     }
     const value = form.value;
     const id = this.editMode ? this.document.id : "0";
+
     const newDocument: Document = new Document(
       id,
       this.loginService.getLoggedId(),
       // scrape off leading and trailing whitespace.
-      value.name.trim(),
+      value.name ? value.name.trim() : "",
       value.description ? value.description.trim(): "",
       value.url ? value.url.trim() : "",
-      this.document.children ? this.document.children : []);
+      this.editMode ? this.document.children : []);
     if (this.editMode) {
       this.documentService.updateDocument(newDocument)
     } else {

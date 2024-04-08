@@ -53,7 +53,7 @@
       </div>
       <button class="btn btn-success pull-right" role="presentation" (click)="onAddSubdocument(f)" *ngIf="editMode" >Add Child Document</button><br>
       <hr>
-      <div *ngIf="children.length > 0"> 
+      <div *ngIf="children && children.length > 0"> 
         Subdocuments:
         <div *ngFor="let child of children; let i = index">
           <div>
