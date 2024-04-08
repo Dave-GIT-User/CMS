@@ -4,17 +4,19 @@ import { Subscription } from 'rxjs';
 
 import { Document } from '../document.model'
 import { DocumentService } from '../document.service';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute,/* ActivatedRouteSnapshot,*/ Params } from '@angular/router';
 import { LoginService } from '../../contacts/login/login.service';
 
 @Component({
-  selector: 'cms-document-edit',
-  templateUrl: './document-edit.component.html',
-  styleUrl: './document-edit.component.css'
+  selector: 'app-subdoc-edit',
+  templateUrl: './subdoc-edit.component.html',
+  styleUrl: './subdoc-edit.component.css'
 })
-export class DocumentEditComponent implements OnInit{
+export class SubdocEditComponent implements OnInit {
   document: Document;
-  children: Document[] = [];
+  childIndex: number = 0;
+  //children: Document[] = [];
+  child: Document;
   editMode: boolean = false;
   private subscription1: Subscription;
   private subscription2: Subscription;
@@ -24,6 +26,7 @@ export class DocumentEditComponent implements OnInit{
     private documentService: DocumentService,
     private router: Router,
     private route: ActivatedRoute,
+    //private snapshot: ActivatedRouteSnapshot,
     private loginService: LoginService) {
   }
 
@@ -35,22 +38,35 @@ export class DocumentEditComponent implements OnInit{
     if (this.invalidForm(form)) {
       return;
     }
+    if (!this.document) {
+      this.onCancel();
+      return;
+    }
     const value = form.value;
-    const id = this.editMode ? this.document.id : "0";
-    const newDocument: Document = new Document(
+    const id = this.editMode ? this.child.id : "0";
+    const newChild: Document = new Document(
       id,
-      this.loginService.getLoggedId(),
+      this.loginService.getLoggedId(), // author
       // scrape off leading and trailing whitespace.
-      value.name.trim(),
+      value.name ? value.name.trim() : "",
       value.description ? value.description.trim(): "",
       value.url ? value.url.trim() : "",
-      this.document.children ? this.document.children : []);
+      []);//this.child.children ? this.child.children : []);
     if (this.editMode) {
-      this.documentService.updateDocument(newDocument)
+      this.document.children[this.childIndex] = newChild;
     } else {
-      this.documentService.addDocument(newDocument);
+      this.document.children.push(newChild);
     }
+    this.documentService.updateSubdocument(this.childIndex, this.document)
+
     this.router.navigate(['/documents']);
+  }
+
+  getFormName() {
+    if (this.editMode)
+      return "Edit Child Document";
+    else
+      return "Add Child Document";
   }
 
   // defend against someone submitting a form with whitespace but no real content.
@@ -66,31 +82,29 @@ export class DocumentEditComponent implements OnInit{
     }
     return (value.name.trim().length == 0 || value.url.trim().length == 0);
   }
+  getParentId(index: number): number {
+    const routeStr = this.route.toString();
+    // like: route Route(url:'10/0/edit', path:':id/:id/edit')
+    return +routeStr.substring(11).split('/')[0];
+  }
 
   ngOnInit() {
     this.subscription1 = this.route.params.subscribe(
       (params: Params) => {
-        const id = params.id;
-        if (!id) {
-          this.editMode = false;
-          return;
-        }
-        this.editMode = true;
+        this.childIndex = params.id;
+        this.editMode = this.childIndex > -1;
+        const id = ''+this.getParentId(0);
         this.document = this.documentService.getDocument(id);
-        if (this.document === null) {
+        if (!this.document) {
           this.onCancel();
           return;
-        } else {
-         if (this.document.children) {
-           this.children = this.document.children
-         } else {
-           this.children = [];
-         }
-       }
-
+        }
+        if (this.editMode) {
+          this.child = this.document.children[this.childIndex];
+        }
       }
     );
-    this.subscription2 =     this.subscription2 = this.documentService.documentIOError.subscribe(
+    this.subscription2 = this.subscription2 = this.documentService.documentIOError.subscribe(
       (error) => {
         this.errorMessage = error;
          }
@@ -99,19 +113,5 @@ export class DocumentEditComponent implements OnInit{
 
   onClearError() {
     this.errorMessage = "";
-  }
-
-  onEditSubdocument(index: number) {
-    this.router.navigate(['/documents/'+this.document.id+'/'+index+'/edit']);
-  }
-
-  onDeleteSubdocument(index: number) {
-    this.document.children.splice(index, 1);
-    this.documentService.updateSubdocument(index, this.document);
-  }
-
-  onAddSubdocument(form: NgForm) {
-    // use nonexistent index of -1 to signal call for new child.
-    this.router.navigate(['/documents/'+this.document.id+'/-1/edit']);
   }
 }

@@ -31,7 +31,6 @@ error = false;
   onSubmit(form: NgForm) {
     const value = form.value;
     const hash = this.contactService.hashValue(value.name, value.password );
-    console.log('hash should be '+hash);
     this.contact = this.contactService.getContactByHash(value.name, hash);
     if (this.contact) {
       this.error = false;

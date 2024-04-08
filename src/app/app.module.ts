@@ -27,6 +27,7 @@ import { MessageDetailComponent } from './messages/message-detail/message-detail
 import { SubdocDetailComponent } from './documents/subdoc-detail/subdoc-detail.component';
 import { LoginComponent } from './contacts/login/login.component';
 import { HelpComponent } from './help/help.component';
+import { SubdocEditComponent } from './documents/subdoc-edit/subdoc-edit.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { HelpComponent } from './help/help.component';
     MessageDetailComponent,
     SubdocDetailComponent,
     LoginComponent,
-    HelpComponent
+    HelpComponent,
+    SubdocEditComponent
   ],
   imports: [
     BrowserModule,

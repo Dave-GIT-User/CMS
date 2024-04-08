@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { DestroyRef, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 
@@ -14,8 +14,8 @@ export class DocumentService {
   documentIOError: Subject<string>=new Subject();
   constructor(private http: HttpClient) {  }
 
-  //private dbUrl = 'http://localhost:3000';
-  private dbUrl = 'https://cms-api-3t5r.onrender.com';
+  private dbUrl = 'http://localhost:3000';
+  //private dbUrl = 'https://cms-api-3t5r.onrender.com';
   getDocuments(): void {
     this.http.get(this.dbUrl+'/documents')
     .subscribe({ 
@@ -96,28 +96,47 @@ export class DocumentService {
     })
    }
 
-    deleteSubdocument(index: number, newDocument: Document) {
-    // look for the the index into the array of the updated document
-    const pos = this.documents.indexOf(newDocument);
-    if (pos < 0) {
-       return;
-    }
-    // did we find it?
-    if (pos <0) {
-      return;
-    }
-    this.http.put<'application/json'>(this.dbUrl+'/subdocuments/'+index, newDocument)
-    .subscribe({
-      next: (responseData) => {
-        this.documents[pos].children.splice(index, 1);
-        this.documentListChangedEvent.next(this.documents.slice());
-      },
-      error: (msg) => {
-        this.documentIOError.next("Error deleting subdocument!");
-        console.log('Delete subdocument error '+msg.error);
+    // actually handles add, delete, and edit subdocument.
+    // if the childIndex is negative, the API will treat it 
+    // as new subdocument. 
+    // If the children array is the same size as that of 
+    // the old document it is an edit subdocument.
+    // Otherwise, it is a delete.
+    updateSubdocument(childIndex: number, parentDocument: Document) {
+      const pos = this.documents.indexOf(parentDocument);
+      if (pos < 0) {
+        return;
       }
-    })
-  }
+      // did we find it?
+      if (pos <0) {
+        return;
+      }
+      var operation = "";
+      const destCount = this.documents[pos].children.length;
+      const srcCount = parentDocument.children.length;
+      if (srcCount > destCount) {
+        operation = "adding";
+      } else if (srcCount == destCount) {
+        operation = "editing";
+      } else {
+        operation = "deleting"
+      }
+      this.http.post(this.dbUrl+'/subdocuments/'+(childIndex), parentDocument)
+      .subscribe({
+        next: (response: {statusMessage: string, feedback: number}) => {
+          this.documents[pos] = parentDocument;
+          this.documentListChangedEvent.next(this.documents.slice());
+          if (operation == "add") {
+            this.getDocuments();
+          }
+          this.documentListChangedEvent.next(this.documents.slice());
+        },
+        error: (msg) => {
+          this.documentIOError.next("Error " + operation+ "subdocument!");
+          console.log(operation + ' subdocument error '+msg.error);
+        }
+      })
+    }
 
   addDocument(newDocument: Document ) {
     if (newDocument === null)

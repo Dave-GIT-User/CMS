@@ -11,6 +11,7 @@ import { MessageDetailComponent } from './messages/message-detail/message-detail
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { DocumentDetailComponent } from './documents/document-detail/document-detail.component';
 import { SubdocDetailComponent } from './documents/subdoc-detail/subdoc-detail.component';
+import { SubdocEditComponent } from './documents/subdoc-edit/subdoc-edit.component';
 import { SubconDetailComponent } from './contacts/subcon-detail/subcon-detail.component';
 import { LoginComponent } from './contacts/login/login.component';
 import { HelpComponent } from './help/help.component';
@@ -23,7 +24,8 @@ const routes: Routes = [
     { path: 'new', component: DocumentEditComponent },
     { path: ':id', component: DocumentDetailComponent},
     { path: ':id/edit', component: DocumentEditComponent },
-    { path: ':id/:id', component: SubdocDetailComponent}
+    { path: ':id/:id', component: SubdocDetailComponent},
+    { path: ':id/:id/edit', component: SubdocEditComponent}
   ]},
   { path: 'messages', component: MessagesComponent, children: [
     { path: 'new', component: MessageEditComponent },
