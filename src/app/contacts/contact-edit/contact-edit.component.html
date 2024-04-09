@@ -31,7 +31,7 @@
           size="150" max="255" ngModel required [ngModel]="" #password="ngModel"
           pattern="\D*(?=.*[a-z])(?=.*[A-Z]).{8,20}\D*">
           <span class="help-block" *ngIf="password.value !=' ' && !password.valid && password.touched">
-            Password at least 8 characters, upper and lower case
+            Password 8-20 characters, upper and lower case
           </span>
         </div>
       </div>

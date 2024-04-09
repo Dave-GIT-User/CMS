@@ -3,10 +3,24 @@
         <p>It was decided to implement a basic login without calling a framework 
             or API. The logic is that a username and password are concatenated and 
             then passed to a hash function. That hash is then stored in the contacts 
-            collection along with the user's other information.
+            collection along with the user's other information. 
         </p>
     </span>
 </h4>
+<h4>
+    <span>
+        <p>The user name and password
+            each allow spaces but are trimmed of white space at each end. 
+            The current rule is that there must be upper and lower case letters
+            in the password, but this could easily be modified for complexity. 
+            Passwords must be between 8 and 20 characters.
+        </p>
+    </span>
+</h4>
+The user name and password
+            each allow spaces but are trimmed of white space at both ends. 
+            The current rule is that there must be upper and lower case letters
+            in the password, but this could easily be modified.
 <h4>
     <span>
         <p>When someone attempts to log in, the hash is once again generated. If 
@@ -19,9 +33,10 @@
 <h4>
     <span>
         <p>When they log out, they become anonymous users with read-only rights 
-            and the cached login and admin status is purged from cache. If they 
-            don't, they remain logged in. However, if return the next day, they 
-            are logged out and the cached details are dropped from local storage.
+            and the cached login and admin status is purged from cache. 
+            Nothing prevents a user from walking away without logging out. 
+            However, if they attempt to reuse that cached login the next day, 
+            they are logged out and the expired details are dropped from local storage.
         </p>
     </span>
 </h4>

@@ -155,6 +155,7 @@ export class ContactEditComponent implements OnInit {
     return (
       value.name.trim().length == 0 ||
       value.password.trim().length < 8 ||
+      value.password.trim().length > 20 ||
       value.email.trim().length == 0
     );
   }
