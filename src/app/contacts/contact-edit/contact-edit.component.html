@@ -94,8 +94,8 @@
       </div>
       <div class="alert alert-danger" *ngIf="!name.valid && !name.touched || 
       !email.valid && !email.touched ||
-      !password.valid && !password.touched || invalidForm(f)" style="margin-top: 10px">
-        The Name, Password, and Email fields are required.
+      !password.valid && !password.touched || invalidForm(f) || forbidden" style="margin-top: 10px">
+        {{ errorMessage() }}
       </div>
       <div class="row">
         <div class="col-xs-12 btn-toolbar" style="margin-top: 10px">

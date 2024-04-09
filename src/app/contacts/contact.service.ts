@@ -180,4 +180,12 @@ export class ContactService {
     }
     return null;
   }
+
+  duplicateAccount(username: string, hash: string) {
+    for (let contact of this.contacts) {
+      if (username == contact.name || hash == contact.hash)
+        return true;
+    }
+    return false;
+  }
 }

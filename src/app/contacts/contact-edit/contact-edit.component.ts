@@ -16,6 +16,7 @@ export class ContactEditComponent implements OnInit {
   editMode: boolean = false;
   droppedContacts: Contact[] = [];
   invalidDrop: boolean = false;
+  forbidden = false;
 
   constructor(
     private contactService: ContactService,
@@ -56,6 +57,7 @@ export class ContactEditComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    this.forbidden = false;
     const value = form.value;
     const hash = value.password
       ? this.contactService.hashValue(value.name, value.password)
@@ -76,12 +78,24 @@ export class ContactEditComponent implements OnInit {
       hash,
       admin
     );
+    if (this.contactService.duplicateAccount(newContact.name, newContact.hash)) {
+      this.forbidden = true;
+      return;
+    }
     if (this.editMode) {
       this.contactService.updateContact(newContact);
     } else {
       this.contactService.addContact(newContact);
     }
     this.onCancel();
+  }
+
+  errorMessage() {
+    if (this.forbidden) {
+      return "Please try a different username/password pair."
+    } else {
+      return "The Name, Password, and Email fields are required."
+    }
   }
 
   isInvalidContact(newContact: Contact) {
