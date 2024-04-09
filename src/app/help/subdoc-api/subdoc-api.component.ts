@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrl: './subdoc-api.component.css'
 })
 export class SubdocApiComponent {
+  leftBrace() {
+    return '{';
+  }
+  rightBrace() {
+    return '}';
+  }
 
 }

@@ -12,39 +12,39 @@
     </p>
     <hr>The delete contact method:
     <pre>
-        router.delete("/:id", async (req, res, next) => %7B
-            try %7B
+        router.delete("/:id", async (req, res, next) => {{leftBrace()}}
+            try {{leftBrace()}}
                 const contactId = req.params.id;
                 await util.purgeOphanedRecords(contactId);
-                const contact = await Contact.findOne(%7B id: req.params.id %7D)       
-                    contact.deleteOne(%7B id: contactId %7D)
-                    .then(result => %7B
-                        res.status(204).json(%7B
+                const contact = await Contact.findOne({{leftBrace()}} id: req.params.id {{rightBrace()}})       
+                    contact.deleteOne({{leftBrace()}} id: contactId {{rightBrace()}})
+                    .then(result => {{leftBrace()}}
+                        res.status(204).json({{leftBrace()}}
                         message: "Contact deleted successfully"
-                        %7D);
-                    %7D)      
-            %7D catch(error) %7B
-                res.status(500).json(%7B
+                        {{rightBrace()}});
+                    {{rightBrace()}})      
+            {{rightBrace()}} catch(error) {{leftBrace()}}
+                res.status(500).json({{leftBrace()}}
                 message: 'An error occurred',
                 error: error
-                %7D);
-            %7D
-        %7D);
+                {{rightBrace()}});
+            {{rightBrace()}}
+        {{rightBrace()}});
     </pre>
     <hr>The purge orphans method:
     <pre>
         // Messages and documents each have foreign keys to contacts.
         // If a contact is deleted, first their documents and 
         // messages must be purged.
-        async purgeOphanedRecords(id) %7B
-            try %7B
+        async purgeOphanedRecords(id) {{leftBrace()}}
+            try {{leftBrace()}}
                 // const author = await Contact.findOne(
                 const contact_id = await this.getContact_id(id);
-                await Document.deleteMany(%7Bauthor: contact_id%7D)
-                await Message.deleteMany(%7Bsender: contact_id%7D)
-            %7D catch (err) %7B
+                await Document.deleteMany({{leftBrace()}}author: contact_id{{rightBrace()}})
+                await Message.deleteMany({{leftBrace()}}sender: contact_id{{rightBrace()}})
+            {{rightBrace()}} catch (err) {{leftBrace()}}
                 console.log('Error purging orphaned records');
                 throw err;
-            %7D
-        %7D
+            {{rightBrace()}}
+        {{rightBrace()}}
     </pre>

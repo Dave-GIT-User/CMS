@@ -3,7 +3,7 @@
         data? The get operation is trivial, and not discussed here.
     </p>
     <p> A single method at the API handles adds, deletes, and edits of subdocuments. 
-        MongoDB treates subdocuments specially. One does not save the subdocument, 
+        MongoDB treats subdocuments specially. One does not save the subdocument, 
         but rather update the children array and then save the parent document. 
         For further information, please see 
         <a href="https://mongoosejs.com/docs/subdocs.html" 
@@ -23,29 +23,29 @@
     // The difference between this and the put
     // method of documents.js is that it 
     // is for adding, deleting or updating child documents
-    router.post('/:id', async (req, res, next) => %7B
-        try %7B
+    router.post('/:id', async (req, res, next) => {{leftBrace()}}
+        try {{leftBrace()}}
             index = req.params.id;
-            const  document = await Document.findOne(%7B"id": req.body.id%7D); // the parent document
+            const  document = await Document.findOne({{leftBrace()}}"id": req.body.id{{rightBrace()}}); // the parent document
             // do some analysis to determine the operation.
             var destCount = 0;
-            for (let child of document.children) %7B
+            for (let child of document.children) {{leftBrace()}}
                 destCount++;
-            %7D
+            {{rightBrace()}}
             var srcCount = 0;
-            for (let child of req.body.children) %7B
+            for (let child of req.body.children) {{leftBrace()}}
                 srcCount++;
-            %7D
+            {{rightBrace()}}
     
             var operation = "";
-            if (srcCount > destCount) %7B
+            if (srcCount > destCount) {{leftBrace()}}
                 operation = "add";
-            %7D else if (srcCount == destCount) %7B
+            {{rightBrace()}} else if (srcCount == destCount) {{leftBrace()}}
                 operation = "edit";
-            %7D else operation = "delete";
+            {{rightBrace()}} else operation = "delete";
     
             var id = "0"; // only needed for add, ignored at the client otherwise.
-            switch (operation) %7B
+            switch (operation) {{leftBrace()}}
                 case "delete":
                     deletedChild = document.children[index]; 
                     await deletedChild.deleteOne();
@@ -61,25 +61,25 @@
                     const name = req.body.children[index].name;
                     const description = req.body.children[index].description;
                     const url = req.body.children[index].url;
-                    await document.children.push(%7Bid: id, author: author, name: name, description: description, url: url%7D);
+                    await document.children.push({{leftBrace()}}id: id, author: author, name: name, description: description, url: url{{rightBrace()}});
                     break;
                 default:
                     throw new Error('Invalid child document operation');
-            %7D
+            {{rightBrace()}}
             await document.save()
-            .then((response) => %7B 
-                res.status(201).json(%7B
+            .then((response) => {{leftBrace()}} 
+                res.status(201).json({{leftBrace()}}
                     statusMessage: "Message added successfully.",
                     feedback: id 
-                %7D);
-            %7D)
-        %7D catch(error) %7B
-                res.status(500).json(%7B
+                {{rightBrace()}});
+            {{rightBrace()}})
+        {{rightBrace()}} catch(error) {{leftBrace()}}
+                res.status(500).json({{leftBrace()}}
                 message: 'An error occurred',
                 error: error
-            %7D);
-        %7D
-    %7D);
+            {{rightBrace()}});
+        {{rightBrace()}}
+    {{rightBrace()}});
     
     module.exports = router; 
     </pre>

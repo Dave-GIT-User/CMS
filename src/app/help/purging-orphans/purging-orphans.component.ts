@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrl: './purging-orphans.component.css'
 })
 export class PurgingOrphansComponent {
-
+  leftBrace() {
+    return '{';
+  }
+  rightBrace() {
+    return '}';
+  }
 }
