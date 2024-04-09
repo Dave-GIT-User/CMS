@@ -31,13 +31,16 @@ export class LoginComponent implements OnInit {
   onSubmit(form: NgForm) {
     const value = form.value;
     const hash = this.contactService.hashValue(value.name, value.password);
+    const date: string = new Date().toString().substring(0,15); // like Tue Apr 09 2024
+
     this.contact = this.contactService.getContactByHash(value.name, hash);
     if (this.contact) {
       this.error = false;
       this.loginService.setLoggedUser(
         this.contact.name,
         this.contact.id,
-        this.contact.admin
+        this.contact.admin,
+        date
       );
       this.onCancel();
     } else {

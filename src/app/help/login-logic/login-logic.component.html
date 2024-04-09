@@ -1,0 +1,18 @@
+<h4>
+    <span>
+        <p>It was decided to implement a basic login without calling a framework or API. The logic is that a username and password are concatenated and then passed to a hash function. That hash is then stored in the contacts collection along with the user's other information.
+        </p>
+    </span>
+</h4>
+<h4>
+    <span>
+        <p>When someone attempts to log in, the hash is once again generated. If that hash matches that of a contact, they are logged in. This event including admin status is cached to local storage, saving the user from repeatedly logging in after the application loses its state.
+        </p>
+    </span>
+</h4>
+<h4>
+    <span>
+        <p>When they log out, they become anonymous users with read-only rights and the cached login and admin status is purged from cache. If they don't, they remain logged in. However, if return the next day, they are logged out and the cached details are dropped from local storage.
+        </p>
+    </span>
+</h4>

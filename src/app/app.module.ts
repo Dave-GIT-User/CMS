@@ -28,6 +28,10 @@ import { SubdocDetailComponent } from './documents/subdoc-detail/subdoc-detail.c
 import { LoginComponent } from './contacts/login/login.component';
 import { HelpComponent } from './help/help.component';
 import { SubdocEditComponent } from './documents/subdoc-edit/subdoc-edit.component';
+import { SubdocApiComponent } from './help/subdoc-api/subdoc-api.component';
+import { PurgingOrphansComponent } from './help/purging-orphans/purging-orphans.component';
+import { UnderTheHoodComponent } from './help/under-the-hood/under-the-hood.component';
+import { LoginLogicComponent } from './help/login-logic/login-logic.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +57,11 @@ import { SubdocEditComponent } from './documents/subdoc-edit/subdoc-edit.compone
     SubdocDetailComponent,
     LoginComponent,
     HelpComponent,
-    SubdocEditComponent
+    SubdocEditComponent,
+    SubdocApiComponent,
+    PurgingOrphansComponent,
+    UnderTheHoodComponent,
+    LoginLogicComponent
   ],
   imports: [
     BrowserModule,

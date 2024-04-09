@@ -1,0 +1,50 @@
+    <p>The MongoDB database for this implementation of CMS has foreign key 
+        contraints, that all documents must have authors and all messages 
+        must have senders. These are each in the contacts collection. The 
+        dilemma is what to do if a contact is deleted after that person 
+        created documents and sent messages.
+    </p>
+    <p> A former client-side remedy no longer works, once we migrated
+        from FireBase to MongoDB. The approach taken here is that when 
+        a contact is deleted, the API first gets rid of any documents 
+        and messages from that person. Otherwise, the data is broken 
+        such that get operations fail with a 500 error.
+    </p>
+    <hr>The delete contact method:
+    <pre>
+        router.delete("/:id", async (req, res, next) => %7B
+            try %7B
+                const contactId = req.params.id;
+                await util.purgeOphanedRecords(contactId);
+                const contact = await Contact.findOne(%7B id: req.params.id %7D)       
+                    contact.deleteOne(%7B id: contactId %7D)
+                    .then(result => %7B
+                        res.status(204).json(%7B
+                        message: "Contact deleted successfully"
+                        %7D);
+                    %7D)      
+            %7D catch(error) %7B
+                res.status(500).json(%7B
+                message: 'An error occurred',
+                error: error
+                %7D);
+            %7D
+        %7D);
+    </pre>
+    <hr>The purge orphans method:
+    <pre>
+        // Messages and documents each have foreign keys to contacts.
+        // If a contact is deleted, first their documents and 
+        // messages must be purged.
+        async purgeOphanedRecords(id) %7B
+            try %7B
+                // const author = await Contact.findOne(
+                const contact_id = await this.getContact_id(id);
+                await Document.deleteMany(%7Bauthor: contact_id%7D)
+                await Message.deleteMany(%7Bsender: contact_id%7D)
+            %7D catch (err) %7B
+                console.log('Error purging orphaned records');
+                throw err;
+            %7D
+        %7D
+    </pre>

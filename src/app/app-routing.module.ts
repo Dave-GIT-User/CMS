@@ -15,11 +15,19 @@ import { SubdocEditComponent } from './documents/subdoc-edit/subdoc-edit.compone
 import { SubconDetailComponent } from './contacts/subcon-detail/subcon-detail.component';
 import { LoginComponent } from './contacts/login/login.component';
 import { HelpComponent } from './help/help.component';
+import { SubdocApiComponent } from './help/subdoc-api/subdoc-api.component';
+import { PurgingOrphansComponent } from './help/purging-orphans/purging-orphans.component';
+import { UnderTheHoodComponent } from './help/under-the-hood/under-the-hood.component';
+import { LoginLogicComponent } from './help/login-logic/login-logic.component';
 
 const routes: Routes = [  
   { path: '', redirectTo: '/documents', pathMatch: 'full'},
   { path: 'login', component: LoginComponent},
   { path: 'help', component: HelpComponent},
+  { path: 'help/subdoc-api', component: SubdocApiComponent},
+  { path: 'help/purging-orphans', component: PurgingOrphansComponent},
+  { path: 'help/under-the-hood', component: UnderTheHoodComponent},
+  { path: 'help/login-logic', component: LoginLogicComponent},
   { path: 'documents', component: DocumentsComponent, children: [
     { path: 'new', component: DocumentEditComponent },
     { path: ':id', component: DocumentDetailComponent},

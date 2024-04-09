@@ -35,6 +35,7 @@ export class SubdocDetailComponent {
       this.document = this.documentService.getDocument(this.id);
       if (this.document === null) {
         this.router.navigate(["/documents"]);
+        return;
       } else {
         if (this.document.children) {
           this.children = this.document.children;
@@ -50,13 +51,26 @@ export class SubdocDetailComponent {
     this.nativeWindow.open(url);
   }
 
+  // Beyond getting the author, much of this
+  // logic is about handling an untimely 
+  // browser reset.
   getAuthor() {
+    if (!this.document) {
+      this.router.navigate(["/documents"]);
+      return "anonymous";
+    } 
     const authorId = this.document.author;
     if (authorId) {
       const author: Contact = this.contactService.getContact(authorId);
       if (author) {
         return author.name;
-      } else return "anonymous";
-    } else return "anonymous";
+      } else {
+        this.router.navigate(["/documents"]);
+        return "anonymous";
+      }
+    } else {
+      this.router.navigate(["/documents"]);
+      return "anonymous";
+    }        
   }
 }
