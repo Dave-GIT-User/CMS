@@ -1,23 +1,32 @@
 <div class="panel panel-default" xmlns="http://www.w3.org/1999/html">
   <div class="panel-heading">
     <div class="row pad-all">
-      <h4 class="title margin-left-right">{{document?.name}}</h4>
+      <h4 class="title margin-left-right">
+        {{document?.name}}
+      </h4>
       <div class="row pull-right margin-left-right">
-        <a class="btn btn-primary" (click)="onView()">View</a>
-
+        <a class="btn btn-primary" (click)="onView()">
+          View
+        </a>
       </div>
     </div>
   </div>
   <div class="panel-body">
     <div class="pad-left-right">
       <div class="row">
-        <p class="label-value">Author: {{ getAuthor() }}</p>
+        <p class="label-value">
+          Author: {{ getAuthor() }}
+        </p>
       </div>
       <div class="row">
-        <p class="label-value">Description: {{ document?.description}}</p>
+        <p class="label-value">
+          Description: {{ document?.description}}
+        </p>
       </div>
       <div class="row">
-        <p class="label-value">URL: {{ document?.url }}</p>
+        <p class="label-value">
+          URL: {{ document?.url }}
+        </p>
       </div>
     </div>
   </div>

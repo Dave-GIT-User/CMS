@@ -1,22 +1,28 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row pad-left-right">
-      <span class="pull-left title">Documents</span>
+      <span class="pull-left title">
+        Documents
+      </span>
       <div *ngIf="loggedIn()">
-        <a class="btn btn-success pull-right" role="presentation" [routerLink]="['/documents', 'new']">New Document</a>
-      </div>      
+        <a class="btn btn-success pull-right" role="presentation" [routerLink]="['/documents', 'new']">
+          New Document
+        </a>
+      </div>
     </div>
   </div>
   <div class="panel-body">
     <div class="center-panel">
-      <cms-document-item
-      *ngFor="let documentEl of documents;"
-      [document]="documentEl"
-      [docIndex]="documentEl.id"   
-      ></cms-document-item>
+      <cms-document-item *ngFor="let documentEl of documents;" [document]="documentEl"
+      [docIndex]="documentEl.id">
+      </cms-document-item>
       <div *ngIf="errorMessage.length > 0">
-        <h3>{{ errorMessage }}</h3>
-        <button type="button" class="btn btn-danger" (click)="onClearError()">Clear Error</button>
+        <h3>
+          {{ errorMessage }}
+        </h3>
+        <button type="button" class="btn btn-danger" (click)="onClearError()">
+          Clear Error
+        </button>
       </div>
     </div>
   </div>

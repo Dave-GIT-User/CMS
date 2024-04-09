@@ -1,58 +1,45 @@
 <div class="panel panel-default">
-    <div class="panel-body">
-    <h3>Login<hr></h3>
-      <form id="login" (ngSubmit)="onSubmit(f)" #f="ngForm">
-        <div class="row">
-          <div class="col-sm-12 form-group">
-            <label for="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              class="form-control required"
-              size="120"
-              max="120"
-              ngModel
-              required
-              [ngModel]=""
-              #name="ngModel">
-          </div>
+  <div class="panel-body">
+    <h3>
+      Login
+      <hr>
+    </h3>
+    <form id="login" (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="name">
+            Name:
+          </label>
+          <input type="text" id="name" name="name" class="form-control required"
+          size="120" max="120" ngModel required [ngModel]="" #name="ngModel">
         </div>
-  
-        <div class="row">
-          <div class="col-sm-12 form-group">
-            <label for="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              class="form-control invalid"
-              size="150"
-              max="255"
-              ngModel
-              [ngModel]=""
-              #password="ngModel"
-              pattern="\D*(?=.*[a-z])(?=.*[A-Z]).{8,20}\D*">
-              <span class="help-block" *ngIf="password.value !=' ' && !password.valid && password.touched">Password at least 8 characters, upper and lower case</span>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="password">
+            Password:
+          </label>
+          <input type="password" id="password" name="password" class="form-control invalid"
+          size="150" max="255" ngModel [ngModel]="" #password="ngModel" pattern="\D*(?=.*[a-z])(?=.*[A-Z]).{8,20}\D*">
+          <span class="help-block" *ngIf="password.value !=' ' && !password.valid && password.touched">
+            Password at least 8 characters, upper and lower case
+          </span>
         </div>
-  
-        <div 
-          class="alert alert-danger"
-          *ngIf="error || !name.valid && !name.touched || 
-          !password.valid && !password.touched" style="margin-top: 10px">
-          {{ errorMessage() }}
-
+      </div>
+      <div class="alert alert-danger" *ngIf="error || !name.valid && !name.touched || 
+      !password.valid && !password.touched" style="margin-top: 10px">
+        {{ errorMessage() }}
+      </div>
+      <div class="row">
+        <div class="col-xs-12 btn-toolbar" style="margin-top: 10px">
+          <button class="btn btn-success" type="submit" [disabled]="!f.valid">
+            Save
+          </button>
+          <button class="btn btn-primary" type="button" (click)="onCancel()">
+            Cancel
+          </button>
         </div>
-
-  
-        <div class="row">
-          <div class="col-xs-12 btn-toolbar" style="margin-top: 10px">
-            <button class="btn btn-success" type="submit" [disabled]="!f.valid">Save</button>
-            <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
-          </div>
-        </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
-  
+</div>

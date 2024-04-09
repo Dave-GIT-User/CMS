@@ -1,19 +1,24 @@
-
 <div class="panel panel-default">
   <div class="row">
     <div class="col-xs-12">
       <div class="panel panel-default">
         <div class="panel-heading">
           <div class="row">
-            <span class="title pad-left-right">Contacts</span>
+            <span class="title pad-left-right">
+              Contacts
+            </span>
           </div>
           <div class="row">
             <div class="input-group pull-left pad-left-right col-xs-7">
-              <input type="text" class="form-control" (keyup)="search(searchBox.value)" placeholder="Enter a search value" #searchBox>
-              <div class="glyphicon glyphicon-search input-group-addon" (click)="search(searchBox.value)"></div>
+              <input type="text" class="form-control" (keyup)="search(searchBox.value)"
+              placeholder="Enter a search value" #searchBox>
+              <div class="glyphicon glyphicon-search input-group-addon" (click)="search(searchBox.value)">
+              </div>
             </div>
             <div class="pull-right pad-left-right" *ngIf="isAdmin()">
-              <a class="btn btn-success" [routerLink]="['/contacts', 'new']">New Contact</a>
+              <a class="btn btn-success" [routerLink]="['/contacts', 'new']">
+                New Contact
+              </a>
             </div>
           </div>
         </div>
@@ -23,18 +28,18 @@
   <div class="panel-body">
     <div class="center-panel">
       <div cdkDropList [cdkDropListData]="contacts">
-        <cms-contact-item 
-          *ngFor="let contactEl of contacts | contactsfilter:term" cdkDrag 
-          [contact]="contactEl"
-          [contactIndex]="contactEl.id"         
-        ></cms-contact-item>
+        <cms-contact-item *ngFor="let contactEl of contacts | contactsfilter:term"
+        cdkDrag [contact]="contactEl" [contactIndex]="contactEl.id">
+        </cms-contact-item>
         <div *ngIf="errorMessage.length > 0">
-          <h3>{{ errorMessage }}</h3>
-          <button type="button" class="btn btn-danger" (click)="onClearError()">Clear Error</button>
+          <h3>
+            {{ errorMessage }}
+          </h3>
+          <button type="button" class="btn btn-danger" (click)="onClearError()">
+            Clear Error
+          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-

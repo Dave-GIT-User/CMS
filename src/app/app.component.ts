@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
-  title = 'WeLearn CMS!';
+  title = 'CMS Prime';
 }

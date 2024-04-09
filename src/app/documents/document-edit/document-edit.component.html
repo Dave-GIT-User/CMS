@@ -1,98 +1,83 @@
 <div class="panel panel-default">
   <div class="panel-body">
-
     <form id="document-edit" (ngSubmit)="onSubmit(f)" #f="ngForm">
       <div class="row">
         <div class="col-sm-12 form-group">
-          <label for="name">Document Title:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            class="form-control"
-            size="120"
-            max="120"
-            ngModel
-            required
-            [ngModel]=document?.name
-            #name="ngModel">
+          <label for="name">
+            Document Title:
+          </label>
+          <input type="text" id="name" name="name" class="form-control" size="120"
+          max="120" ngModel required [ngModel]=document?.name #name="ngModel">
         </div>
       </div>
-
       <div class="row">
         <div class="col-sm-12 form-group">
-          <label for="description">Document Description:</label>
-          <input
-            type="text"
-            id="description"
-            name="description"
-            class="form-control"
-            size="120"
-            max="255"
-            ngModel
-            [ngModel]=document?.description
-            #description="ngModel">
+          <label for="description">
+            Document Description:
+          </label>
+          <input type="text" id="description" name="description" class="form-control"
+          size="120" max="255" ngModel [ngModel]=document?.description #description="ngModel">
         </div>
       </div>
-
       <div class="row">
         <div class="col-sm-12 form-group">
-          <label for="url">Document URL:</label>
-          <input
-            type="text"
-            id="url"
-            name="url"
-            class="form-control"
-            size="150"
-            max="255"
-            ngModel
-            required
-            [ngModel]=document?.url
-            #url="ngModel">
+          <label for="url">
+            Document URL:
+          </label>
+          <input type="text" id="url" name="url" class="form-control" size="150"
+          max="255" ngModel required [ngModel]=document?.url #url="ngModel">
         </div>
       </div>
-      <button class="btn btn-success pull-right" role="presentation" (click)="onAddSubdocument(f)" *ngIf="editMode" >Add Child Document</button><br>
+      <button class="btn btn-success pull-right" role="presentation" (click)="onAddSubdocument(f)"
+      *ngIf="editMode">
+        Add Child Document
+      </button>
+      <br>
       <hr>
-      <div *ngIf="children && children.length > 0"> 
+      <div *ngIf="children && children.length > 0">
         Subdocuments:
         <div *ngFor="let child of children; let i = index">
           <div>
-            <cms-document-item class="col-sm-40" [docIndex]="child.id" [document]="child" style="margin-top: 10px"></cms-document-item>
-            
-            <div class="row"><br>
+            <cms-document-item class="col-sm-40" [docIndex]="child.id" [document]="child"
+            style="margin-top: 10px">
+            </cms-document-item>
+            <div class="row">
+              <br>
               <span>
-                <button type="button" class="btn btn-info col-sm-3 deleteButton pull-left " style="margin-left: 10px" (click)="onEditSubdocument(i)">Edit Child</button>
-                <button type="button" class="btn btn-danger col-sm-4 deleteButton" style="margin-left: 10px;" (click)="onDeleteSubdocument(i)">Delete Child</button>
+                <button type="button" class="btn btn-info col-sm-3 deleteButton pull-left "
+                style="margin-left: 10px" (click)="onEditSubdocument(i)">
+                  Edit Child
+                </button>
+                <button type="button" class="btn btn-danger col-sm-4 deleteButton" style="margin-left: 10px;"
+                (click)="onDeleteSubdocument(i)">
+                  Delete Child
+                </button>
               </span>
-
             </div>
-            
           </div>
-
         </div>
       </div>
-      <div 
-        class="alert alert-danger"
-        *ngIf="!name.valid && !name.touched || !url.valid && !url.touched || invalidForm(f)">
+      <div class="alert alert-danger" *ngIf="!name.valid && !name.touched || !url.valid && !url.touched || invalidForm(f)">
         The Document Title and Document URL are required fields.
       </div>
-
       <div class="row">
         <div class="col-xs-12 btn-toolbar">
-          <button 
-            class="btn btn-success" 
-            type="submit" 
-            [disabled]="!f.valid"
-            >Save</button>
-          <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
+          <button class="btn btn-success" type="submit" [disabled]="!f.valid">
+            Save
+          </button>
+          <button class="btn btn-primary" type="button" (click)="onCancel()">
+            Cancel
+          </button>
         </div>
       </div>
-
     </form>
     <div *ngIf="errorMessage.length > 0">
-      <h3>{{ errorMessage }}</h3>
-      <button type="button" class="btn btn-danger" (click)="onClearError()">Clear Error</button>
+      <h3>
+        {{ errorMessage }}
+      </h3>
+      <button type="button" class="btn btn-danger" (click)="onClearError()">
+        Clear Error
+      </button>
     </div>
   </div>
 </div>
-

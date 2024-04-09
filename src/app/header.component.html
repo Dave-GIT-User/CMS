@@ -1,44 +1,68 @@
 <nav class="navbar navbar-default">
     <div class="navbar-header">
-        <a class="navbar-brand"><h4>CMS Prime</h4></a>
+      <a class="navbar-brand">
+        <h4>
+          CMS Prime
+        </h4>
+      </a>
     </div>
     <div class="collpase navbar-collapse">
-        <ul class="nav navbar-nav navbar-left">
-            <li role="presentation" 
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{'exact': true}">
-                <a routerLink="documents">Documents</a>
-            </li>
-            <li role="presentation" 
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{'exact': true}">
-                <a routerLink="messages">Messages</a>
-            </li>
-            <li role="presentation" 
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{'exact': true}">
-                <a routerLink="contacts">Contacts</a>
-            </li>
-            <li role="presentation" 
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{'exact': true}">
-            <a routerLink="help">Help</a>
+      <ul class="nav navbar-nav navbar-left">
+        <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{'exact': true}">
+          <a routerLink="documents">
+            Documents
+          </a>
         </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown" appDropdown>
-                <a class="dropdown-toggle" role="button">{{ getPrompt() }}<span class="caret"></span> </a>
-                    <ul class="dropdown-menu">
-                        <div *ngIf="!getUserName()">
-                            <li><a routerLink="login">Login</a></li>
-                            <li><a routerLink="contacts/new" >Create Account</a></li>    
-                        </div>  
-                        <div *ngIf="getUserName()">
-                            <li><a style="cursor: pointer;" (click)="logout()" >Logout</a></li>                 
-                            <li><a style="cursor: pointer;" (click)="editAccount()" >Edit Account</a></li> 
-                        </div>                                                        
-                    </ul>
-            </li>
-        </ul>
+        <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{'exact': true}">
+          <a routerLink="messages">
+            Messages
+          </a>
+        </li>
+        <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{'exact': true}">
+          <a routerLink="contacts">
+            Contacts
+          </a>
+        </li>
+        <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{'exact': true}">
+          <a routerLink="help">
+            Help
+          </a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown" appDropdown>
+          <a class="dropdown-toggle" role="button">
+            {{ getPrompt() }}
+            <span class="caret">
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <div *ngIf="!getUserName()">
+              <li>
+                <a routerLink="login">
+                  Login
+                </a>
+              </li>
+              <li>
+                <a routerLink="contacts/new">
+                  Create Account
+                </a>
+              </li>
+            </div>
+            <div *ngIf="getUserName()">
+              <li>
+                <a style="cursor: pointer;" (click)="logout()">
+                  Logout
+                </a>
+              </li>
+              <li>
+                <a style="cursor: pointer;" (click)="editAccount()">
+                  Edit Account
+                </a>
+              </li>
+            </div>
+          </ul>
+        </li>
+      </ul>
     </div>
-</nav>
+  </nav>

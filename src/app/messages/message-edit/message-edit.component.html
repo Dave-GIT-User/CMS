@@ -1,57 +1,46 @@
 <div class="panel panel-default">
-    <div class="panel-body">
-  
-      <form id="message-edit" (ngSubmit)="onSendMessage(f)" #f="ngForm">
-        <div class="row">
-          <div class="col-sm-12 form-group">
-            <label for="subject">Subject:</label>
-            <input
-              type="text"
-              id="subject"
-              name="subject"
-              class="form-control required"
-              size="120"
-              max="120"
-              ngModel
-              required
-              [ngModel]=message?.subject
-              #subject="ngModel"
-              pattern=".{1,500}">
-              <span class="help-block" *ngIf="!subject.valid && subject.touched">Message text between 1 and 50 characters</span>
-          </div>
+  <div class="panel-body">
+    <form id="message-edit" (ngSubmit)="onSendMessage(f)" #f="ngForm">
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="subject">
+            Subject:
+          </label>
+          <input type="text" id="subject" name="subject" class="form-control required"
+          size="120" max="120" ngModel required [ngModel]=message?.subject #subject="ngModel"
+          pattern=".{1,500}">
+          <span class="help-block" *ngIf="!subject.valid && subject.touched">
+            Message text between 1 and 50 characters
+          </span>
         </div>
-  
-        <div class="row">
-          <div class="col-sm-12 form-group">            
-            <label for="msgText">Message:</label>
-            <textarea 
-              id="msgText" 
-              name="msgText" 
-              rows="6" 
-              cols="50"
-              ngModel
-              required
-              [ngModel]=message?.msgText
-              #msgText="ngModel"
-              pattern=".{1,500}">
-            </textarea>
-            <span class="help-block" *ngIf="!msgText.valid && msgText.touched">Message text between 1 and 500 characters</span>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="msgText">
+            Message:
+          </label>
+          <textarea id="msgText" name="msgText" rows="6" cols="50" ngModel required
+          [ngModel]=message?.msgText #msgText="ngModel" pattern=".{1,500}">
+          </textarea>
+          <span class="help-block" *ngIf="!msgText.valid && msgText.touched">
+            Message text between 1 and 500 characters
+          </span>
         </div>
-   
-        <div 
-          class="alert alert-danger"
-          *ngIf="!subject.valid && !subject.touched || !msgText.valid && !msgText.touched || invalidForm(f)" style="margin-top: 10px">
-          The Subject and Message fields are required.
+      </div>
+      <div class="alert alert-danger" *ngIf="!subject.valid && !subject.touched || !msgText.valid && !msgText.touched || invalidForm(f)"
+      style="margin-top: 10px">
+        The Subject and Message fields are required.
+      </div>
+      <div class="row">
+        <div class="col-xs-12 btn-toolbar" style="margin-top: 10px">
+          <button class="btn btn-success" type="submit" [disabled]="!f.valid || invalidForm(f)">
+            Save
+          </button>
+          <button class="btn btn-primary" type="button" (click)="onCancel()">
+            Cancel
+          </button>
         </div>
-  
-        <div class="row">
-          <div class="col-xs-12 btn-toolbar" style="margin-top: 10px">
-            <button class="btn btn-success" type="submit" [disabled]="!f.valid || invalidForm(f)">Save</button>
-            <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
-          </div>
-        </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
-  
+</div>

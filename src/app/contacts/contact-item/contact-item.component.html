@@ -1,17 +1,15 @@
-<!-- Suppress selected appearance and clickability of subitems in contact edit mode -->
+<!-- Suppress selected appearance and clickability of subitems in contact
+edit mode -->
 <!-- actually it process a click as old_url/./ -->
-<a 
-class="list-group-item clearfix documentDiv" style="cursor: pointer;"
- [routerLinkActive]="activeStatus()" [routerLink]="[contactIndex]">
-<div class="pull-left">
-    <h4 class="list-group-item-heading">{{ contact.name }}</h4>
-</div>
-<span class="pull-right">
-    <img 
-    [src]="contact.imageUrl" 
-    alt="{{ contact.name }}"
-    class="img-responsive" 
+<a class="list-group-item clearfix documentDiv" style="cursor: pointer;"
+[routerLinkActive]="activeStatus()" [routerLink]="[contactIndex]">
+  <div class="pull-left">
+    <h4 class="list-group-item-heading">
+      {{ contact.name }}
+    </h4>
+  </div>
+  <span class="pull-right">
+    <img [src]="contact.imageUrl" alt="{{ contact.name }}" class="img-responsive"
     style="max-height: 50px">
-</span>
+  </span>
 </a>
-

@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'cms-documents',
-  templateUrl: './documents.component.html',
-  styleUrl: './documents.component.css'
+  selector: "cms-documents",
+  templateUrl: "./documents.component.html",
+  styleUrl: "./documents.component.css",
 })
-export class DocumentsComponent {
-
-}
+export class DocumentsComponent {}
