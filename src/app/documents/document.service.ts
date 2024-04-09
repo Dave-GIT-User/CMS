@@ -14,8 +14,8 @@ export class DocumentService {
   documentIOError: Subject<string> = new Subject();
   constructor(private http: HttpClient) {}
 
-  private dbUrl = 'http://localhost:3000';
-  //private dbUrl = "https://cms-api-3t5r.onrender.com";
+  //private dbUrl = 'http://localhost:3000';
+  private dbUrl = "https://cms-api-3t5r.onrender.com";
   getDocuments(): void {
     this.http.get(this.dbUrl + "/documents").subscribe({
       next: (documentData: { message: string; documents: Document[] }) => {
